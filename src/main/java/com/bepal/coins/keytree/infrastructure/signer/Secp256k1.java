@@ -9,7 +9,7 @@
 
 Secp256k1
 */
-package com.bepal.coins.keytree.signer;
+package com.bepal.coins.keytree.infrastructure.signer;
 
 import com.bepal.coins.keytree.infrastructure.interfaces.ISigner;
 import com.bepal.coins.keytree.model.ECSign;

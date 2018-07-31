@@ -17,7 +17,7 @@ import com.bepal.coins.keytree.model.Chain;
 import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.infrastructure.coordinators.SeedCoordinator;
 import com.bepal.coins.keytree.infrastructure.tags.SeedTag;
-import com.bepal.coins.keytree.signer.Secp256k1;
+import com.bepal.coins.keytree.infrastructure.signer.Secp256k1;
 import com.bepal.coins.models.ByteArrayData;
 import com.bepal.coins.utils.BigIntUtil;
 import com.bepal.coins.utils.ErrorTool;

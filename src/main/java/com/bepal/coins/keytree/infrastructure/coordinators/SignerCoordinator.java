@@ -13,9 +13,9 @@ package com.bepal.coins.keytree.infrastructure.coordinators;
 
 import com.bepal.coins.keytree.infrastructure.interfaces.ISigner;
 import com.bepal.coins.keytree.infrastructure.tags.SignerTag;
-import com.bepal.coins.keytree.signer.ED25519;
-import com.bepal.coins.keytree.signer.Secp256k1;
-import com.bepal.coins.keytree.signer.Secp256k1Nonce;
+import com.bepal.coins.keytree.infrastructure.signer.ED25519;
+import com.bepal.coins.keytree.infrastructure.signer.Secp256k1;
+import com.bepal.coins.keytree.infrastructure.signer.Secp256k1Nonce;
 
 public class SignerCoordinator {
     private static SignerCoordinator instance;

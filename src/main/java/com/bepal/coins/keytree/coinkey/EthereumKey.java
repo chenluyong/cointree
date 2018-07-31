@@ -21,7 +21,7 @@ import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.model.ECSign;
 import com.bepal.coins.models.ByteArrayData;
 
-import static com.bepal.coins.keytree.signer.Secp256k1.CURVE;
+import static com.bepal.coins.keytree.infrastructure.signer.Secp256k1.CURVE;
 
 public class EthereumKey implements ICoinKey {
     private ECKey ecKey;

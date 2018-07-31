@@ -9,7 +9,7 @@
 
 ED25519
 */
-package com.bepal.coins.keytree.signer;
+package com.bepal.coins.keytree.infrastructure.signer;
 
 import com.bepal.coins.crypto.SHAHash;
 import com.bepal.coins.crypto.ed25519.Ed25519EncodedFieldElement;

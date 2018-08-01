@@ -69,4 +69,9 @@ public class ED25519 implements ISigner {
         final int result = ByteArrayData.isEqualConstantTime(encodedCalculatedR, rawEncodedR);
         return 1 == result;
     }
+
+    @Override
+    public byte[] recoverPubKey(byte[] hash, ECSign ecSign) {
+        return null;
+    }
 }

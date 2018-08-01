@@ -146,6 +146,11 @@ public class Secp256k1Nonce implements ISigner {
         return Arrays.equals(pubKey, q.getEncoded(true));
     }
 
+    @Override
+    public byte[] recoverPubKey(byte[] hash, ECSign ecSign) {
+        return recoverPubKey(hash, ecSign, ecSign.V);
+    }
+
     private static byte[] recoverPubKey(byte[] messageSigned, ECSign ecSign, byte recId) {
         ErrorTool.checkArgument(recId >= 0, "recId must be positive");
         ErrorTool.checkArgument(ecSign.getRBigInt().compareTo(BigInteger.ZERO) >= 0, "r must be positive");

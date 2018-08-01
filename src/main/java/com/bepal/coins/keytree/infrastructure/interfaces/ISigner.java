@@ -22,5 +22,13 @@ public interface ISigner {
      * */
     ECSign sign(byte[] priKey, byte[] pubKey, byte[] hash);
 
+    /**
+     * verify if sign right
+     * */
     boolean verify(byte[] pubKey, byte[] hash, ECSign ecSign);
+
+    /**
+     * recover public key from hash and sign data
+     * */
+    byte[] recoverPubKey(byte[] hash, ECSign ecSign);
 }

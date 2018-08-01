@@ -86,6 +86,11 @@ public class Secp256k1 implements ISigner {
         }
     }
 
+    @Override
+    public byte[] recoverPubKey(byte[] hash, ECSign ecSign) {
+        return recoverPublicKey(ecSign.V, hash, ecSign);
+    }
+
     private static byte[] recoverPublicKey(byte recId, byte[] hash, ECSign ecSign) {
         ErrorTool.checkArgument(recId >= 0, "recId must be positive");
         ErrorTool.checkArgument(ecSign.getRBigInt().signum() >= 0, "r must be positive");

@@ -170,7 +170,7 @@ public class KeyTreerTest {
         KeyTreer keyTreer= new KeyTreer();
         byte[] seed= keyTreer.transSeed(list, "");
 
-        String address= "";
+        String address= "", pubkey= "";
         String expect= "1FFiZJj3th8zRktVZi3Gyn7wARmQ3p8S36";
         ICoinKey coinKey= keyTreer.deriveBepalKey(seed, CoinTag.tagBITCOIN);
         address= coinKey.address();
@@ -196,9 +196,10 @@ public class KeyTreerTest {
         address= coinKey.address();
         Assert.assertEquals("deriveBepalKey gxchain failed, address dismatch", expect, address);
 
+        expect= "SSC6km11fQXws75EamGd3JbU4kaKnSUdUXVpidHs418q9cNnYd7e8";
         coinKey= keyTreer.deriveBepalKey(seed, CoinTag.tagSELFSELL);
-        System.out.println(coinKey.privateKey());
-        System.out.println(coinKey.publicKey());
+        pubkey= coinKey.publicKey();
+        Assert.assertEquals("deriveBepalKey selfsell failed, address dismatch", expect, pubkey);
     }
 
     @Test
@@ -213,7 +214,7 @@ public class KeyTreerTest {
         KeyTreer keyTreer= new KeyTreer();
         byte[] seed= keyTreer.transSeed(list, "");
 
-        String address= "";
+        String address= "", pubKey= "";
         String[] expects= new String[] {"1FFiZJj3th8zRktVZi3Gyn7wARmQ3p8S36", "1PyBbSjHyLYrSZ3JXhe3m6Xzfp5Ywzt954"};
         List<ICoinKey> coinKeys= keyTreer.deriveBepalKeyRange(seed, 0, 1, CoinTag.tagBITCOIN);
         for (int i= 0; i< 2; i++) {
@@ -247,6 +248,13 @@ public class KeyTreerTest {
         for (int i= 0; i< 2; i++) {
             address= coinKeys.get(i).address();
             Assert.assertEquals("deriveBepalKeyRange gxchain faield,  address dismatch", expects[i], address);
+        }
+
+        expects= new String[] {"SSC6km11fQXws75EamGd3JbU4kaKnSUdUXVpidHs418q9cNnYd7e8", "SSC59fMtdggcUa7bt3BXAopx9uFoiJFZpX4LFQjFeV6WtM2EoMCgq"};
+        coinKeys= keyTreer.deriveBepalKeyRange(seed, 0, 1, CoinTag.tagSELFSELL);
+        for (int i= 0; i< 2; i++) {
+            pubKey= coinKeys.get(i).publicKey();
+            Assert.assertEquals("deriveBepalKeyRange selfsell faield,  address dismatch", expects[i], pubKey);
         }
     }
 
@@ -332,8 +340,6 @@ public class KeyTreerTest {
     public void batchDeriveBepalKey() {
         String[] files= new String[] {"btc", "eth", "btm", "eos", "gxc"};
         CoinTag[] coinTags= new CoinTag[] {CoinTag.tagBITCOIN, CoinTag.tagETHEREUM, CoinTag.tagBYTOM, CoinTag.tagEOS, CoinTag.tagGXCHAIN};
-        files= new String[] {"eth"};
-        coinTags= new CoinTag[] {CoinTag.tagETHEREUM};
 
         BufferedReader reader = null;
         String code, addr, valid;

@@ -21,6 +21,8 @@ import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.model.ECSign;
 import com.bepal.coins.models.ByteArrayData;
 
+import java.util.Arrays;
+
 public class BitcoinKey implements ICoinKey {
     private ECKey ecKey;
     private int VERSION= 0;
@@ -72,5 +74,10 @@ public class BitcoinKey implements ICoinKey {
     public boolean verify(byte[] hash, ECSign ecSign) {
         ISigner signer= SignerCoordinator.getInstance().findSigner(SignerTag.tagSECP256K1);
         return signer.verify(this.ecKey.getPubKey(), hash, ecSign);
+    }
+
+    public byte[] recoverPubKey(byte[] hash, ECSign ecSign) {
+        ISigner signer= SignerCoordinator.getInstance().findSigner(SignerTag.tagSECP256K1);
+        return signer.recoverPubKey(hash, ecSign);
     }
 }

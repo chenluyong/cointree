@@ -16,7 +16,8 @@ public enum CoinTag {
     tagETHEREUM(1),
     tagBYTOM(2),
     tagEOS(3),
-    tagGXCHAIN(4)
+    tagGXCHAIN(4),
+    tagSELFSELL(5),
     ;
 
 

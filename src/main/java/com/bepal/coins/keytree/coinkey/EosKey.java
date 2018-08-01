@@ -11,8 +11,7 @@ EosKey
 */
 package com.bepal.coins.keytree.coinkey;
 
-import com.bepal.coins.crypto.Base58;
-import com.bepal.coins.crypto.SHAHash;
+import com.bepal.coins.keytree.infrastructure.components.GrapheneSerializer;
 import com.bepal.coins.keytree.infrastructure.coordinators.SignerCoordinator;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.infrastructure.interfaces.ISigner;
@@ -39,19 +38,12 @@ public class EosKey implements ICoinKey {
 
     @Override
     public String publicKey() {
-        byte[] data= this.ecKey.getPubKey();
-        byte[] checksum= SHAHash.RIPEMD160(data);
-
-        byte[] result= new byte[data.length+ 4];
-        System.arraycopy(data, 0, result, 0, data.length);
-        System.arraycopy(checksum, 0, result, data.length, 4);
-
-        return "EOS"+ Base58.encode(result);
+        return "EOS"+ GrapheneSerializer.serializePubKey(this.ecKey.getPubKey());
     }
 
     @Override
     public String privateKey() {
-        return null;
+        return GrapheneSerializer.wifPriKey(this.ecKey.getPriKey());
     }
 
     @Override

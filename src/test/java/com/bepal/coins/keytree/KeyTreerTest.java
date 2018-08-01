@@ -195,6 +195,10 @@ public class KeyTreerTest {
         coinKey= keyTreer.deriveBepalKey(seed, CoinTag.tagGXCHAIN);
         address= coinKey.address();
         Assert.assertEquals("deriveBepalKey gxchain failed, address dismatch", expect, address);
+
+        coinKey= keyTreer.deriveBepalKey(seed, CoinTag.tagSELFSELL);
+        System.out.println(coinKey.privateKey());
+        System.out.println(coinKey.publicKey());
     }
 
     @Test
@@ -328,6 +332,8 @@ public class KeyTreerTest {
     public void batchDeriveBepalKey() {
         String[] files= new String[] {"btc", "eth", "btm", "eos", "gxc"};
         CoinTag[] coinTags= new CoinTag[] {CoinTag.tagBITCOIN, CoinTag.tagETHEREUM, CoinTag.tagBYTOM, CoinTag.tagEOS, CoinTag.tagGXCHAIN};
+        files= new String[] {"eth"};
+        coinTags= new CoinTag[] {CoinTag.tagETHEREUM};
 
         BufferedReader reader = null;
         String code, addr, valid;

@@ -267,6 +267,9 @@ public class KeyTreer {
             case tagGXCHAIN: {
                 return new GXChainer();
             }
+            case tagSELFSELL: {
+                return new Selfseller();
+            }
         }
 
         return null;

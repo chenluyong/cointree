@@ -19,17 +19,39 @@ import com.bepal.coins.keytree.infrastructure.interfaces.ISigner;
 import com.bepal.coins.keytree.infrastructure.tags.SignerTag;
 import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.model.ECSign;
+import sun.nio.ch.Net;
 
 import java.io.ByteArrayOutputStream;
 
 public class BytomKey implements ICoinKey {
     private ECKey ecKey;
 
-    private final String SEGWITMAIN= "bm";
-    private final String SEGWITTEST= "tm";
-    private final String SEGWITSOLO= "sm";
+    private static final String SEGWITMAIN= "bm";
+    private static final String SEGWITTEST= "tm";
+    private static final String SEGWITSOLO= "sm";
+
+    /**
+     * net type: main or test or solo
+     * */
+    private NetType type= NetType.MAIN;
+
+    public enum NetType {
+        MAIN(0),
+        TEST(1),
+        SOLO(2);
+
+        private final int val;
+        NetType(int val) {
+            this.val= val;
+        }
+    }
 
     public BytomKey(ECKey ecKey) {
+        this.ecKey= ecKey;
+    }
+
+    public BytomKey(ECKey ecKey, NetType netType) {
+        this.type= netType;
         this.ecKey= ecKey;
     }
 
@@ -47,7 +69,15 @@ public class BytomKey implements ICoinKey {
         stream.write(0);
         stream.write(bData, 0, bData.length);
 
-        return Bech32.Bech32Encode(SEGWITMAIN, stream.toByteArray());
+        String segwit= SEGWITMAIN;
+        if (this.type== NetType.TEST) {
+            segwit= SEGWITTEST;
+        } else if (this.type== NetType.SOLO) {
+            segwit= SEGWITSOLO;
+        }
+
+
+        return Bech32.Bech32Encode(segwit, stream.toByteArray());
     }
 
     @Override

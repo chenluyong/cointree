@@ -200,6 +200,31 @@ public class KeyTreerTest {
         coinKey= keyTreer.deriveBepalKey(seed, CoinTag.tagSELFSELL);
         pubkey= coinKey.publicKey();
         Assert.assertEquals("deriveBepalKey selfsell failed, address dismatch", expect, pubkey);
+
+
+
+
+
+        expect= "mvD7iGnPrJ7KjTMVNdKCbcvSGGD1Ew4urE";
+        coinKey= keyTreer.deriveBepalKey(seed, CoinTag.tagBITCOINTEST);
+        address= coinKey.address();
+        Assert.assertEquals("deriveBepalKey bitcoin test net failed, address dismatch", expect, address);
+
+        expect= "0xc9b3d56861111a7a05687b2ef446f32750dd9721";
+        coinKey= keyTreer.deriveBepalKey(seed, CoinTag.tagETHEREUMTEST);
+        address= coinKey.address();
+        Assert.assertEquals("deriveBepalKey ethereum test net failed, address dismatch", expect, address);
+
+        expect= "tm1qf6efxyu8e7z65u273ytnw767sypq7dmv3cfu05";
+        coinKey= keyTreer.deriveBepalKey(seed, CoinTag.tagBYTOMTEST);
+        address= coinKey.address();
+        Assert.assertEquals("deriveBepalKey bytom test failed, address dismatch", expect, address);
+
+        expect= "EOS686AHcgGFTrzYfmSPq23xuHgDqHELzoN5Dm2qvCEoR38U4Mge6";
+        coinKey= keyTreer.deriveBepalKey(seed, CoinTag.tagEOSTEST);
+        address= coinKey.address();
+        Assert.assertEquals("deriveBepalKey eos test failed, address dismatch", expect, address);
+
     }
 
     @Test

@@ -26,7 +26,18 @@ import java.util.List;
 
 public class Ethereumer implements ICoiner {
 
+    /**
+     * coin type: main or test
+     * */
+    private int type= 0;
+
     private static final int BIP44INDEX= 60;
+
+    public Ethereumer() {}
+
+    public Ethereumer(int type) {
+        this.type= type;
+    }
 
     @Override
     public ICoinKey deriveBip44(byte[] seed) {
@@ -34,10 +45,16 @@ public class Ethereumer implements ICoiner {
         ECKey ecKey= derivator.deriveFromSeed(seed, SeedTag.tagDEFAULT);
         if (ecKey== null) return null;
 
+        int secLayer= BIP44INDEX, thdLayer= 0;
+        if (this.type!= 0) {
+            secLayer= 1;
+            thdLayer= BIP44INDEX;
+        }
+
         List<Chain> chains= new ArrayList<>();
         chains.add(new Chain(44, true));
-        chains.add(new Chain(BIP44INDEX, true));
-        chains.add(new Chain(0, true));
+        chains.add(new Chain(secLayer, true));
+        chains.add(new Chain(thdLayer, true));
 
         for (Chain chain: chains) {
             ecKey= derivator.deriveChild(ecKey, chain);

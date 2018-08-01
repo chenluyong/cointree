@@ -11,6 +11,8 @@ KeyTreer
 */
 package com.bepal.coins.keytree;
 
+import com.bepal.coins.keytree.coinkey.BitcoinKey;
+import com.bepal.coins.keytree.coinkey.BytomKey;
 import com.bepal.coins.keytree.coins.*;
 import com.bepal.coins.keytree.infrastructure.components.MnemonicCode;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
@@ -251,7 +253,10 @@ public class KeyTreer {
      * using the CoinTag the specific coiner
      * */
     private ICoiner findCoiner(CoinTag coinTag) {
+        final int testNet= 1;
+
         switch (coinTag) {
+            // main net
             case tagBITCOIN: {
                 return new Bitcoiner();
             }
@@ -269,6 +274,33 @@ public class KeyTreer {
             }
             case tagSELFSELL: {
                 return new Selfseller();
+            }
+
+
+            // test net
+            case tagBITCOINTEST: {
+                return new Bitcoiner(BitcoinKey.NetType.TEST);
+            }
+            case tagETHEREUMTEST: {
+                return new Ethereumer(testNet);
+            }
+            case tagBYTOMTEST: {
+                return new Bytomer(BytomKey.NetType.TEST);
+            }
+            case tagEOSTEST: {
+                return new Eoser(testNet);
+            }
+            case tagGXCHAINTEST: {
+                return new GXChainer(testNet);
+            }
+            case tagSELFSELLTEST: {
+                return new Selfseller(testNet);
+            }
+
+
+            // other net
+            case tagBYTOMSOLO: {
+                return new Bytomer(BytomKey.NetType.SOLO);
             }
         }
 

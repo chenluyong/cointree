@@ -28,22 +28,39 @@ public class Bytomer implements ICoiner {
 
     private static final int BIP44INDEX= 153;
 
+    /**
+     * net type: main or test
+     * */
+    private BytomKey.NetType type= BytomKey.NetType.MAIN;
+
+    public Bytomer() { }
+
+    public Bytomer(BytomKey.NetType netType) {
+        this.type= netType;
+    }
+
     @Override
     public ICoinKey deriveBip44(byte[] seed) {
         IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagED25519);
         ECKey ecKey= derivator.deriveFromSeed(seed, SeedTag.tagHMAC512_ROOT);
         if (ecKey== null) return null;
 
+        int secLayer= BIP44INDEX, thdLayer= 0;
+        if (this.type== BytomKey.NetType.TEST) {
+            secLayer= 1;
+            thdLayer= BIP44INDEX;
+        }
+
         List<Chain> chains= new ArrayList<>();
         chains.add(new Chain(44, true, 2));
-        chains.add(new Chain(BIP44INDEX, true, 2));
-        chains.add(new Chain(0, true, 2));
+        chains.add(new Chain(secLayer, true, 2));
+        chains.add(new Chain(thdLayer, true, 2));
 
         for (Chain chain: chains) {
             ecKey= derivator.deriveChild(ecKey, chain);
         }
         ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
-        return new BytomKey(ecKey);
+        return new BytomKey(ecKey, this.type);
     }
 
     @Override
@@ -56,7 +73,7 @@ public class Bytomer implements ICoiner {
             ecKey= derivator.deriveChild(ecKey, chain);
             ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
         }
-        return new BytomKey(ecKey);
+        return new BytomKey(ecKey, this.type);
     }
 
     @Override
@@ -74,7 +91,7 @@ public class Bytomer implements ICoiner {
             ECKey tmpKey= derivator.deriveChild(ecKey, chain);
             tmpKey.setPubKey(derivator.derivePubKey(tmpKey.getPriKey()));
 
-            coinKeys.add(new BytomKey(tmpKey));
+            coinKeys.add(new BytomKey(tmpKey, this.type));
         }
 
         return coinKeys;
@@ -88,7 +105,7 @@ public class Bytomer implements ICoiner {
         for (int i= 0; i< 2; i++) {
             ecKey= derivator.deriveChildPub(ecKey, chain);
         }
-        return new BytomKey(ecKey);
+        return new BytomKey(ecKey, this.type);
     }
 
     @Override
@@ -103,7 +120,7 @@ public class Bytomer implements ICoiner {
             chain.setPath(i);
             ECKey tmpKey= derivator.deriveChildPub(ecKey, chain);
 
-            coinKeys.add(new BytomKey(tmpKey));
+            coinKeys.add(new BytomKey(tmpKey, this.type));
         }
 
         return coinKeys;

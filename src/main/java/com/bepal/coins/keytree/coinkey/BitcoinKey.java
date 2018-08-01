@@ -24,10 +24,32 @@ import com.bepal.coins.models.ByteArrayData;
 import java.util.Arrays;
 
 public class BitcoinKey implements ICoinKey {
+
+    private static final int VERSION= 0;
+    private static final int TESTVERSION= 111;
+
+    /**
+     * net type: main or test
+     * */
+    private NetType type;
     private ECKey ecKey;
-    private int VERSION= 0;
+
+    public enum NetType {
+        MAIN(0),
+        TEST(1);
+
+        private final int val;
+        NetType(int val) {
+            this.val= val;
+        }
+    }
 
     public BitcoinKey(ECKey ecKey) {
+        this.ecKey= ecKey;
+    }
+
+    public BitcoinKey(ECKey ecKey, NetType netType) {
+        this.type= netType;
         this.ecKey= ecKey;
     }
 
@@ -38,15 +60,12 @@ public class BitcoinKey implements ICoinKey {
 
     @Override
     public String address() {
-        byte[] hash= SHAHash.RIPEMD160(SHAHash.Sha2256(this.ecKey.getPubKey()));
+        int version= this.type== NetType.MAIN? VERSION: TESTVERSION;
 
-        ByteArrayData data = new ByteArrayData();
         byte[] bversion;
-        if (VERSION <= 255) {
-            bversion = new byte[]{(byte) VERSION};
-        } else {
-            bversion = new byte[]{(byte) (VERSION >> 8 & 0xFF), (byte) (VERSION & 0xFF)};
-        }
+        bversion = new byte[]{(byte) version};
+        byte[] hash= SHAHash.RIPEMD160(SHAHash.Sha2256(this.ecKey.getPubKey()));
+        ByteArrayData data = new ByteArrayData();
         data.putBytes(bversion);
         data.putBytes(hash);
         byte[] checksum = SHAHash.hash2256Twice(data.toBytes());

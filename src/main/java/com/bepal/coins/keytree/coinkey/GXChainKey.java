@@ -11,8 +11,6 @@ GXChainKey
 */
 package com.bepal.coins.keytree.coinkey;
 
-import com.bepal.coins.crypto.Base58;
-import com.bepal.coins.crypto.SHAHash;
 import com.bepal.coins.keytree.infrastructure.components.GrapheneSerializer;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.model.ECKey;
@@ -25,7 +23,6 @@ public class GXChainKey implements ICoinKey {
     public GXChainKey(ECKey ecKey) {
         this.ecKey= ecKey;
     }
-
 
     @Override
     public ECKey base() {

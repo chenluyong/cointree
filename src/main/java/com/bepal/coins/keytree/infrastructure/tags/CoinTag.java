@@ -18,6 +18,18 @@ public enum CoinTag {
     tagEOS(3),
     tagGXCHAIN(4),
     tagSELFSELL(5),
+
+
+    tagBITCOINTEST(1000),
+    tagETHEREUMTEST(1001),
+    tagBYTOMTEST(1002),
+    tagEOSTEST(1003),
+    tagGXCHAINTEST(1004),
+    tagSELFSELLTEST(1005),
+
+
+
+    tagBYTOMSOLO(10002),
     ;
 
 

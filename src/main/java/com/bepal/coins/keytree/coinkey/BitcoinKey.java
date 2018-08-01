@@ -76,7 +76,7 @@ public class BitcoinKey implements ICoinKey {
         return signer.verify(this.ecKey.getPubKey(), hash, ecSign);
     }
 
-    public byte[] recoverPubKey(byte[] hash, ECSign ecSign) {
+    public static byte[] recoverPubKey(byte[] hash, ECSign ecSign) {
         ISigner signer= SignerCoordinator.getInstance().findSigner(SignerTag.tagSECP256K1);
         return signer.recoverPubKey(hash, ecSign);
     }

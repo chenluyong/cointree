@@ -28,7 +28,6 @@ public enum CoinTag {
     tagSELFSELLTEST(1005),
 
 
-
     tagBYTOMSOLO(10002),
     ;
 

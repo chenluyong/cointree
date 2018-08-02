@@ -201,7 +201,9 @@ public class KeyTreerTest {
         pubkey= coinKey.publicKey();
         Assert.assertEquals("deriveBepalKey selfsell failed, address dismatch", expect, pubkey);
 
-
+        expect= "SSCPJPiW9WHgVPgWXdtdAiSAHDjPWKDEY7Dx";
+        address= coinKey.address();
+        Assert.assertEquals("deriveBepalKey selfsell failed, address dismatch", expect, address);
 
 
 

@@ -229,6 +229,7 @@ public class KeyTreerTest {
         coinKey= keyTreer.deriveBepalKey(seed, CoinTag.tagAChain);
         System.out.println(coinKey.publicKey());
         System.out.println(coinKey.privateKey());
+        System.out.println(coinKey.address());
     }
 
     @Test

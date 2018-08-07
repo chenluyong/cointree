@@ -11,6 +11,8 @@ AChainKey
 */
 package com.bepal.coins.keytree.coinkey;
 
+import com.bepal.coins.crypto.Base58;
+import com.bepal.coins.crypto.SHAHash;
 import com.bepal.coins.keytree.infrastructure.components.GrapheneSerializer;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.model.ECKey;
@@ -30,7 +32,14 @@ public class AChainKey implements ICoinKey {
 
     @Override
     public String address() {
-        return null;
+        byte[] pubKey= this.ecKey.getPubKey();
+        byte[] addr= SHAHash.sha512hash160(pubKey);
+        byte[] checksum= SHAHash.RIPEMD160(addr);
+
+        byte[] result= new byte[24];
+        System.arraycopy(addr, 0, result, 0, addr.length);
+        System.arraycopy(checksum, 0, result, addr.length, 4);
+        return "ACT" + Base58.encode(result);
     }
 
     @Override

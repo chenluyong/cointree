@@ -275,6 +275,9 @@ public class KeyTreer {
             case tagSELFSELL: {
                 return new Selfseller();
             }
+            case tagAChain: {
+                return new AChainer();
+            }
 
 
             // test net
@@ -295,6 +298,9 @@ public class KeyTreer {
             }
             case tagSELFSELLTEST: {
                 return new Selfseller(testNet);
+            }
+            case tagACHAINTEST: {
+                return new AChainer(testNet);
             }
 
 

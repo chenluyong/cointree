@@ -206,7 +206,6 @@ public class KeyTreerTest {
         Assert.assertEquals("deriveBepalKey selfsell failed, address dismatch", expect, address);
 
 
-
         expect= "mvD7iGnPrJ7KjTMVNdKCbcvSGGD1Ew4urE";
         coinKey= keyTreer.deriveBepalKey(seed, CoinTag.tagBITCOINTEST);
         address= coinKey.address();
@@ -227,6 +226,9 @@ public class KeyTreerTest {
         address= coinKey.address();
         Assert.assertEquals("deriveBepalKey eos test failed, address dismatch", expect, address);
 
+        coinKey= keyTreer.deriveBepalKey(seed, CoinTag.tagAChain);
+        System.out.println(coinKey.publicKey());
+        System.out.println(coinKey.privateKey());
     }
 
     @Test
@@ -365,8 +367,8 @@ public class KeyTreerTest {
 
     @Test
     public void batchDeriveBepalKey() {
-        String[] files= new String[] {"btc", "eth", "btm", "eos", "gxc"};
-        CoinTag[] coinTags= new CoinTag[] {CoinTag.tagBITCOIN, CoinTag.tagETHEREUM, CoinTag.tagBYTOM, CoinTag.tagEOS, CoinTag.tagGXCHAIN};
+        String[] files= new String[] {"btc", "eth", "btm", "eos", "gxc", "ssc"};
+        CoinTag[] coinTags= new CoinTag[] {CoinTag.tagBITCOIN, CoinTag.tagETHEREUM, CoinTag.tagBYTOM, CoinTag.tagEOS, CoinTag.tagGXCHAIN, CoinTag.tagSELFSELL};
 
         BufferedReader reader = null;
         String code, addr, valid;

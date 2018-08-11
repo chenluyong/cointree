@@ -14,11 +14,12 @@ package com.bepal.coins.keytree.infrastructure.tags;
 public enum DeriveTag {
     tagDEFAULT(0),
     tagBITCOIN(0),
-    tagED25519(1)
-    ;
+    tagED25519(1),
+    tagSECP256R1(2);
 
     private final int val;
+
     DeriveTag(int val) {
-        this.val= val;
+        this.val = val;
     }
 }

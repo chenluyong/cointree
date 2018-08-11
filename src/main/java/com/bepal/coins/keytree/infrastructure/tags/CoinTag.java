@@ -19,6 +19,8 @@ public enum CoinTag {
     tagGXCHAIN(4),
     tagSELFSELL(5),
     tagAChain(6),
+    tagELASTOS(7),
+
 
 
     tagBITCOINTEST(1000),
@@ -28,6 +30,7 @@ public enum CoinTag {
     tagGXCHAINTEST(1004),
     tagSELFSELLTEST(1005),
     tagACHAINTEST(1006),
+    tagELASTOSTEST(1007),
 
 
     tagBYTOMSOLO(10002),

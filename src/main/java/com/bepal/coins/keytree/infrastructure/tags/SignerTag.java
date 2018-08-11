@@ -14,7 +14,8 @@ package com.bepal.coins.keytree.infrastructure.tags;
 public enum SignerTag {
     tagSECP256K1(0),
     tagSECP256K1NONCE(1),
-    tagED25519(2)
+    tagED25519(2),
+    tagSECP256R1(3)
     ;
 
     private final int val;

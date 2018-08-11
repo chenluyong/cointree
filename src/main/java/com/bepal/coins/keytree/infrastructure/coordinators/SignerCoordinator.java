@@ -12,6 +12,7 @@ SignerCoordinator
 package com.bepal.coins.keytree.infrastructure.coordinators;
 
 import com.bepal.coins.keytree.infrastructure.interfaces.ISigner;
+import com.bepal.coins.keytree.infrastructure.signer.Secp256r1;
 import com.bepal.coins.keytree.infrastructure.tags.SignerTag;
 import com.bepal.coins.keytree.infrastructure.signer.ED25519;
 import com.bepal.coins.keytree.infrastructure.signer.Secp256k1;
@@ -40,6 +41,9 @@ public class SignerCoordinator {
             }
             case tagED25519: {
                 return new ED25519();
+            }
+            case tagSECP256R1:{
+                return new Secp256r1();
             }
         }
 

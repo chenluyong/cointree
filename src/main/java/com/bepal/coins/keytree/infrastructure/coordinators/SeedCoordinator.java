@@ -21,7 +21,7 @@ public final class SeedCoordinator {
     private SeedCoordinator() {}
 
     public static SeedCoordinator getInstance() {
-        if (null== instance) {
+        if (null == instance) {
             instance= new SeedCoordinator();
         }
         return instance;

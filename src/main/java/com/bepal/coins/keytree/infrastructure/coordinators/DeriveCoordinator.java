@@ -13,7 +13,9 @@ package com.bepal.coins.keytree.infrastructure.coordinators;
 
 import com.bepal.coins.keytree.infrastructure.derivator.BitcoinDerivator;
 import com.bepal.coins.keytree.infrastructure.derivator.ED25519Derivator;
+import com.bepal.coins.keytree.infrastructure.derivator.Secp256r1Derivator;
 import com.bepal.coins.keytree.infrastructure.interfaces.IDerivator;
+import com.bepal.coins.keytree.infrastructure.signer.Secp256r1;
 import com.bepal.coins.keytree.infrastructure.tags.DeriveTag;
 
 public final class DeriveCoordinator {
@@ -33,6 +35,9 @@ public final class DeriveCoordinator {
         switch (deriveTag) {
             case tagED25519: {
                 return new ED25519Derivator();
+            }
+            case tagSECP256R1:{
+                return new Secp256r1Derivator();
             }
             default: {
                 return new BitcoinDerivator();

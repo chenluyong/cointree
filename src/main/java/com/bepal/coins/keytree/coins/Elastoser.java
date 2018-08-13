@@ -15,7 +15,8 @@ import java.util.List;
 
 public class Elastoser  implements ICoiner {
 
-    private static final int BIP44INDEX= 666;
+//    private static final int BIP44INDEX= 666;
+    private static final int BIP44INDEX= 2305;
 
     /**
      * coin type: main or test

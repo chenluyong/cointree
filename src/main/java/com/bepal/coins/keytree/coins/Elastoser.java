@@ -10,7 +10,9 @@ import com.bepal.coins.keytree.infrastructure.tags.SeedTag;
 import com.bepal.coins.keytree.model.Chain;
 import com.bepal.coins.keytree.model.ECKey;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Elastoser  implements ICoiner {
@@ -36,7 +38,7 @@ public class Elastoser  implements ICoiner {
         if (ecKey== null) return null;
 
         int secLayer= BIP44INDEX, thdLayer= 0;
-        if (this.type!= 0) {
+        if (0 != this.type) {
             secLayer= 1;
             thdLayer= BIP44INDEX;
         }
@@ -46,13 +48,17 @@ public class Elastoser  implements ICoiner {
         chains.add(new Chain(secLayer, true));
         chains.add(new Chain(thdLayer, true));
 
+        int depth = 0;
+        int path = 0;
         for (Chain chain: chains) {
-            ecKey = derivator.deriveChild(ecKey, chain);
+            ecKey= derivator.deriveChild(ecKey, chain);
+            ++depth;
+            path = ByteBuffer.wrap(Arrays.copyOfRange(chain.getPath(),0,4)).getInt();
         }
         if (ecKey== null) return null;
 
         ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
-        return new ElastosKey(ecKey);
+        return new ElastosKey(ecKey, depth, path);
     }
 
     @Override

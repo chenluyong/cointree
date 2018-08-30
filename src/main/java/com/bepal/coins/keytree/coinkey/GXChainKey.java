@@ -11,17 +11,20 @@ GXChainKey
 */
 package com.bepal.coins.keytree.coinkey;
 
+import com.bepal.coins.keytree.infrastructure.abstraction.ACoinKey;
 import com.bepal.coins.keytree.infrastructure.components.GrapheneSerializer;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.model.ECSign;
 
-public class GXChainKey implements ICoinKey {
-    private ECKey ecKey;
+public class GXChainKey extends ACoinKey {
     private int VERSION= 0;
 
     public GXChainKey(ECKey ecKey) {
-        this.ecKey= ecKey;
+        super(ecKey,0,0);
+    }
+    public GXChainKey(ECKey _ecKey, int _depth, int _path) {
+        super(_ecKey,_depth,_path);
     }
 
     @Override

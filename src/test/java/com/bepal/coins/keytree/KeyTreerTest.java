@@ -12,16 +12,15 @@ KeyTreerTest
 
 package com.bepal.coins.keytree;
 
+import com.bepal.coins.crypto.Base58;
 import com.bepal.coins.crypto.Hex;
 import com.bepal.coins.crypto.SHAHash;
 import com.bepal.coins.keytree.coinkey.ElastosKey;
-import com.bepal.coins.keytree.coins.Elastoser;
 import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.infrastructure.interfaces.IDerivator;
 import com.bepal.coins.keytree.infrastructure.tags.CoinTag;
 import com.bepal.coins.keytree.infrastructure.tags.DeriveTag;
-import com.bepal.coins.keytree.infrastructure.tags.SeedTag;
 import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.model.ECSign;
 import org.junit.Assert;
@@ -50,6 +49,7 @@ public class KeyTreerTest {
         for (byte se : seed) {
             seedStr += se;
         }
+        System.out.println("transSeed: " + Hex.toHexString(seed));
         String expected = "118-146048-17-1262451996-4415104-97-123-72-62902-101062961-45-72-62-119-123211247228686823-20-12123-67-892113821412096120-24109631-62-60117-1109-40-12286-1001161226183";
         Assert.assertEquals("rannsSeed failed", expected, seedStr);
     }
@@ -166,7 +166,7 @@ public class KeyTreerTest {
 
         coinKey = keyTreer.deriveBip44(seed, CoinTag.tagELASTOS);
         System.out.println(coinKey.privateKey());
-        expects = new String[]{"ETiGxZ8NvoAMmicu2c7k375r4qntsj8u28", "EY9BBFgbUT6LnJWe6zppNcU488xihYqqmg"};
+        expects = new String[]{"ENu66Di2wpwimBUKcHiL5fn1f1HDVPn3uu", "EJUGryNES35U3LUniX75MBqVaZni5st6gu"};
         coinKeys = keyTreer.deriveSecChildRangePub(coinKey.base(), 0, 1, CoinTag.tagELASTOS);
         for (int i = 0; i < 2; i++) {
             address = coinKeys.get(i).address();
@@ -249,7 +249,7 @@ public class KeyTreerTest {
         Assert.assertEquals("deriveBepalKey eos test failed, address dismatch", expect, address);
 
 
-        expect = "ETiGxZ8NvoAMmicu2c7k375r4qntsj8u28";
+        expect = "ENu66Di2wpwimBUKcHiL5fn1f1HDVPn3uu";
         coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagELASTOS);
         address = coinKey.address();
         Assert.assertEquals("deriveBepalKey eos test failed, address dismatch", expect, address);
@@ -486,16 +486,23 @@ public class KeyTreerTest {
 
     @Test
     public void testMain() {
-        ECKey ecKey = new ECKey();
-        IDerivator derivator = DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagSECP256R1);
-        ecKey.setPriKey(Hex.fromHexString("27EF4BAC013E0A18043E8995F7684335F3510071864E220CE1303F69C766DB28"));
-        ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
+        String codes = "beyond honey crisp weird type coast pair endless idle glad famous visa";
+        String[] codeAry = codes.split(" ");
+        List<String> list = new ArrayList<>();
+        for (String code : codeAry) {
+            list.add(code);
+        }
 
-        ElastosKey elastosKey = new ElastosKey(ecKey);
-        System.out.println("---------------------------");
-        System.out.println("private key: " + elastosKey.privateKey());
-        System.out.println("public key : " + elastosKey.publicKey());
-        System.out.println("address    : " + elastosKey.address());
+        KeyTreer keyTreer = new KeyTreer();
+        byte[] seed = keyTreer.transSeed(list, "");
+
+        ICoinKey coinKey = keyTreer.deriveBip44(seed, CoinTag.tagAChain);
+
+        byte [] hdPrvKey = coinKey.toStandardXPrivate(0);
+        byte [] hdPubKey = coinKey.toStandardXPublic(0);
+        System.out.println(Base58.encode(hdPubKey));
+        System.out.println(Base58.encode(hdPrvKey));
+
     }
 
 }

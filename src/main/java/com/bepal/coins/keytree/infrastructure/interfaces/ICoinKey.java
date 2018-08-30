@@ -15,8 +15,15 @@ import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.model.ECSign;
 
 public interface ICoinKey {
+
+   /**
+    * hd key
+    * */
+    byte[] toStandardXPrivate(int prefix);
+    byte[] toStandardXPublic(int prefix);
+
     /**
-     * base ECKey
+     * base ECKey`
      * */
     ECKey base();
 

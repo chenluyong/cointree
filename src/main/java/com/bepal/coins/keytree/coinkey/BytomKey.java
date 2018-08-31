@@ -62,11 +62,6 @@ public class BytomKey extends ACoinKey {
 
 
     @Override
-    public ECKey base() {
-        return this.ecKey;
-    }
-
-    @Override
     public String address() {
         byte[] data= SHAHash.RIPEMD160(this.ecKey.getPubKey());
         byte[] bData= Bech32.ConvertBits(data, (byte) 8, (byte) 5, true);

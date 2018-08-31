@@ -30,11 +30,6 @@ public class EosKey extends ACoinKey {
     }
 
     @Override
-    public ECKey base() {
-        return this.ecKey;
-    }
-
-    @Override
     public String address() {
         return publicKey();
     }

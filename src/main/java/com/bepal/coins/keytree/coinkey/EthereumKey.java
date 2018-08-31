@@ -34,11 +34,6 @@ public class EthereumKey extends ACoinKey {
     }
 
     @Override
-    public ECKey base() {
-        return this.ecKey;
-    }
-
-    @Override
     public String address() {
         byte[] point= CURVE.getCurve().decodePoint(this.ecKey.getPubKey()).getEncoded(false);
         byte[] pubKey= ByteArrayData.copyOfRange(point, 1, 64);

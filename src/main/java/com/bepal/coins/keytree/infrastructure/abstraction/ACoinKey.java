@@ -26,6 +26,14 @@ public abstract class ACoinKey implements ICoinKey {
     }
 
 
+
+    @Override
+    public ECKey base() {
+        return ecKey;
+    }
+
+
+    ///////////////////HDKey////////////////////
     public byte[] toStandardXPrivate(int prefix) {
         if (0 == prefix) {
             prefix = 0x0488ADE4;

@@ -59,11 +59,6 @@ public class BitcoinKey extends ACoinKey {
 
 
     @Override
-    public ECKey base() {
-        return ecKey;
-    }
-
-    @Override
     public String address() {
         int version= this.type== NetType.MAIN? VERSION: TESTVERSION;
 

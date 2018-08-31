@@ -27,10 +27,6 @@ public class GXChainKey extends ACoinKey {
         super(_ecKey,_depth,_path);
     }
 
-    @Override
-    public ECKey base() {
-        return ecKey;
-    }
 
     @Override
     public String address() {

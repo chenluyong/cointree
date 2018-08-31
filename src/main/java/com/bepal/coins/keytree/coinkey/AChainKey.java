@@ -30,11 +30,6 @@ public class AChainKey extends ACoinKey {
 
 
     @Override
-    public ECKey base() {
-        return this.ecKey;
-    }
-
-    @Override
     public String address() {
         byte[] pubKey= this.ecKey.getPubKey();
         byte[] addr= SHAHash.sha512hash160(pubKey);

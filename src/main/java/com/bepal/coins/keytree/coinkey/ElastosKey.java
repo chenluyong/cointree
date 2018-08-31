@@ -21,11 +21,6 @@ public class ElastosKey extends ACoinKey {
     }
 
     @Override
-    public ECKey base() {
-        return this.ecKey;
-    }
-
-    @Override
     public String address() {
         byte[] program = createSingleSignatureRedeemScript(this.ecKey.getPubKey());
         byte[] programHash = toCodeHash(program,1);

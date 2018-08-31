@@ -34,15 +34,6 @@ public class BitcoinKey extends ACoinKey {
      * */
     private NetType type;
 
-    public enum NetType {
-        MAIN(0),
-        TEST(1);
-
-        private final int val;
-        NetType(int val) {
-            this.val= val;
-        }
-    }
 
     public BitcoinKey(ECKey ecKey) {
         super(ecKey,0,0);

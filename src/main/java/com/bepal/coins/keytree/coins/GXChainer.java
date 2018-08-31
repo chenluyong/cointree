@@ -12,6 +12,7 @@ GXChainer
 package com.bepal.coins.keytree.coins;
 
 import com.bepal.coins.keytree.coinkey.GXChainKey;
+import com.bepal.coins.keytree.infrastructure.abstraction.ACoiner;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;
 import com.bepal.coins.keytree.infrastructure.tags.DeriveTag;
@@ -26,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class GXChainer implements ICoiner {
+public class GXChainer extends ACoiner {
 
     private static final int BIP44INDEX= 2303;
 
@@ -36,45 +37,27 @@ public class GXChainer implements ICoiner {
     private int type= 0;
 
 
-    public GXChainer() {}
+    public GXChainer() {
+        super(DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagDEFAULT),BIP44INDEX, NetType.MAIN);
+    }
 
-    public GXChainer(int type) {
-        this.type= type;
+    public GXChainer(NetType _netType) {
+        super(DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagDEFAULT),BIP44INDEX, _netType);
     }
 
     @Override
     public ICoinKey deriveBip44(byte[] seed) {
-        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagDEFAULT);
         ECKey ecKey= derivator.deriveFromSeed(seed, SeedTag.tagDEFAULT);
         if (ecKey== null) return null;
 
-        int secLayer= BIP44INDEX, thdLayer= 0;
-        if (this.type != 0) {
-            secLayer= 1;
-            thdLayer= BIP44INDEX;
-        }
+        HDKey hdKey = this.deriveBip44(ecKey);
+        if (hdKey== null) return null;
 
-        List<Chain> chains= new ArrayList<>();
-        chains.add(new Chain(44, true));
-        chains.add(new Chain(secLayer, true));
-        chains.add(new Chain(thdLayer, true));
-
-        int depth = 0;
-        int path = 0;
-        for (Chain chain: chains) {
-            ecKey= derivator.deriveChild(ecKey, chain);
-            ++depth;
-            path = ByteBuffer.wrap(Arrays.copyOfRange(chain.getPath(),0,4)).getInt();
-        }
-        if (ecKey== null) return null;
-
-        ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
-        return new GXChainKey(ecKey, depth, path);
+        return new GXChainKey(hdKey.getEcKey(), hdKey.getDepth(), hdKey.getPath());
     }
 
     @Override
     public ICoinKey deriveSecChild(ECKey ecKey) {
-        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagDEFAULT);
         if (ecKey.getPubKey()== null) ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
 
         Chain chain= new Chain(0);
@@ -87,7 +70,6 @@ public class GXChainer implements ICoiner {
 
     @Override
     public List<ICoinKey> deriveSecChildRange(ECKey ecKey, int start, int end) {
-        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagDEFAULT);
         if (ecKey.getPubKey()== null) ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
 
         Chain chain= new Chain(0);
@@ -108,8 +90,6 @@ public class GXChainer implements ICoiner {
 
     @Override
     public ICoinKey deriveSecChildPub(ECKey ecKey) {
-        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagDEFAULT);
-
         Chain chain= new Chain(0);
         for (int i= 0; i< 2; i++) {
             ecKey= derivator.deriveChildPub(ecKey, chain);
@@ -119,8 +99,6 @@ public class GXChainer implements ICoiner {
 
     @Override
     public List<ICoinKey> deriveSecChildRangePub(ECKey ecKey, int start, int end) {
-        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagDEFAULT);
-
         Chain chain= new Chain(0);
         ecKey= derivator.deriveChildPub(ecKey, chain);
 

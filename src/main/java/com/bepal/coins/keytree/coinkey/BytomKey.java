@@ -35,16 +35,6 @@ public class BytomKey extends ACoinKey {
      * */
     private NetType type= NetType.MAIN;
 
-    public enum NetType {
-        MAIN(0),
-        TEST(1),
-        SOLO(2);
-
-        private final int val;
-        NetType(int val) {
-            this.val= val;
-        }
-    }
 
     public BytomKey(ECKey ecKey) {
         super(ecKey,0,0);

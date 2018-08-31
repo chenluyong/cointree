@@ -15,7 +15,7 @@ import com.bepal.coins.keytree.model.ECKey;
 
 import java.util.List;
 
-public interface ICoiner extends ICoin{
+public interface ICoiner {
 
     /**
      * according to bip44 derive key

@@ -13,7 +13,6 @@ package com.bepal.coins.keytree.coinkey;
 
 import com.bepal.coins.crypto.Bech32;
 import com.bepal.coins.crypto.SHAHash;
-import com.bepal.coins.keytree.infrastructure.abstraction.ACoinKey;
 import com.bepal.coins.keytree.infrastructure.coordinators.SignerCoordinator;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.infrastructure.interfaces.ISigner;
@@ -24,7 +23,8 @@ import sun.nio.ch.Net;
 
 import java.io.ByteArrayOutputStream;
 
-public class BytomKey extends ACoinKey {
+public class BytomKey implements ICoinKey {
+    private ECKey ecKey;
 
     private static final String SEGWITMAIN= "bm";
     private static final String SEGWITTEST= "tm";
@@ -35,21 +35,31 @@ public class BytomKey extends ACoinKey {
      * */
     private NetType type= NetType.MAIN;
 
+    public enum NetType {
+        MAIN(0),
+        TEST(1),
+        SOLO(2);
 
-    public BytomKey(ECKey ecKey) {
-        super(ecKey,0,0);
+        private final int val;
+        NetType(int val) {
+            this.val= val;
+        }
     }
 
-    public BytomKey(ECKey _ecKey, int _depth, int _path, NetType netType) {
-        super(_ecKey,_depth,_path);
-        this.type= netType;
+    public BytomKey(ECKey ecKey) {
+        this.ecKey= ecKey;
     }
 
     public BytomKey(ECKey ecKey, NetType netType) {
-        super(ecKey,0,0);
         this.type= netType;
+        this.ecKey= ecKey;
     }
 
+
+    @Override
+    public ECKey base() {
+        return this.ecKey;
+    }
 
     @Override
     public String address() {

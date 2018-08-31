@@ -3,7 +3,6 @@ package com.bepal.coins.keytree.coinkey;
 import com.bepal.coins.crypto.Base58;
 import com.bepal.coins.crypto.Hex;
 import com.bepal.coins.crypto.SHAHash;
-import com.bepal.coins.keytree.infrastructure.abstraction.ACoinKey;
 import com.bepal.coins.keytree.infrastructure.components.GrapheneSerializer;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.model.ECKey;
@@ -11,13 +10,16 @@ import com.bepal.coins.keytree.model.ECSign;
 
 import java.math.BigInteger;
 
-public class ElastosKey extends ACoinKey {
+public class ElastosKey implements ICoinKey {
+    private ECKey ecKey;
 
     public ElastosKey(ECKey ecKey) {
-        super(ecKey,0,0);
+        this.ecKey= ecKey;
     }
-    public ElastosKey(ECKey _ecKey, int _depth, int _path) {
-        super(_ecKey,_depth,_path);
+
+    @Override
+    public ECKey base() {
+        return this.ecKey;
     }
 
     @Override

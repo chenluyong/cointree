@@ -1,7 +1,6 @@
 package com.bepal.coins.keytree.coins;
 
 import com.bepal.coins.keytree.coinkey.SelfsellKey;
-import com.bepal.coins.keytree.infrastructure.abstraction.ACoiner;
 import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoiner;
@@ -11,36 +10,53 @@ import com.bepal.coins.keytree.infrastructure.tags.SeedTag;
 import com.bepal.coins.keytree.model.Chain;
 import com.bepal.coins.keytree.model.ECKey;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class Selfseller extends ACoiner {
+public class Selfseller implements ICoiner {
 
     private static final int BIP44INDEX= 2304;
 
-    public Selfseller() {
-        super(DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagDEFAULT),BIP44INDEX, NetType.MAIN);
-    }
+    /**
+     * coin type: main or test
+     * */
+    private int type= 0;
 
-    public Selfseller(NetType _netType) {
-        super(DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagDEFAULT),BIP44INDEX, _netType);
+    public Selfseller() { }
+
+    public Selfseller(int type) {
+        this.type= type;
     }
 
     @Override
     public ICoinKey deriveBip44(byte[] seed) {
+        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagDEFAULT);
         ECKey ecKey= derivator.deriveFromSeed(seed, SeedTag.tagDEFAULT);
         if (ecKey== null) return null;
 
-        HDKey hdKey = this.deriveBip44(ecKey);
-        if (hdKey== null) return null;
+        int secLayer= BIP44INDEX, thdLayer= 0;
+        if (this.type!= 0) {
+            secLayer= 1;
+            thdLayer= BIP44INDEX;
+        }
 
-        return new SelfsellKey(hdKey.getEcKey(), hdKey.getDepth(), hdKey.getPath());
+        List<Chain> chains= new ArrayList<>();
+        chains.add(new Chain(44, true));
+        chains.add(new Chain(secLayer, true));
+        chains.add(new Chain(thdLayer, true));
+
+        for (Chain chain: chains) {
+            ecKey= derivator.deriveChild(ecKey, chain);
+        }
+        if (ecKey== null) return null;
+
+        ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
+        return new SelfsellKey(ecKey);
     }
 
     @Override
     public ICoinKey deriveSecChild(ECKey ecKey) {
+        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagDEFAULT);
         if (ecKey.getPubKey()== null) ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
 
         Chain chain= new Chain(0);
@@ -53,6 +69,7 @@ public class Selfseller extends ACoiner {
 
     @Override
     public List<ICoinKey> deriveSecChildRange(ECKey ecKey, int start, int end) {
+        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagDEFAULT);
         if (ecKey.getPubKey()== null) ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
 
         Chain chain= new Chain(0);
@@ -73,6 +90,8 @@ public class Selfseller extends ACoiner {
 
     @Override
     public ICoinKey deriveSecChildPub(ECKey ecKey) {
+        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagDEFAULT);
+
         Chain chain= new Chain(0);
         for (int i= 0; i< 2; i++) {
             ecKey= derivator.deriveChildPub(ecKey, chain);
@@ -82,6 +101,8 @@ public class Selfseller extends ACoiner {
 
     @Override
     public List<ICoinKey> deriveSecChildRangePub(ECKey ecKey, int start, int end) {
+        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagDEFAULT);
+
         Chain chain= new Chain(0);
         ecKey= derivator.deriveChildPub(ecKey, chain);
 

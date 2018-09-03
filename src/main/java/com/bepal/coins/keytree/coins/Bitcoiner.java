@@ -12,6 +12,7 @@ Bitcoiner
 package com.bepal.coins.keytree.coins;
 
 import com.bepal.coins.keytree.coinkey.BitcoinKey;
+import com.bepal.coins.keytree.infrastructure.abstraction.ACoiner;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;
 import com.bepal.coins.keytree.infrastructure.tags.DeriveTag;
@@ -26,54 +27,30 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Bitcoiner implements ICoiner {
+public class Bitcoiner extends ACoiner {
 
     private static final int BIP44INDEX= 0;
 
-    /**
-     * net type: main or test
-     * */
-    private NetType type= NetType.MAIN;
-
-    public Bitcoiner() { }
+    public Bitcoiner() {
+        super(DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagBITCOIN),BIP44INDEX, NetType.MAIN);
+    }
 
     public Bitcoiner(NetType netType) {
-        this.type= netType;
+        super(DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagBITCOIN),BIP44INDEX, netType);
+
     }
 
     @Override
     public ICoinKey deriveBip44(byte[] seed) {
-        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagBITCOIN);
-        ECKey ecKey= derivator.deriveFromSeed(seed, SeedTag.tagBITCOIN);
+        ECKey ecKey= this.derivator.deriveFromSeed(seed, SeedTag.tagBITCOIN);
         if (ecKey== null) return null;
 
-        int secLayer= BIP44INDEX, thdLayer= 0;
-        if (this.type!= NetType.MAIN) {
-            secLayer= 1;
-            thdLayer= BIP44INDEX;
-        }
-
-        List<Chain> chains= new ArrayList<>();
-        chains.add(new Chain(44, true));
-        chains.add(new Chain(secLayer, true));
-        chains.add(new Chain(thdLayer, true));
-
-        int depth = 0;
-        int path = 0;
-        for (Chain chain: chains) {
-            ecKey= derivator.deriveChild(ecKey, chain);
-            ++depth;
-            path = ByteBuffer.wrap(Arrays.copyOfRange(chain.getPath(),0,4)).getInt();
-        }
-        if (ecKey== null) return null;
-
-        ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
-        return new BitcoinKey(ecKey, depth, path, this.type);
+        HDKey hdKey = this.deriveBip44(ecKey);
+        return new BitcoinKey(hdKey.getEcKey(), hdKey.getDepth(), hdKey.getPath(), this.netType);
     }
 
     @Override
     public ICoinKey deriveSecChild(ECKey ecKey) {
-        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagBITCOIN);
         if (ecKey.getPubKey()== null) ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
 
         Chain chain= new Chain(0);
@@ -81,12 +58,11 @@ public class Bitcoiner implements ICoiner {
             ecKey= derivator.deriveChild(ecKey, chain);
             ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
         }
-        return new BitcoinKey(ecKey, this.type);
+        return new BitcoinKey(ecKey, this.netType);
     }
 
     @Override
     public List<ICoinKey> deriveSecChildRange(ECKey ecKey, int start, int end) {
-        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagBITCOIN);
         if (ecKey.getPubKey()== null) ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
 
         Chain chain= new Chain(0);
@@ -99,7 +75,7 @@ public class Bitcoiner implements ICoiner {
             ECKey tmpKey= derivator.deriveChild(ecKey, chain);
             tmpKey.setPubKey(derivator.derivePubKey(tmpKey.getPriKey()));
 
-            coinKeys.add(new BitcoinKey(tmpKey, this.type));
+            coinKeys.add(new BitcoinKey(tmpKey, this.netType));
         }
 
         return coinKeys;
@@ -107,19 +83,15 @@ public class Bitcoiner implements ICoiner {
 
     @Override
     public ICoinKey deriveSecChildPub(ECKey ecKey) {
-        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagBITCOIN);
-
         Chain chain= new Chain(0);
         for (int i= 0; i< 2; i++) {
             ecKey= derivator.deriveChildPub(ecKey, chain);
         }
-        return new BitcoinKey(ecKey, this.type);
+        return new BitcoinKey(ecKey, this.netType);
     }
 
     @Override
     public List<ICoinKey> deriveSecChildRangePub(ECKey ecKey, int start, int end) {
-        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagBITCOIN);
-
         Chain chain= new Chain(0);
         ecKey= derivator.deriveChildPub(ecKey, chain);
 
@@ -128,7 +100,7 @@ public class Bitcoiner implements ICoiner {
             chain.setPath(i);
             ECKey tmpKey= derivator.deriveChildPub(ecKey, chain);
 
-            coinKeys.add(new BitcoinKey(tmpKey, this.type));
+            coinKeys.add(new BitcoinKey(tmpKey, this.netType));
         }
 
         return coinKeys;

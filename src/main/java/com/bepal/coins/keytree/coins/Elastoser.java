@@ -1,6 +1,7 @@
 package com.bepal.coins.keytree.coins;
 
 import com.bepal.coins.keytree.coinkey.ElastosKey;
+import com.bepal.coins.keytree.infrastructure.abstraction.ACoiner;
 import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoiner;
@@ -15,55 +16,33 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Elastoser  implements ICoiner {
+public class Elastoser extends ACoiner {
 
-//    private static final int BIP44INDEX= 666;
+    //    private static final int BIP44INDEX= 666;
     private static final int BIP44INDEX= 2305;
 
-    /**
-     * coin type: main or test
-     * */
-    private NetType type= NetType.MAIN;
 
-    public Elastoser() { }
+    public Elastoser() {
+        super(DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagSECP256R1), BIP44INDEX, NetType.MAIN);
+    }
 
-    public Elastoser(NetType type) {
-        this.type= type;
+    public Elastoser(NetType netType) {
+        super(DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagSECP256R1), BIP44INDEX, netType);
     }
 
     @Override
     public ICoinKey deriveBip44(byte[] seed) {
-        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagSECP256R1);
         ECKey ecKey= derivator.deriveFromSeed(seed, SeedTag.tagDEFAULT);
         if (ecKey== null) return null;
 
-        int secLayer= BIP44INDEX, thdLayer= 0;
-        if (NetType.MAIN != this.type) {
-            secLayer= 1;
-            thdLayer= BIP44INDEX;
-        }
+        HDKey hdKey = this.deriveBip44(ecKey);
+        if (hdKey== null) return null;
 
-        List<Chain> chains= new ArrayList<>();
-        chains.add(new Chain(44, true));
-        chains.add(new Chain(secLayer, true));
-        chains.add(new Chain(thdLayer, true));
-
-        int depth = 0;
-        int path = 0;
-        for (Chain chain: chains) {
-            ecKey= derivator.deriveChild(ecKey, chain);
-            ++depth;
-            path = ByteBuffer.wrap(Arrays.copyOfRange(chain.getPath(),0,4)).getInt();
-        }
-        if (ecKey== null) return null;
-
-        ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
-        return new ElastosKey(ecKey, depth, path);
+        return new ElastosKey(hdKey.getEcKey(), hdKey.getDepth(), hdKey.getPath());
     }
 
     @Override
     public ICoinKey deriveSecChild(ECKey ecKey) {
-        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagSECP256R1);
         if (ecKey.getPubKey()== null) ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
 
         Chain chain= new Chain(0);
@@ -76,7 +55,6 @@ public class Elastoser  implements ICoiner {
 
     @Override
     public List<ICoinKey> deriveSecChildRange(ECKey ecKey, int start, int end) {
-        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagSECP256R1);
         if (ecKey.getPubKey()== null) ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
 
         Chain chain= new Chain(0);
@@ -97,8 +75,6 @@ public class Elastoser  implements ICoiner {
 
     @Override
     public ICoinKey deriveSecChildPub(ECKey ecKey) {
-        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagSECP256R1);
-
         Chain chain= new Chain(0);
         for (int i= 0; i< 2; i++) {
             ecKey= derivator.deriveChildPub(ecKey, chain);
@@ -108,8 +84,6 @@ public class Elastoser  implements ICoiner {
 
     @Override
     public List<ICoinKey> deriveSecChildRangePub(ECKey ecKey, int start, int end) {
-        IDerivator derivator= DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagSECP256R1);
-
         Chain chain= new Chain(0);
         ecKey= derivator.deriveChildPub(ecKey, chain);
 

@@ -11,9 +11,7 @@ KeyTreer
 */
 package com.bepal.coins.keytree;
 
-import com.bepal.coins.crypto.SHAHash;
 import com.bepal.coins.keytree.coinkey.BitcoinKey;
-import com.bepal.coins.keytree.coinkey.BytomKey;
 import com.bepal.coins.keytree.coins.*;
 import com.bepal.coins.keytree.infrastructure.components.MnemonicCode;
 import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;

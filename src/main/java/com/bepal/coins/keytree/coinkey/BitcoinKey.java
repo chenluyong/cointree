@@ -13,17 +13,17 @@ package com.bepal.coins.keytree.coinkey;
 
 import com.bepal.coins.crypto.Base58;
 import com.bepal.coins.crypto.SHAHash;
+import com.bepal.coins.keytree.infrastructure.abstraction.ACoinKey;
 import com.bepal.coins.keytree.infrastructure.coordinators.SignerCoordinator;
-import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.infrastructure.interfaces.ISigner;
 import com.bepal.coins.keytree.infrastructure.tags.SignerTag;
 import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.model.ECSign;
 import com.bepal.coins.models.ByteArrayData;
 
-import java.util.Arrays;
+//import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 
-public class BitcoinKey implements ICoinKey {
+public class BitcoinKey extends ACoinKey {
 
     private static final int VERSION= 0;
     private static final int TESTVERSION= 111;
@@ -32,31 +32,21 @@ public class BitcoinKey implements ICoinKey {
      * net type: main or test
      * */
     private NetType type;
-    private ECKey ecKey;
-
-    public enum NetType {
-        MAIN(0),
-        TEST(1);
-
-        private final int val;
-        NetType(int val) {
-            this.val= val;
-        }
-    }
 
     public BitcoinKey(ECKey ecKey) {
-        this.ecKey= ecKey;
+        super(ecKey,0,0);
     }
 
     public BitcoinKey(ECKey ecKey, NetType netType) {
+        super(ecKey,0,0);
         this.type= netType;
-        this.ecKey= ecKey;
+    }
+    public BitcoinKey(ECKey _ecKey, int _depth, int _path, NetType netType) {
+        super(_ecKey,_depth,_path);
+        this.type= netType;
     }
 
-    @Override
-    public ECKey base() {
-        return ecKey;
-    }
+
 
     @Override
     public String address() {

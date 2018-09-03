@@ -11,25 +11,23 @@ EosKey
 */
 package com.bepal.coins.keytree.coinkey;
 
+import com.bepal.coins.keytree.infrastructure.abstraction.ACoinKey;
 import com.bepal.coins.keytree.infrastructure.components.GrapheneSerializer;
 import com.bepal.coins.keytree.infrastructure.coordinators.SignerCoordinator;
-import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.infrastructure.interfaces.ISigner;
 import com.bepal.coins.keytree.infrastructure.tags.SignerTag;
 import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.model.ECSign;
 
-public class EosKey implements ICoinKey {
-    private ECKey ecKey;
+public class EosKey extends ACoinKey {
 
     public EosKey(ECKey ecKey) {
-        this.ecKey= ecKey;
+        super(ecKey,0,0);
+    }
+    public EosKey(ECKey _ecKey, int _depth, int _path) {
+        super(_ecKey,_depth,_path);
     }
 
-    @Override
-    public ECKey base() {
-        return this.ecKey;
-    }
 
     @Override
     public String address() {

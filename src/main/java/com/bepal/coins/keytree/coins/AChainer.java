@@ -21,7 +21,9 @@ import com.bepal.coins.keytree.infrastructure.tags.SeedTag;
 import com.bepal.coins.keytree.model.Chain;
 import com.bepal.coins.keytree.model.ECKey;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class AChainer implements ICoiner {
@@ -31,11 +33,11 @@ public class AChainer implements ICoiner {
     /**
      * coin type: main or test
      * */
-    private int type= 0;
+    private NetType type = NetType.MAIN;
 
     public AChainer() { }
 
-    public AChainer(int type) {
+    public AChainer(NetType type) {
         this.type= type;
     }
 
@@ -46,7 +48,7 @@ public class AChainer implements ICoiner {
         if (ecKey== null) return null;
 
         int secLayer= BIP44INDEX, thdLayer= 0;
-        if (this.type!= 0) {
+        if (this.type != NetType.MAIN) {
             secLayer= 1;
             thdLayer= BIP44INDEX;
         }
@@ -55,14 +57,18 @@ public class AChainer implements ICoiner {
         chains.add(new Chain(44, true));
         chains.add(new Chain(secLayer, true));
         chains.add(new Chain(thdLayer, true));
-
+        System.out.println(thdLayer);
+        int depth = 0;
+        int path = 0;
         for (Chain chain: chains) {
             ecKey= derivator.deriveChild(ecKey, chain);
+            ++depth;
+            path = ByteBuffer.wrap(Arrays.copyOfRange(chain.getPath(),0,4)).getInt();
         }
         if (ecKey== null) return null;
 
         ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
-        return new AChainKey(ecKey);
+        return new AChainKey(ecKey, depth, path);
     }
 
     @Override

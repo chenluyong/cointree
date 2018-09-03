@@ -13,8 +13,8 @@ package com.bepal.coins.keytree.coinkey;
 
 import com.bepal.coins.crypto.Hex;
 import com.bepal.coins.crypto.SHAHash;
+import com.bepal.coins.keytree.infrastructure.abstraction.ACoinKey;
 import com.bepal.coins.keytree.infrastructure.coordinators.SignerCoordinator;
-import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.infrastructure.interfaces.ISigner;
 import com.bepal.coins.keytree.infrastructure.tags.SignerTag;
 import com.bepal.coins.keytree.model.ECKey;
@@ -23,17 +23,15 @@ import com.bepal.coins.models.ByteArrayData;
 
 import static com.bepal.coins.keytree.infrastructure.signer.Secp256k1.CURVE;
 
-public class EthereumKey implements ICoinKey {
-    private ECKey ecKey;
+public class EthereumKey extends ACoinKey {
 
     public EthereumKey(ECKey ecKey) {
-        this.ecKey= ecKey;
+        super(ecKey,0,0);
+    }
+    public EthereumKey(ECKey _ecKey, int _depth, int _path) {
+        super(_ecKey,_depth,_path);
     }
 
-    @Override
-    public ECKey base() {
-        return this.ecKey;
-    }
 
     @Override
     public String address() {

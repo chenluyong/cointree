@@ -1,4 +1,4 @@
-/*
+    /*
 >>>------ Copyright (c) 2018 zformular ------>
 |                                            |
 |            Author: zformular               |
@@ -15,6 +15,7 @@ import com.bepal.coins.keytree.coinkey.BitcoinKey;
 import com.bepal.coins.keytree.coinkey.BytomKey;
 import com.bepal.coins.keytree.coins.*;
 import com.bepal.coins.keytree.infrastructure.components.MnemonicCode;
+import com.bepal.coins.keytree.infrastructure.interfaces.ICoin;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.infrastructure.tags.CoinTag;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoiner;
@@ -253,7 +254,7 @@ public class KeyTreer {
      * using the CoinTag the specific coiner
      * */
     private ICoiner findCoiner(CoinTag coinTag) {
-        final int testNet= 1;
+        final ICoin.NetType testNet= ICoin.NetType.TEST;
 
         switch (coinTag) {
             // main net
@@ -285,13 +286,13 @@ public class KeyTreer {
 
             // test net
             case tagBITCOINTEST: {
-                return new Bitcoiner(BitcoinKey.NetType.TEST);
+                return new Bitcoiner(testNet);
             }
             case tagETHEREUMTEST: {
                 return new Ethereumer(testNet);
             }
             case tagBYTOMTEST: {
-                return new Bytomer(BytomKey.NetType.TEST);
+                return new Bytomer(testNet);
             }
             case tagEOSTEST: {
                 return new Eoser(testNet);
@@ -312,7 +313,7 @@ public class KeyTreer {
 
             // other net
             case tagBYTOMSOLO: {
-                return new Bytomer(BytomKey.NetType.SOLO);
+                return new Bytomer(ICoin.NetType.SOLO);
             }
         }
 

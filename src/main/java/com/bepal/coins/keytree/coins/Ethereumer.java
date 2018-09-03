@@ -21,7 +21,9 @@ import com.bepal.coins.keytree.infrastructure.tags.SeedTag;
 import com.bepal.coins.keytree.model.Chain;
 import com.bepal.coins.keytree.model.ECKey;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Ethereumer implements ICoiner {
@@ -29,13 +31,13 @@ public class Ethereumer implements ICoiner {
     /**
      * coin type: main or test
      * */
-    private int type= 0;
+    private NetType type= NetType.MAIN;
 
     private static final int BIP44INDEX= 60;
 
     public Ethereumer() {}
 
-    public Ethereumer(int type) {
+    public Ethereumer(NetType type) {
         this.type= type;
     }
 
@@ -46,7 +48,7 @@ public class Ethereumer implements ICoiner {
         if (ecKey== null) return null;
 
         int secLayer= BIP44INDEX, thdLayer= 0;
-        if (this.type!= 0) {
+        if (this.type != NetType.MAIN) {
             secLayer= 1;
             thdLayer= BIP44INDEX;
         }
@@ -56,11 +58,17 @@ public class Ethereumer implements ICoiner {
         chains.add(new Chain(secLayer, true));
         chains.add(new Chain(thdLayer, true));
 
+        int depth = 0;
+        int path = 0;
         for (Chain chain: chains) {
             ecKey= derivator.deriveChild(ecKey, chain);
+            ++depth;
+            path = ByteBuffer.wrap(Arrays.copyOfRange(chain.getPath(),0,4)).getInt();
         }
+        if (ecKey== null) return null;
+
         ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
-        return new EthereumKey(ecKey);
+        return new EthereumKey(ecKey, depth, path);
     }
 
     @Override

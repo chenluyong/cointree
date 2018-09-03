@@ -54,7 +54,7 @@ public class KeyTreer {
 
         IDerivator derivator = DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagBITCOIN);
         ECKey ecKey= derivator.deriveFromSeed(seed, SeedTag.tagBITCOIN);
-        if (ecKey== null) return null;
+        ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
 
         // default bitcoin key
         return new BitcoinKey(ecKey,0,0,ICoin.NetType.MAIN);

@@ -11,14 +11,19 @@ KeyTreer
 */
 package com.bepal.coins.keytree;
 
+import com.bepal.coins.crypto.SHAHash;
 import com.bepal.coins.keytree.coinkey.BitcoinKey;
 import com.bepal.coins.keytree.coinkey.BytomKey;
 import com.bepal.coins.keytree.coins.*;
 import com.bepal.coins.keytree.infrastructure.components.MnemonicCode;
+import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoin;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
+import com.bepal.coins.keytree.infrastructure.interfaces.IDerivator;
 import com.bepal.coins.keytree.infrastructure.tags.CoinTag;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoiner;
+import com.bepal.coins.keytree.infrastructure.tags.DeriveTag;
+import com.bepal.coins.keytree.infrastructure.tags.SeedTag;
 import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.models.ByteArrayData;
 
@@ -42,6 +47,19 @@ public class KeyTreer {
         if (coiner== null) return null;
 
         return coiner.deriveBip44(seed);
+    }
+
+    /**
+     * 默认比特币规则
+     * */
+    public ICoinKey deriveHDKey(byte[] seed) {
+
+        IDerivator derivator = DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagBITCOIN);
+        ECKey ecKey= derivator.deriveFromSeed(seed, SeedTag.tagBITCOIN);
+        if (ecKey== null) return null;
+
+        // default bitcoin key
+        return new BitcoinKey(ecKey,0,0,ICoin.NetType.MAIN);
     }
 
     /**

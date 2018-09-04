@@ -35,6 +35,7 @@ public class BitcoinKey extends ACoinKey {
 
     public BitcoinKey(ECKey ecKey) {
         super(ecKey,0,0);
+        this.type = NetType.MAIN;
     }
 
     public BitcoinKey(ECKey ecKey, NetType netType) {

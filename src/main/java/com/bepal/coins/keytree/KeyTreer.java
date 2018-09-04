@@ -23,6 +23,7 @@ import com.bepal.coins.keytree.infrastructure.interfaces.ICoiner;
 import com.bepal.coins.keytree.infrastructure.tags.DeriveTag;
 import com.bepal.coins.keytree.infrastructure.tags.SeedTag;
 import com.bepal.coins.keytree.model.ECKey;
+import com.bepal.coins.keytree.model.HDKey;
 import com.bepal.coins.models.ByteArrayData;
 
 import java.util.Arrays;
@@ -51,11 +52,12 @@ public class KeyTreer {
         return new BitcoinKey(ecKey,0,0,ICoin.NetType.MAIN);
     }
 
+
     /////////////////////////////////////////////zformular////////////////////////////////////////////////////////////
     /**
      * derive keys according to bip44
      * */
-    public ICoinKey deriveBip44(byte[] seed, CoinTag coinTag) {
+    public HDKey deriveBip44(byte[] seed, CoinTag coinTag) {
         ICoiner coiner= findCoiner(coinTag);
         if (coiner== null) return null;
 
@@ -66,57 +68,57 @@ public class KeyTreer {
     /**
      * derive second layer key
      * */
-    public ICoinKey deriveSecChild(ECKey ecKey, CoinTag coinTag) {
+    public HDKey deriveSecChild(ECKey ecKey, CoinTag coinTag) {
         ICoiner coiner= findCoiner(coinTag);
         if (coiner== null) return null;
 
-        return coiner.deriveSecChild(ecKey);
+        return coiner.deriveSecChild(new HDKey(ecKey));
     }
 
     /**
      * derive second layer range key
      * */
-    public List<ICoinKey> deriveSecChildRange(ECKey ecKey, int start, int end, CoinTag coinTag) {
+    public List<HDKey> deriveSecChildRange(ECKey ecKey, int start, int end, CoinTag coinTag) {
         ICoiner coiner= findCoiner(coinTag);
         if (coiner== null) return null;
 
-        return coiner.deriveSecChildRange(ecKey, start, end);
+        return coiner.deriveSecChildRange(new HDKey(ecKey), start, end);
     }
 
     /**
      * derive second layer public key by public key
      * */
-    public ICoinKey deriveSecChildPub(ECKey ecKey, CoinTag coinTag) {
+    public HDKey deriveSecChildPub(ECKey ecKey, CoinTag coinTag) {
         ICoiner coiner= findCoiner(coinTag);
         if (coiner== null) return null;
 
-        return coiner.deriveSecChildPub(ecKey);
+        return coiner.deriveSecChildPub(new HDKey(ecKey));
     }
 
     /**
      * derive second layer range public key by public key
      * */
-    public List<ICoinKey> deriveSecChildRangePub(ECKey ecKey, int start, int end, CoinTag coinTag) {
+    public List<HDKey> deriveSecChildRangePub(ECKey ecKey, int start, int end, CoinTag coinTag) {
         ICoiner coiner= findCoiner(coinTag);
         if (coiner== null) return null;
 
-        return coiner.deriveSecChildRangePub(ecKey, start, end);
+        return coiner.deriveSecChildRangePub(new HDKey(ecKey), start, end);
     }
 
     /**
      * derive child key from seed
      * */
-    public ICoinKey deriveBepalKey(byte[] seed, CoinTag coinTag) {
-        ICoinKey coinKey= deriveBip44(seed, coinTag);
-        return deriveSecChild(coinKey.base(), coinTag);
+    public HDKey deriveBepalKey(byte[] seed, CoinTag coinTag) {
+        HDKey coinKey= deriveBip44(seed, coinTag);
+        return deriveSecChild(coinKey.getEcKey(), coinTag);
     }
 
     /**
      * derive child key range from seed
      * */
-    public List<ICoinKey> deriveBepalKeyRange(byte[] seed, int start, int end, CoinTag coinTag) {
-        ICoinKey coinKey= deriveBip44(seed, coinTag);
-        return deriveSecChildRange(coinKey.base(), start, end, coinTag);
+    public List<HDKey> deriveBepalKeyRange(byte[] seed, int start, int end, CoinTag coinTag) {
+        HDKey coinKey= deriveBip44(seed, coinTag);
+        return deriveSecChildRange(coinKey.getEcKey(), start, end, coinTag);
     }
 
     /**
@@ -248,7 +250,7 @@ public class KeyTreer {
      *
      * @param sdkPriKey the return of sdkPriKey
      * */
-    public ICoinKey deriveSDKSecChild(byte[] sdkPriKey, CoinTag coinTag) {
+    public HDKey deriveSDKSecChild(byte[] sdkPriKey, CoinTag coinTag) {
         ECKey ecKey= new ECKey();
         ecKey.setPriKey(ByteArrayData.copyOfRange(sdkPriKey, 0+ 4, 33));
         ecKey.setChainCode(ByteArrayData.copyOfRange(sdkPriKey, 33+ 4, 33));
@@ -261,7 +263,7 @@ public class KeyTreer {
      *
      * @param sdkPubKey the return of sdkPubKey
      * */
-    public ICoinKey deriveSDKSecChildPub(byte[] sdkPubKey, CoinTag coinTag) {
+    public HDKey deriveSDKSecChildPub(byte[] sdkPubKey, CoinTag coinTag) {
         ECKey ecKey= new ECKey();
         ecKey.setPubKey(ByteArrayData.copyOfRange(sdkPubKey, 0+ 4, 33));
         ecKey.setChainCode(ByteArrayData.copyOfRange(sdkPubKey, 33+ 4, 33));
@@ -280,60 +282,60 @@ public class KeyTreer {
             case tagBITCOIN: {
                 return new Bitcoiner();
             }
-            case tagETHEREUM: {
-                return new Ethereumer();
-            }
-            case tagBYTOM: {
-                return new Bytomer();
-            }
-            case tagEOS: {
-                return new Eoser();
-            }
-            case tagGXCHAIN: {
-                return new GXChainer();
-            }
-            case tagSELFSELL: {
-                return new Selfseller();
-            }
-            case tagAChain: {
-                return new AChainer();
-            }
-            case tagELASTOS: {
-                return new Elastoser();
-            }
+//            case tagETHEREUM: {
+//                return new Ethereumer();
+//            }
+//            case tagBYTOM: {
+//                return new Bytomer();
+//            }
+//            case tagEOS: {
+//                return new Eoser();
+//            }
+//            case tagGXCHAIN: {
+//                return new GXChainer();
+//            }
+//            case tagSELFSELL: {
+//                return new Selfseller();
+//            }
+//            case tagAChain: {
+//                return new AChainer();
+//            }
+//            case tagELASTOS: {
+//                return new Elastoser();
+//            }
 
 
             // test net
             case tagBITCOINTEST: {
                 return new Bitcoiner(testNet);
             }
-            case tagETHEREUMTEST: {
-                return new Ethereumer(testNet);
-            }
-            case tagBYTOMTEST: {
-                return new Bytomer(testNet);
-            }
-            case tagEOSTEST: {
-                return new Eoser(testNet);
-            }
-            case tagGXCHAINTEST: {
-                return new GXChainer(testNet);
-            }
-            case tagSELFSELLTEST: {
-                return new Selfseller(testNet);
-            }
-            case tagACHAINTEST: {
-                return new AChainer(testNet);
-            }
-            case tagELASTOSTEST:{
-                return new Elastoser(testNet);
-            }
-
-
-            // other net
-            case tagBYTOMSOLO: {
-                return new Bytomer(ICoin.NetType.SOLO);
-            }
+//            case tagETHEREUMTEST: {
+//                return new Ethereumer(testNet);
+//            }
+//            case tagBYTOMTEST: {
+//                return new Bytomer(testNet);
+//            }
+//            case tagEOSTEST: {
+//                return new Eoser(testNet);
+//            }
+//            case tagGXCHAINTEST: {
+//                return new GXChainer(testNet);
+//            }
+//            case tagSELFSELLTEST: {
+//                return new Selfseller(testNet);
+//            }
+//            case tagACHAINTEST: {
+//                return new AChainer(testNet);
+//            }
+//            case tagELASTOSTEST:{
+//                return new Elastoser(testNet);
+//            }
+//
+//
+//            // other net
+//            case tagBYTOMSOLO: {
+//                return new Bytomer(ICoin.NetType.SOLO);
+//            }
         }
 
         return null;

@@ -31,9 +31,9 @@ public abstract class ACoiner implements ICoiner {
     ///////////////////// function ///////////////////////
     @Override
     public HDKey deriveBip44(byte[] seed) {
-        System.out.println(Hex.toHexString(seed));
+//        System.out.println(Hex.toHexString(seed));
         ECKey ecKey = derivator.deriveFromSeed(seed, this.config.seedTag);
-        System.out.println(Hex.toHexString(ecKey.getPriKey()));
+//        System.out.println(Hex.toHexString(ecKey.getPriKey()));
         if (ecKey == null) return null;
 
         int secLayer = (int) this.config.bip44, thdLayer = 0;
@@ -51,7 +51,7 @@ public abstract class ACoiner implements ICoiner {
         int path = 0;
         for (Chain chain : chains) {
             ecKey = derivator.deriveChild(ecKey, chain);
-            System.out.println("Chain:" + Hex.toHexString(ecKey.getPriKey()));
+//            System.out.println("Chain:" + Hex.toHexString(ecKey.getPriKey()));
             ++depth;
             path = ByteBuffer.wrap(Arrays.copyOfRange(chain.getPath(), 0, 4)).getInt();
         }
@@ -62,11 +62,13 @@ public abstract class ACoiner implements ICoiner {
     @Override
     public HDKey deriveSecChild(HDKey hdKey) {
         ECKey ecKey = hdKey.getEcKey();
-        if (ecKey.getPubKey() == null) ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
+        if (null == ecKey.getPubKey()) {
+            ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
+        }
 
         int depth = hdKey.getDepth();
         Chain chain = new Chain(0);
-        for (int i = 0; i < 2; i++, ++depth) {
+        for (int i = 0; i < 2; ++i, ++depth) {
             ecKey = derivator.deriveChild(ecKey, chain);
             ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
         }
@@ -115,7 +117,7 @@ public abstract class ACoiner implements ICoiner {
         ecKey = derivator.deriveChildPub(ecKey, chain);
 
         List<HDKey> coinKeys = new ArrayList<>();
-        for (int i = start; i <= end; i++) {
+        for (int i = start; i <= end; ++i) {
             chain.setPath(i);
             ECKey tmpKey = derivator.deriveChildPub(ecKey, chain);
             coinKeys.add(new HDKey(tmpKey, hdKey.getDepth() + 1, start));

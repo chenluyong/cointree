@@ -69,7 +69,7 @@ public class KeyTreerTest {
         HDKey coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBITCOIN);
 
         coinKey = keyTreer.deriveSecChild(coinKey.getEcKey(), CoinTag.tagBITCOIN);
-        address = new BitcoinKey(coinKey.getEcKey()).address();
+        address = new BitcoinKey(coinKey).address();
         Assert.assertEquals("deriveBip44 failed address dismatch", expect, address);
 
 //        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBITCOIN);
@@ -100,7 +100,7 @@ public class KeyTreerTest {
         byte[] masterPubKey = keyTreer.masterPubKey(new BitcoinKey(hdKey.getEcKey()));
         byte[] sdkPubKey = keyTreer.sdkPubKey(masterPubKey);
         hdKey = keyTreer.deriveSDKSecChildPub(sdkPubKey, CoinTag.tagBITCOIN);
-        address = new BitcoinKey(hdKey.getEcKey()).address();
+        address = new BitcoinKey(hdKey).address();
         Assert.assertEquals("deriveSecChildPub failed address dismatch", expect, address);
 
 //        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBITCOIN);

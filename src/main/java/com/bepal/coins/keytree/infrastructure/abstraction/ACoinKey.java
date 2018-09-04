@@ -3,80 +3,37 @@ package com.bepal.coins.keytree.infrastructure.abstraction;
 import com.bepal.coins.crypto.SHAHash;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.model.ECKey;
+import com.bepal.coins.keytree.model.HDKey;
 import com.bepal.coins.models.ByteArrayData;
 
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 public abstract class ACoinKey implements ICoinKey {
-    protected ECKey ecKey; // 33 32
-    protected int depth = 0; // 1
-    protected long path = 0; // 4
-    // hdkey head  (example: xpub\xprv)
+    protected HDKey hdKey; // 33 32
+    protected NetType netType;
 
 
-    public ACoinKey(ECKey _ecKey, int _depth, int _path) {
-        this.ecKey = _ecKey;
-        this.depth = _depth;
-        this.path = _path;
+    public ACoinKey(ECKey _ecKey) {
+        this.hdKey = new HDKey(_ecKey);
+    }
+    public ACoinKey(HDKey _hdKey) {
+        this.hdKey = _hdKey;
     }
 
     @Override
     public ECKey base() {
-        return this.ecKey;
+        return this.hdKey.getEcKey();
     }
 
-    public byte[] toStandardXPrivate(int prefix) {
-        if (0 == prefix) {
-            prefix = 0x0488ADE4;
-        }
-        ByteArrayData data = new ByteArrayData();
-        data.appendIntLE(prefix);
-        data.appendByte(this.depth);
-        data.appendIntLE(this.getFingerprint());
-        data.appendIntLE(this.path);
-        data.putBytes(this.ecKey.getChainCode());
-        byte[] privateKey = this.ecKey.getPriKey();
-        if (null == privateKey) {
-            return null;
-        }
-        if (privateKey.length == 32) {
-            data.appendByte(0);
-        }
-        data.putBytes(privateKey);
-        byte[] checkSum = SHAHash.hash2256Twice(data.toBytes());
-        data.putBytes(ByteArrayData.copyOfRange(checkSum,0,4));
-        return data.toBytes();
+    public HDKey hdKey() {return this.hdKey; }
+
+    public byte[] toStandardXPrivate() {
+        return hdKey.toStandardXPrivate();
     }
 
-    public byte[] toStandardXPublic(int prefix) {
-        if (0 == prefix) {
-            prefix = 0x0488B21E;
-        }
-        ByteArrayData data = new ByteArrayData();
-        data.appendIntLE(prefix);
-        data.appendByte(this.depth);
-        data.appendIntLE(this.getFingerprint());
-        data.appendIntLE(this.path);
-        data.putBytes(this.ecKey.getChainCode());
-        byte[] publicKey = this.ecKey.getPubKey();
-        if (null == publicKey) {
-            return null;
-        }
-        if (publicKey.length == 32) {
-            data.appendByte(0);
-        }
-        data.putBytes(publicKey);
-        byte[] checkSum = SHAHash.hash2256Twice(data.toBytes());
-        data.putBytes(ByteArrayData.copyOfRange(checkSum,0,4));
-
-        return data.toBytes();
-
-    }
-
-
-    private int getFingerprint() {
-        return ByteBuffer.wrap(Arrays.copyOfRange(SHAHash.sha256hash160(ecKey.getPubKey()), 0, 4)).getInt();
+    public byte[] toStandardXPublic() {
+        return hdKey.toStandardXPublic();
     }
 
 }

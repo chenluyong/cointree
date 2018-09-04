@@ -49,7 +49,7 @@ public class KeyTreer {
         ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
 
         // default bitcoin key
-        return new BitcoinKey(ecKey,0,0,ICoin.NetType.MAIN);
+        return new BitcoinKey(new HDKey(ecKey), ICoin.NetType.MAIN);
     }
 
 

@@ -1,10 +1,10 @@
 package com.bepal.coins.keytree.infrastructure.interfaces;
 
+import com.bepal.coins.keytree.config.CoinConfig;
 import com.bepal.coins.keytree.infrastructure.tags.CoinTag;
 import com.bepal.coins.keytree.infrastructure.tags.DeriveTag;
 import com.bepal.coins.keytree.infrastructure.tags.SeedTag;
 import com.bepal.coins.keytree.infrastructure.tags.SignerTag;
-import org.spongycastle.crypto.Signer;
 
 public interface ICoin {
 
@@ -22,6 +22,7 @@ public interface ICoin {
         }
     }
 
+    CoinConfig config = null;
 
     class Config {
         public DeriveTag deriveTag;

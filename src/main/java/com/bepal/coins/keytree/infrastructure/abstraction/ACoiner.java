@@ -1,6 +1,6 @@
 package com.bepal.coins.keytree.infrastructure.abstraction;
 
-import com.bepal.coins.crypto.Hex;
+import com.bepal.coins.keytree.config.CoinConfig;
 import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoiner;
 import com.bepal.coins.keytree.infrastructure.interfaces.IDerivator;
@@ -19,27 +19,25 @@ public abstract class ACoiner implements ICoiner {
     protected IDerivator derivator;
 
 
-    protected Config config;
+    protected CoinConfig config;
 
     ///////////////////// construct ///////////////////////
 
-    public ACoiner(Config config) {
+    public ACoiner(CoinConfig config) {
         this.config = config;
-        this.derivator = DeriveCoordinator.getInstance().findDerivator(this.config.deriveTag);
+        this.derivator = DeriveCoordinator.getInstance().findDerivator(this.config.getDeriveTag());
     }
 
     ///////////////////// function ///////////////////////
     @Override
     public HDKey deriveBip44(byte[] seed) {
-//        System.out.println(Hex.toHexString(seed));
-        ECKey ecKey = derivator.deriveFromSeed(seed, this.config.seedTag);
-//        System.out.println(Hex.toHexString(ecKey.getPriKey()));
+        ECKey ecKey = derivator.deriveFromSeed(seed, this.config.getSeedTag());
         if (ecKey == null) return null;
 
-        int secLayer = (int) this.config.bip44, thdLayer = 0;
-        if (this.config.netType != NetType.MAIN) {
+        int secLayer = (int) this.config.getBip44(), thdLayer = 0;
+        if (this.config.getNetType() != NetType.MAIN) {
             secLayer = 1;
-            thdLayer = (int) this.config.bip44;
+            thdLayer = (int) this.config.getBip44();
         }
 
         List<Chain> chains = new ArrayList<>();
@@ -51,7 +49,6 @@ public abstract class ACoiner implements ICoiner {
         int path = 0;
         for (Chain chain : chains) {
             ecKey = derivator.deriveChild(ecKey, chain);
-//            System.out.println("Chain:" + Hex.toHexString(ecKey.getPriKey()));
             ++depth;
             path = ByteBuffer.wrap(Arrays.copyOfRange(chain.getPath(), 0, 4)).getInt();
         }

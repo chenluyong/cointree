@@ -37,15 +37,6 @@ public class KeyTreer {
       return MnemonicCode.toSeed(codes, passphrase);
     }
 
-    /**
-     * derive keys according to bip44
-     * */
-    public ICoinKey deriveBip44(byte[] seed, CoinTag coinTag) {
-        ICoiner coiner= findCoiner(coinTag);
-        if (coiner== null) return null;
-
-        return coiner.deriveBip44(seed);
-    }
 
     /**
      * 默认比特币规则
@@ -59,6 +50,18 @@ public class KeyTreer {
         // default bitcoin key
         return new BitcoinKey(ecKey,0,0,ICoin.NetType.MAIN);
     }
+
+    /////////////////////////////////////////////zformular////////////////////////////////////////////////////////////
+    /**
+     * derive keys according to bip44
+     * */
+    public ICoinKey deriveBip44(byte[] seed, CoinTag coinTag) {
+        ICoiner coiner= findCoiner(coinTag);
+        if (coiner== null) return null;
+
+        return coiner.deriveBip44(seed);
+    }
+
 
     /**
      * derive second layer key

@@ -1,6 +1,6 @@
 package com.bepal.coins.keytree.infrastructure.abstraction;
 
-import com.bepal.coins.keytree.coinkey.CoinKeyFactory;
+import com.bepal.coins.keytree.config.CoinKeyFactory;
 import com.bepal.coins.keytree.config.CoinConfig;
 import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoin;
@@ -43,9 +43,9 @@ public abstract class ACoiner implements ICoiner {
         }
 
         List<Chain> chains = new ArrayList<>();
-        chains.add(new Chain(44, true));
-        chains.add(new Chain(secLayer, true));
-        chains.add(new Chain(thdLayer, true));
+        chains.add(getChain(44,true));
+        chains.add(getChain(secLayer,true));
+        chains.add(getChain(thdLayer,true));
 
         int depth = 0;
         int path = 0;
@@ -66,7 +66,7 @@ public abstract class ACoiner implements ICoiner {
         }
 
         int depth = hdKey.getDepth();
-        Chain chain = new Chain(0);
+        Chain chain = getChain(0);
         for (int i = 0; i < 2; ++i, ++depth) {
             ecKey = derivator.deriveChild(ecKey, chain);
             ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
@@ -82,7 +82,7 @@ public abstract class ACoiner implements ICoiner {
             ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
         }
 
-        Chain chain = new Chain(0);
+        Chain chain = getChain(0);
         ecKey = derivator.deriveChild(ecKey, chain);
         ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
 
@@ -101,7 +101,7 @@ public abstract class ACoiner implements ICoiner {
     @Override
     public ICoinKey deriveSecChildPub(HDKey hdKey) {
         ECKey ecKey = hdKey.getEcKey();
-        Chain chain = new Chain(0);
+        Chain chain = getChain(0);
         int depth = hdKey.getDepth();
         for (int i = 0; i < 2; ++i, ++depth) {
             ecKey = derivator.deriveChildPub(ecKey, chain);
@@ -112,7 +112,7 @@ public abstract class ACoiner implements ICoiner {
     @Override
     public List<ICoinKey> deriveSecChildRangePub(HDKey hdKey, int start, int end) {
         ECKey ecKey = hdKey.getEcKey();
-        Chain chain = new Chain(0);
+        Chain chain = getChain(0);
         ecKey = derivator.deriveChildPub(ecKey, chain);
 
         List<ICoinKey> coinKeys = new ArrayList<>();
@@ -123,6 +123,13 @@ public abstract class ACoiner implements ICoiner {
         }
 
         return coinKeys;
+    }
+
+    protected Chain getChain(int path) {
+        return getChain(path, false);
+    }
+    protected Chain getChain(int path, boolean hardened) {
+        return new Chain(path, hardened);
     }
 
     private ICoinKey base(HDKey hdKey) {

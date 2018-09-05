@@ -42,11 +42,16 @@ public class CoinConfigFactory {
                 return new CoinConfig(DeriveTag.tagBITCOIN, coinTag, SeedTag.tagBITCOIN,
                         SignerTag.tagSECP256K1, 666, netType,pubPrefix,prvPrefix);
 
+            case tagBYTOM:
+            case tagBYTOMTEST:
+            case tagBYTOMSOLO:
+                return new CoinConfig(DeriveTag.tagED25519, coinTag, SeedTag.tagHMAC512_ROOT,
+                        SignerTag.tagED25519, 153, netType,pubPrefix,prvPrefix);
+
         }
 
-        // 默认比特币主网
-        return new CoinConfig(DeriveTag.tagBITCOIN, CoinTag.tagBITCOIN, SeedTag.tagBITCOIN,
-                SignerTag.tagSECP256K1, 0, ICoin.NetType.MAIN);
+
+        return null;
     }
 
 }

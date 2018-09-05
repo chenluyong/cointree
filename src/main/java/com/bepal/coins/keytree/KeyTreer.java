@@ -289,9 +289,9 @@ public class KeyTreer {
 //            case tagETHEREUM: {
 //                return new Ethereumer();
 //            }
-//            case tagBYTOM: {
-//                return new Bytomer();
-//            }
+            case tagBYTOM: {
+                return new Bytomer();
+            }
 //            case tagEOS: {
 //                return new Eoser();
 //            }
@@ -316,9 +316,9 @@ public class KeyTreer {
 //            case tagETHEREUMTEST: {
 //                return new Ethereumer(testNet);
 //            }
-//            case tagBYTOMTEST: {
-//                return new Bytomer(testNet);
-//            }
+            case tagBYTOMTEST: {
+                return new Bytomer(testNet);
+            }
 //            case tagEOSTEST: {
 //                return new Eoser(testNet);
 //            }
@@ -336,10 +336,10 @@ public class KeyTreer {
 //            }
 //
 //
-//            // other net
-//            case tagBYTOMSOLO: {
-//                return new Bytomer(ICoin.NetType.SOLO);
-//            }
+            // other net
+            case tagBYTOMSOLO: {
+                return new Bytomer(ICoin.NetType.SOLO);
+            }
         }
 
         return null;

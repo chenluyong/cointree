@@ -139,13 +139,13 @@ public class KeyTreerTest {
 //            Assert.assertEquals("deriveBepalKeyRange ethereum faield,  address dismatch", expects[i], address);
 //        }
 //
-//        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBYTOM);
-//        expects = new String[]{"bm1qdef50r0zz5jr8r3juvr93htu2uq0hsahnsrpmq", "bm1qlh8ujxq86gkw4cm928ktt56j6rzxa2c86muaqf"};
-//        coinKeys = keyTreer.deriveSecChildRangePub(coinKey.base(), 0, 1, CoinTag.tagBYTOM);
-//        for (int i = 0; i < 2; i++) {
-//            address = coinKeys.get(i).address();
-//            Assert.assertEquals("deriveBepalKeyRange bytom faield,  address dismatch", expects[i], address);
-//        }
+        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBYTOM);
+        expects = new String[]{"bm1qdef50r0zz5jr8r3juvr93htu2uq0hsahnsrpmq", "bm1qlh8ujxq86gkw4cm928ktt56j6rzxa2c86muaqf"};
+        coinKeys = keyTreer.deriveSecChildRangePub(coinKey.base(), 0, 1, CoinTag.tagBYTOM);
+        for (int i = 0; i < 2; i++) {
+            address = coinKeys.get(i).address();
+            Assert.assertEquals("deriveBepalKeyRange bytom faield,  address dismatch", expects[i], address);
+        }
 //
 //        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagEOS);
 //        expects = new String[]{"EOS6KZheUhLuVkzQheaJG5Bxn3S1VPzCzPJ9DjRisrZkKkC2mwWXT", "EOS5bgoXZVUdjpnoZaTi9eNLtZkYqnW3GrJg5TDuxHmpQa7MiRZNx"};
@@ -196,10 +196,10 @@ public class KeyTreerTest {
 //        address = coinKey.address();
 //        Assert.assertEquals("deriveBepalKey ethereum failed, address dismatch", expect, address);
 //
-//        expect = "bm1qdef50r0zz5jr8r3juvr93htu2uq0hsahnsrpmq";
-//        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBYTOM);
-//        address = coinKey.address();
-//        Assert.assertEquals("deriveBepalKey bytom failed, address dismatch", expect, address);
+        expect = "bm1qdef50r0zz5jr8r3juvr93htu2uq0hsahnsrpmq";
+        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBYTOM);
+        address = coinKey.address();
+        Assert.assertEquals("deriveBepalKey bytom failed, address dismatch", expect, address);
 //
 //        expect = "EOS6KZheUhLuVkzQheaJG5Bxn3S1VPzCzPJ9DjRisrZkKkC2mwWXT";
 //        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagEOS);
@@ -231,10 +231,10 @@ public class KeyTreerTest {
 //        address = coinKey.address();
 //        Assert.assertEquals("deriveBepalKey ethereum test net failed, address dismatch", expect, address);
 //
-//        expect = "tm1qf6efxyu8e7z65u273ytnw767sypq7dmv3cfu05";
-//        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBYTOMTEST);
-//        address = coinKey.address();
-//        Assert.assertEquals("deriveBepalKey bytom test failed, address dismatch", expect, address);
+        expect = "tm1qf6efxyu8e7z65u273ytnw767sypq7dmv3cfu05";
+        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBYTOMTEST);
+        address = coinKey.address();
+        Assert.assertEquals("deriveBepalKey bytom test failed, address dismatch", expect, address);
 //
 //        expect = "EOS686AHcgGFTrzYfmSPq23xuHgDqHELzoN5Dm2qvCEoR38U4Mge6";
 //        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagEOSTEST);
@@ -283,12 +283,12 @@ public class KeyTreerTest {
 //            Assert.assertEquals("deriveBepalKeyRange ethereum faield,  address dismatch", expects[i], address);
 //        }
 //
-//        expects = new String[]{"bm1qdef50r0zz5jr8r3juvr93htu2uq0hsahnsrpmq", "bm1qlh8ujxq86gkw4cm928ktt56j6rzxa2c86muaqf"};
-//        coinKeys = keyTreer.deriveBepalKeyRange(seed, 0, 1, CoinTag.tagBYTOM);
-//        for (int i = 0; i < 2; i++) {
-//            address = coinKeys.get(i).address();
-//            Assert.assertEquals("deriveBepalKeyRange bytom faield,  address dismatch", expects[i], address);
-//        }
+        expects = new String[]{"bm1qdef50r0zz5jr8r3juvr93htu2uq0hsahnsrpmq", "bm1qlh8ujxq86gkw4cm928ktt56j6rzxa2c86muaqf"};
+        coinKeys = keyTreer.deriveBepalKeyRange(seed, 0, 1, CoinTag.tagBYTOM);
+        for (int i = 0; i < 2; i++) {
+            address = coinKeys.get(i).address();
+            Assert.assertEquals("deriveBepalKeyRange bytom faield,  address dismatch", expects[i], address);
+        }
 //
 //        expects = new String[]{"EOS6KZheUhLuVkzQheaJG5Bxn3S1VPzCzPJ9DjRisrZkKkC2mwWXT", "EOS5bgoXZVUdjpnoZaTi9eNLtZkYqnW3GrJg5TDuxHmpQa7MiRZNx"};
 //        coinKeys = keyTreer.deriveBepalKeyRange(seed, 0, 1, CoinTag.tagEOS);
@@ -339,11 +339,11 @@ public class KeyTreerTest {
 //        sign = ecSign.toHex();
 //        Assert.assertEquals("sign ethereum failed, sign dismatch", expect, sign);
 //
-//        expect = "bfe5377126c8fc46c85eaed4e3546c289706d3611887286e57d1190ccab7b0ffe16fcdb971ce6c5062f55271e6dbc19306d6d5e8d0c709909a9511eb0507b802";
-//        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBYTOM);
-//        ecSign = coinKey.sign(msg);
-//        sign = ecSign.toHex();
-//        Assert.assertEquals("sign bytom failed, sign dismatch", expect, sign);
+        expect = "bfe5377126c8fc46c85eaed4e3546c289706d3611887286e57d1190ccab7b0ffe16fcdb971ce6c5062f55271e6dbc19306d6d5e8d0c709909a9511eb0507b802";
+        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBYTOM);
+        ecSign = coinKey.sign(msg);
+        sign = ecSign.toHex();
+        Assert.assertEquals("sign bytom failed, sign dismatch", expect, sign);
 //
 //        msg = SHAHash.Sha2256("helloworldlrowolleh".getBytes());
 //        expect = "010749784950eb7c2678757da0192afdb82e25667650028ee3138ebe0a94c96eb97a931055a7ed0aa103dc12251b5198765d39bdf400a5c116a4b0b8239ac72208";
@@ -378,10 +378,10 @@ public class KeyTreerTest {
 //        verify = coinKey.verify(msg, ecSign);
 //        Assert.assertEquals("signVerify ethereum failed, sign dismatch", expect, verify);
 //
-//        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBYTOM);
-//        ecSign = coinKey.sign(msg);
-//        verify = coinKey.verify(msg, ecSign);
-//        Assert.assertEquals("signVerify bytom failed, sign dismatch", expect, verify);
+        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBYTOM);
+        ecSign = coinKey.sign(msg);
+        verify = coinKey.verify(msg, ecSign);
+        Assert.assertEquals("signVerify bytom failed, sign dismatch", expect, verify);
 //
 //        msg = SHAHash.Sha2256("helloworldlrowolleh".getBytes());
 //        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagEOS);

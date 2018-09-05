@@ -7,6 +7,8 @@ import com.bepal.coins.keytree.infrastructure.tags.CoinTag;
 import com.bepal.coins.keytree.model.HDKey;
 
 public class CoinKeyFactory {
+
+    // 使用java模版优化或使用反射
     static public ICoinKey get(CoinTag coinTag, HDKey hdKey) {
         // net type
         ICoinKey.NetType netType = ICoin.NetType.MAIN;

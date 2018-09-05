@@ -298,9 +298,9 @@ public class KeyTreer {
             case tagGXCHAIN: {
                 return new GXChainer();
             }
-//            case tagSELFSELL: {
-//                return new Selfseller();
-//            }
+            case tagSELFSELL: {
+                return new SelfSeller();
+            }
             case tagAChain: {
                 return new AChainer();
             }
@@ -325,9 +325,9 @@ public class KeyTreer {
             case tagGXCHAINTEST: {
                 return new GXChainer(testNet);
             }
-//            case tagSELFSELLTEST: {
-//                return new Selfseller(testNet);
-//            }
+            case tagSELFSELLTEST: {
+                return new SelfSeller(testNet);
+            }
             case tagACHAINTEST: {
                 return new AChainer(testNet);
             }

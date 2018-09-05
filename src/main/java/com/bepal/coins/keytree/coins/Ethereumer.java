@@ -10,7 +10,7 @@ public class Ethereumer extends ACoiner {
         super(CoinConfigFactory.getConfig(CoinTag.tagETHEREUM));
     }
 
-    public Ethereumer(ICoin.NetType netType) {
+    public Ethereumer(NetType netType) {
         super(CoinConfigFactory.getConfig(
                 ICoin.NetType.MAIN == netType ? CoinTag.tagETHEREUM :  CoinTag.tagETHEREUMTEST)
         );

@@ -35,6 +35,8 @@ public class CoinConfigFactory {
         switch (coinTag) {
             case tagGXCHAIN:
             case tagGXCHAINTEST:
+            case tagSELFSELL:
+            case tagSELFSELLTEST:
             case tagAChain:
             case tagACHAINTEST:
             case tagETHEREUM:

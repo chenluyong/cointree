@@ -53,11 +53,11 @@ public class KeyTreer {
     }
 
 
-    /////////////////////////////////////////////zformular////////////////////////////////////////////////////////////
+
     /**
      * derive keys according to bip44
      * */
-    public HDKey deriveBip44(byte[] seed, CoinTag coinTag) {
+    public ICoinKey deriveBip44(byte[] seed, CoinTag coinTag) {
         ICoiner coiner= findCoiner(coinTag);
         if (coiner== null) return null;
 
@@ -68,7 +68,7 @@ public class KeyTreer {
     /**
      * derive second layer key
      * */
-    public HDKey deriveSecChild(ECKey ecKey, CoinTag coinTag) {
+    public ICoinKey deriveSecChild(ECKey ecKey, CoinTag coinTag) {
         ICoiner coiner= findCoiner(coinTag);
         if (coiner== null) return null;
 
@@ -78,7 +78,7 @@ public class KeyTreer {
     /**
      * derive second layer range key
      * */
-    public List<HDKey> deriveSecChildRange(ECKey ecKey, int start, int end, CoinTag coinTag) {
+    public List<ICoinKey> deriveSecChildRange(ECKey ecKey, int start, int end, CoinTag coinTag) {
         ICoiner coiner= findCoiner(coinTag);
         if (coiner== null) return null;
 
@@ -88,7 +88,7 @@ public class KeyTreer {
     /**
      * derive second layer public key by public key
      * */
-    public HDKey deriveSecChildPub(ECKey ecKey, CoinTag coinTag) {
+    public ICoinKey deriveSecChildPub(ECKey ecKey, CoinTag coinTag) {
         ICoiner coiner= findCoiner(coinTag);
         if (coiner== null) return null;
 
@@ -98,7 +98,7 @@ public class KeyTreer {
     /**
      * derive second layer range public key by public key
      * */
-    public List<HDKey> deriveSecChildRangePub(ECKey ecKey, int start, int end, CoinTag coinTag) {
+    public List<ICoinKey> deriveSecChildRangePub(ECKey ecKey, int start, int end, CoinTag coinTag) {
         ICoiner coiner= findCoiner(coinTag);
         if (coiner== null) return null;
 
@@ -108,19 +108,23 @@ public class KeyTreer {
     /**
      * derive child key from seed
      * */
-    public HDKey deriveBepalKey(byte[] seed, CoinTag coinTag) {
-        HDKey coinKey= deriveBip44(seed, coinTag);
-        return deriveSecChild(coinKey.getEcKey(), coinTag);
+    public ICoinKey deriveBepalKey(byte[] seed, CoinTag coinTag) {
+        ICoinKey coinKey= deriveBip44(seed, coinTag);
+        return deriveSecChild(coinKey.base(), coinTag);
     }
 
     /**
      * derive child key range from seed
      * */
-    public List<HDKey> deriveBepalKeyRange(byte[] seed, int start, int end, CoinTag coinTag) {
-        HDKey coinKey= deriveBip44(seed, coinTag);
-        return deriveSecChildRange(coinKey.getEcKey(), start, end, coinTag);
+    public List<ICoinKey> deriveBepalKeyRange(byte[] seed, int start, int end, CoinTag coinTag) {
+        ICoinKey coinKey= deriveBip44(seed, coinTag);
+        return deriveSecChildRange(coinKey.base(), start, end, coinTag);
     }
 
+
+
+
+    /////////////////////////////////////////////zformular////////////////////////////////////////////////////////////
     /**
      * pack master private key from derived ICoinKey
      * in this case, we call deriveBip44 first,
@@ -250,7 +254,7 @@ public class KeyTreer {
      *
      * @param sdkPriKey the return of sdkPriKey
      * */
-    public HDKey deriveSDKSecChild(byte[] sdkPriKey, CoinTag coinTag) {
+    public ICoinKey deriveSDKSecChild(byte[] sdkPriKey, CoinTag coinTag) {
         ECKey ecKey= new ECKey();
         ecKey.setPriKey(ByteArrayData.copyOfRange(sdkPriKey, 0+ 4, 33));
         ecKey.setChainCode(ByteArrayData.copyOfRange(sdkPriKey, 33+ 4, 33));
@@ -263,7 +267,7 @@ public class KeyTreer {
      *
      * @param sdkPubKey the return of sdkPubKey
      * */
-    public HDKey deriveSDKSecChildPub(byte[] sdkPubKey, CoinTag coinTag) {
+    public ICoinKey deriveSDKSecChildPub(byte[] sdkPubKey, CoinTag coinTag) {
         ECKey ecKey= new ECKey();
         ecKey.setPubKey(ByteArrayData.copyOfRange(sdkPubKey, 0+ 4, 33));
         ecKey.setChainCode(ByteArrayData.copyOfRange(sdkPubKey, 33+ 4, 33));

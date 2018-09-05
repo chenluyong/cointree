@@ -67,10 +67,10 @@ public class KeyTreerTest {
         String address = "";
         String expect = "1FFiZJj3th8zRktVZi3Gyn7wARmQ3p8S36";
 
-        HDKey coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBITCOIN);
+        ICoinKey coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBITCOIN);
 
-        coinKey = keyTreer.deriveSecChild(coinKey.getEcKey(), CoinTag.tagBITCOIN);
-        address = new BitcoinKey(coinKey).address();
+        coinKey = keyTreer.deriveSecChild(coinKey.base(), CoinTag.tagBITCOIN);
+        address = coinKey.address();
         Assert.assertEquals("deriveBip44 failed address dismatch", expect, address);
 
 //        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBITCOIN);
@@ -97,11 +97,11 @@ public class KeyTreerTest {
         String address = "";
         String expect = "1FFiZJj3th8zRktVZi3Gyn7wARmQ3p8S36";
 
-        HDKey hdKey = keyTreer.deriveBip44(seed, CoinTag.tagBITCOIN);
-        byte[] masterPubKey = keyTreer.masterPubKey(new BitcoinKey(hdKey.getEcKey()));
+        ICoinKey coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBITCOIN);
+        byte[] masterPubKey = keyTreer.masterPubKey(coinKey);
         byte[] sdkPubKey = keyTreer.sdkPubKey(masterPubKey);
-        hdKey = keyTreer.deriveSDKSecChildPub(sdkPubKey, CoinTag.tagBITCOIN);
-        address = new BitcoinKey(hdKey).address();
+        coinKey = keyTreer.deriveSDKSecChildPub(sdkPubKey, CoinTag.tagBITCOIN);
+        address = coinKey.address();
         Assert.assertEquals("deriveSecChildPub failed address dismatch", expect, address);
 
 //        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBITCOIN);
@@ -125,10 +125,10 @@ public class KeyTreerTest {
         String address = "";
         String[] expects = new String[]{"1FFiZJj3th8zRktVZi3Gyn7wARmQ3p8S36", "1PyBbSjHyLYrSZ3JXhe3m6Xzfp5Ywzt954"};
 
-        HDKey coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBITCOIN);
-        List<HDKey> hdKeys = keyTreer.deriveSecChildRangePub(coinKey.getEcKey(), 0, 1, CoinTag.tagBITCOIN);
+        ICoinKey coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBITCOIN);
+        List<ICoinKey> coinKeys = keyTreer.deriveSecChildRangePub(coinKey.base(), 0, 1, CoinTag.tagBITCOIN);
         for (int i = 0; i < 2; i++) {
-            address = new BitcoinKey(hdKeys.get(i).getEcKey()).address();
+            address = coinKeys.get(i).address();
             Assert.assertEquals("deriveSecChildRangePub bitcoin faield,  address dismatch", expects[i], address);
         }
 //        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagETHEREUM);
@@ -187,8 +187,8 @@ public class KeyTreerTest {
 
         String address = "", pubkey = "";
         String expect = "1FFiZJj3th8zRktVZi3Gyn7wARmQ3p8S36";
-        HDKey hdKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBITCOIN);
-        address = new BitcoinKey(hdKey).address();
+        ICoinKey coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBITCOIN);
+        address = coinKey.address();
         Assert.assertEquals("deriveBepalKey bitcoin failed, address dismatch", expect, address);
 //
 //        expect = "0x063b07ee7b38291c1c0e36686e2e1e5e6b3f3dde";
@@ -242,8 +242,8 @@ public class KeyTreerTest {
 //        Assert.assertEquals("deriveBepalKey eos test failed, address dismatch", expect, address);
 //
         expect = "ACTCLp3vzhFNwSDN9xjQgVi1WEpr59iHa4TQ";
-        hdKey = keyTreer.deriveBepalKey(seed, CoinTag.tagAChain);
-        address = new AChainKey(hdKey).address();
+        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagAChain);
+        address = coinKey.address();
         Assert.assertEquals("deriveBepalKey eos test failed, address dismatch", expect, address);
 //
 //
@@ -270,9 +270,9 @@ public class KeyTreerTest {
 
         String address = "", pubKey = "";
         String[] expects = new String[]{"1FFiZJj3th8zRktVZi3Gyn7wARmQ3p8S36", "1PyBbSjHyLYrSZ3JXhe3m6Xzfp5Ywzt954"};
-        List<HDKey> hdKeys = keyTreer.deriveBepalKeyRange(seed, 0, 1, CoinTag.tagBITCOIN);
+        List<ICoinKey> coinKeys = keyTreer.deriveBepalKeyRange(seed, 0, 1, CoinTag.tagBITCOIN);
         for (int i = 0; i < 2; i++) {
-            address = new BitcoinKey(hdKeys.get(i).getEcKey()).address();
+            address = coinKeys.get(i).address();
             Assert.assertEquals("deriveBepalKeyRange bitcoin faield,  address dismatch", expects[i], address);
         }
 //
@@ -328,8 +328,8 @@ public class KeyTreerTest {
 
         String sign = "";
         String expect = "00b6e117c9f0c5d6afd8fba7af1b0a78f1ab7e7c7ed7ef91c78c259253cf46384266616a9e1277dd3f9259556c26baa1b9ff4f132e23227aade372bfc526f1d028";
-        HDKey hdKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBITCOIN);
-        ECSign ecSign = new BitcoinKey(hdKey.getEcKey()).sign(msg);
+        ICoinKey coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBITCOIN);
+        ECSign ecSign = coinKey.sign(msg);
         sign = ecSign.toHex();
         Assert.assertEquals("sign bitcoin failed, sign dismatch", expect, sign);
 
@@ -368,9 +368,9 @@ public class KeyTreerTest {
 
         boolean verify;
         boolean expect = true;
-        HDKey hdKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBITCOIN);
-        ECSign ecSign = new BitcoinKey(hdKey.getEcKey()).sign(msg);
-        verify = new BitcoinKey(hdKey.getEcKey()).verify(msg, ecSign);
+        ICoinKey coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBITCOIN);
+        ECSign ecSign = coinKey.sign(msg);
+        verify = coinKey.verify(msg, ecSign);
         Assert.assertEquals("signVerify bitcoin failed, sign dismatch", expect, verify);
 //
 //        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagETHEREUM);
@@ -485,12 +485,8 @@ public class KeyTreerTest {
 //        }
 //    }
 //
-    @Test
-    public void testMain() {
-        CoinTag coinTag = CoinTag.tagTESTEND;
-        CoinTag coinTagTest = CoinTag.tagBITCOINTEST;
-        System.out.println(coinTag.compareTo(coinTagTest));
-
-    }
+//    @Test
+//    public void testMain() {
+//    }
 
 }

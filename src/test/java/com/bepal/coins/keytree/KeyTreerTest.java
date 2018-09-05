@@ -163,16 +163,16 @@ public class KeyTreerTest {
 //            Assert.assertEquals("deriveBepalKeyRange gxchain faield,  address dismatch", expects[i], address);
 //        }
 //
-//        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagELASTOS);
-//        expects = new String[]{"ENu66Di2wpwimBUKcHiL5fn1f1HDVPn3uu", "EJUGryNES35U3LUniX75MBqVaZni5st6gu"};
-//        coinKeys = keyTreer.deriveSecChildRangePub(coinKey.base(), 0, 1, CoinTag.tagELASTOS);
-//        for (int i = 0; i < 2; i++) {
-//            address = coinKeys.get(i).address();
-//            Assert.assertEquals("deriveBepalKeyRange gxchain faield,  address dismatch", expects[i], address);
-//        }
-//
+        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagELASTOS);
+        expects = new String[]{"ENu66Di2wpwimBUKcHiL5fn1f1HDVPn3uu", "EJUGryNES35U3LUniX75MBqVaZni5st6gu"};
+        coinKeys = keyTreer.deriveSecChildRangePub(coinKey.base(), 0, 1, CoinTag.tagELASTOS);
+        for (int i = 0; i < 2; i++) {
+            address = coinKeys.get(i).address();
+            Assert.assertEquals("deriveBepalKeyRange gxchain faield,  address dismatch", expects[i], address);
+        }
+
     }
-//
+
     @Test
     public void deriveBepalKey() {
         String codes = "beyond honey crisp weird type coast pair endless idle glad famous visa";
@@ -245,15 +245,15 @@ public class KeyTreerTest {
         coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagAChain);
         address = coinKey.address();
         Assert.assertEquals("deriveBepalKey eos test failed, address dismatch", expect, address);
-//
-//
-//        expect = "ENu66Di2wpwimBUKcHiL5fn1f1HDVPn3uu";
-//        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagELASTOS);
-//        address = coinKey.address();
-//        System.out.println(coinKey.privateKey());
-//        Assert.assertEquals("deriveBepalKey eos test failed, address dismatch", expect, address);
-//
-//
+
+
+        expect = "ENu66Di2wpwimBUKcHiL5fn1f1HDVPn3uu";
+        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagELASTOS);
+        address = coinKey.address();
+        System.out.println(coinKey.privateKey());
+        Assert.assertEquals("deriveBepalKey eos test failed, address dismatch", expect, address);
+
+
     }
 
     @Test

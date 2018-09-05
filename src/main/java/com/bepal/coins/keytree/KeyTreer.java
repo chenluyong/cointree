@@ -304,9 +304,9 @@ public class KeyTreer {
             case tagAChain: {
                 return new AChainer();
             }
-//            case tagELASTOS: {
-//                return new Elastoser();
-//            }
+            case tagELASTOS: {
+                return new Elastoser();
+            }
 
 
             // test net
@@ -331,11 +331,11 @@ public class KeyTreer {
             case tagACHAINTEST: {
                 return new AChainer(testNet);
             }
-//            case tagELASTOSTEST:{
-//                return new Elastoser(testNet);
-//            }
-//
-//
+            case tagELASTOSTEST:{
+                return new Elastoser(testNet);
+            }
+
+
             // other net
             case tagBYTOMSOLO: {
                 return new Bytomer(ICoin.NetType.SOLO);

@@ -48,6 +48,11 @@ public class CoinConfigFactory {
                 return new CoinConfig(DeriveTag.tagED25519, coinTag, SeedTag.tagHMAC512_ROOT,
                         SignerTag.tagED25519, 153, netType,pubPrefix,prvPrefix);
 
+            case tagELASTOS:
+            case tagELASTOSTEST:
+                return new CoinConfig(DeriveTag.tagSECP256R1, coinTag, SeedTag.tagDEFAULT,
+                        SignerTag.tagSECP256R1, 2305, netType,pubPrefix, prvPrefix);
+
         }
 
 

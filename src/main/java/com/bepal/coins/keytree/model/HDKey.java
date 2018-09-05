@@ -51,10 +51,10 @@ public class HDKey{
         this.path = path;
     }
 
+    ///////////////////////////// Prefix //////////////////////////////////
     public int getPrvPrefix() {
         return prvPrefix;
     }
-
     public void setPrvPrefix(int prvPrefix) {
         this.prvPrefix = prvPrefix;
     }
@@ -62,7 +62,6 @@ public class HDKey{
     public int getPubPrefix() {
         return pubPrefix;
     }
-
     public void setPubPrefix(int pubPrefix) {
         this.pubPrefix = pubPrefix;
     }

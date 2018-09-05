@@ -2,6 +2,7 @@ package com.bepal.coins.keytree.infrastructure.abstraction;
 
 import com.bepal.coins.keytree.config.CoinConfig;
 import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;
+import com.bepal.coins.keytree.infrastructure.interfaces.ICoin;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoiner;
 import com.bepal.coins.keytree.infrastructure.interfaces.IDerivator;
 import com.bepal.coins.keytree.model.Chain;
@@ -35,7 +36,7 @@ public abstract class ACoiner implements ICoiner {
         if (ecKey == null) return null;
 
         int secLayer = (int) this.config.getBip44(), thdLayer = 0;
-        if (this.config.getNetType() != NetType.MAIN) {
+        if (this.config.getNetType() != ICoin.NetType.MAIN) {
             secLayer = 1;
             thdLayer = (int) this.config.getBip44();
         }
@@ -114,10 +115,10 @@ public abstract class ACoiner implements ICoiner {
         ecKey = derivator.deriveChildPub(ecKey, chain);
 
         List<HDKey> coinKeys = new ArrayList<>();
-        for (int i = start; i <= end; ++i) {
-            chain.setPath(i);
+        for (int pos = start; pos <= end; ++pos) {
+            chain.setPath(pos);
             ECKey tmpKey = derivator.deriveChildPub(ecKey, chain);
-            coinKeys.add(new HDKey(tmpKey, hdKey.getDepth() + 1, start));
+            coinKeys.add(new HDKey(tmpKey, hdKey.getDepth() + 1, pos));
         }
 
         return coinKeys;

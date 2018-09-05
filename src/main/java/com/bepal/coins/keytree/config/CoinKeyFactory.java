@@ -40,6 +40,10 @@ public class CoinKeyFactory {
             case tagEOSTEST:
                 return new EosKey(hdKey,netType);
 
+            case tagETHEREUM:
+            case tagETHEREUMTEST:
+                return new EthereumKey(hdKey,netType);
+
         }
         return null;
     }

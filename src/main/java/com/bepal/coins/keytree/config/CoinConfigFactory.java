@@ -10,9 +10,6 @@ import com.bepal.coins.keytree.infrastructure.tags.SignerTag;
 public class CoinConfigFactory {
     // https://gitlab.eshanren.com/chenluyong/bepal/blob/master/doc/protocol/table.md
     static public CoinConfig getConfig(CoinTag coinTag) {
-
-
-
         // net type
         ICoinKey.NetType netType = ICoin.NetType.MAIN;
         if (coinTag.compareTo(CoinTag.tagTESTBEGIN) > 0
@@ -29,18 +26,21 @@ public class CoinConfigFactory {
             pubPrefix = 0x043587CF; // tpub
             prvPrefix = 0x04358394; // tprv
         }
-
+        // bip44
+        int bip44 = getBip44(coinTag);
+        if (-1 == bip44) {
+            return null;
+        }
 
         switch (coinTag) {
+            case tagAChain:
+            case tagACHAINTEST:
+            case tagETHEREUM:
+            case tagETHEREUMTEST:
             case tagBITCOINTEST:
             case tagBITCOIN:
                 return new CoinConfig(DeriveTag.tagBITCOIN, coinTag, SeedTag.tagBITCOIN,
-                        SignerTag.tagSECP256K1, 0, netType,pubPrefix,prvPrefix);
-
-            case tagAChain:
-            case tagACHAINTEST:
-                return new CoinConfig(DeriveTag.tagBITCOIN, coinTag, SeedTag.tagBITCOIN,
-                        SignerTag.tagSECP256K1, 666, netType,pubPrefix,prvPrefix);
+                        SignerTag.tagSECP256K1, bip44, netType,pubPrefix,prvPrefix);
 
             case tagBYTOM:
             case tagBYTOMTEST:
@@ -58,10 +58,45 @@ public class CoinConfigFactory {
                 return new CoinConfig(DeriveTag.tagDEFAULT, coinTag, SeedTag.tagDEFAULT,
                         SignerTag.tagSECP256K1NONCE, 194, netType,pubPrefix, prvPrefix);
 
+
         }
 
 
         return null;
+    }
+
+
+    static public int getBip44(CoinTag coinTag) {
+        int ret = -1;
+        switch (coinTag) {
+            case tagBITCOIN:
+            case tagBITCOINTEST:
+                return 0;
+            case tagETHEREUM:
+            case tagETHEREUMTEST:
+                return 60;
+            case tagBYTOM:
+            case tagBYTOMSOLO:
+            case tagBYTOMTEST:
+                return 153;
+            case tagEOS:
+            case tagEOSTEST:
+                return 194;
+            case tagGXCHAIN:
+            case tagGXCHAINTEST:
+                return 2303;
+            case tagSELFSELL:
+            case tagSELFSELLTEST:
+                return 2304;
+            case tagAChain:
+            case tagACHAINTEST:
+                return 666;
+            case tagELASTOS:
+            case tagELASTOSTEST:
+                return 2305;
+
+        }
+        return ret;
     }
 
 }

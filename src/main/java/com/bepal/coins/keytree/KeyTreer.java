@@ -286,9 +286,9 @@ public class KeyTreer {
             case tagBITCOIN: {
                 return new Bitcoiner();
             }
-//            case tagETHEREUM: {
-//                return new Ethereumer();
-//            }
+            case tagETHEREUM: {
+                return new Ethereumer();
+            }
             case tagBYTOM: {
                 return new Bytomer();
             }
@@ -313,9 +313,9 @@ public class KeyTreer {
             case tagBITCOINTEST: {
                 return new Bitcoiner(testNet);
             }
-//            case tagETHEREUMTEST: {
-//                return new Ethereumer(testNet);
-//            }
+            case tagETHEREUMTEST: {
+                return new Ethereumer(testNet);
+            }
             case tagBYTOMTEST: {
                 return new Bytomer(testNet);
             }

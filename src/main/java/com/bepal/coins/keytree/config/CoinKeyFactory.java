@@ -1,6 +1,7 @@
 package com.bepal.coins.keytree.config;
 
 import com.bepal.coins.keytree.coinkey.*;
+import com.bepal.coins.keytree.infrastructure.abstraction.ACoinKey;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoin;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.infrastructure.tags.CoinTag;
@@ -19,6 +20,7 @@ public class CoinKeyFactory {
         else if (coinTag.compareTo(CoinTag.tagTESTEND) > 0) {
             netType = ICoin.NetType.SOLO;
         }
+
 
         switch (coinTag) {
             case tagBITCOINTEST:
@@ -49,6 +51,10 @@ public class CoinKeyFactory {
             case tagGXCHAIN:
             case tagGXCHAINTEST:
                 return new GXChainKey(hdKey,netType);
+
+            case tagSELFSELL:
+            case tagSELFSELLTEST:
+                return new SelfSellKey(hdKey,netType);
 
         }
         return null;

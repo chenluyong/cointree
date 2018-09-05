@@ -73,15 +73,15 @@ public class KeyTreerTest {
         address = coinKey.address();
         Assert.assertEquals("deriveBip44 failed address dismatch", expect, address);
 
-//        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBITCOIN);
-//        byte[] masterPriKey = keyTreer.masterPriKey(coinKey);
-//        byte[] sdkPriKey = keyTreer.sdkPriKey(masterPriKey);
-//
-//        coinKey = keyTreer.deriveSDKSecChild(sdkPriKey, CoinTag.tagBITCOIN);
-//        address = new BitcoinKey(coinKey.getEcKey()).address();
-//        Assert.assertEquals("deriveBip44 failed address dismatch", expect, address);
+        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBITCOIN);
+        byte[] masterPriKey = keyTreer.masterPriKey(coinKey);
+        byte[] sdkPriKey = keyTreer.sdkPriKey(masterPriKey);
+
+        coinKey = keyTreer.deriveSDKSecChild(sdkPriKey, CoinTag.tagBITCOIN);
+        address = coinKey.address();
+        Assert.assertEquals("deriveBip44 failed address dismatch", expect, address);
     }
-//
+
     @Test
     public void deriveSecChildPub() {
         String codes = "beyond honey crisp weird type coast pair endless idle glad famous visa";
@@ -104,12 +104,12 @@ public class KeyTreerTest {
         address = coinKey.address();
         Assert.assertEquals("deriveSecChildPub failed address dismatch", expect, address);
 
-//        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBITCOIN);
-//        coinKey = keyTreer.deriveSecChildPub(coinKey.base(), CoinTag.tagBITCOIN);
-//        address = coinKey.address();
-//        Assert.assertEquals("deriveSecChildPub failed address dismatch", expect, address);
+        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagBITCOIN);
+        coinKey = keyTreer.deriveSecChildPub(coinKey.base(), CoinTag.tagBITCOIN);
+        address = coinKey.address();
+        Assert.assertEquals("deriveSecChildPub failed address dismatch", expect, address);
     }
-//
+
     @Test
     public void deriveSecChildRangePub() {
         String codes = "beyond honey crisp weird type coast pair endless idle glad famous visa";
@@ -211,16 +211,16 @@ public class KeyTreerTest {
         address = coinKey.address();
         Assert.assertEquals("deriveBepalKey gxchain failed, address dismatch", expect, address);
 
-//        expect = "SSC6km11fQXws75EamGd3JbU4kaKnSUdUXVpidHs418q9cNnYd7e8";
-//        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagSELFSELL);
-//        pubkey = coinKey.publicKey();
-//        Assert.assertEquals("deriveBepalKey selfsell failed, address dismatch", expect, pubkey);
-//
-//        expect = "SSCPJPiW9WHgVPgWXdtdAiSAHDjPWKDEY7Dx";
-//        address = coinKey.address();
-//        Assert.assertEquals("deriveBepalKey selfsell failed, address dismatch", expect, address);
-//
-//
+        expect = "SSC6km11fQXws75EamGd3JbU4kaKnSUdUXVpidHs418q9cNnYd7e8";
+        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagSELFSELL);
+        pubkey = coinKey.publicKey();
+        Assert.assertEquals("deriveBepalKey selfsell failed, address dismatch", expect, pubkey);
+
+        expect = "SSCPJPiW9WHgVPgWXdtdAiSAHDjPWKDEY7Dx";
+        address = coinKey.address();
+        Assert.assertEquals("deriveBepalKey selfsell failed, address dismatch", expect, address);
+
+
         expect = "mvD7iGnPrJ7KjTMVNdKCbcvSGGD1Ew4urE";
         coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBITCOINTEST);
         address = coinKey.address();
@@ -304,12 +304,12 @@ public class KeyTreerTest {
             Assert.assertEquals("deriveBepalKeyRange gxchain faield,  address dismatch", expects[i], address);
         }
 
-//        expects = new String[]{"SSC6km11fQXws75EamGd3JbU4kaKnSUdUXVpidHs418q9cNnYd7e8", "SSC59fMtdggcUa7bt3BXAopx9uFoiJFZpX4LFQjFeV6WtM2EoMCgq"};
-//        coinKeys = keyTreer.deriveBepalKeyRange(seed, 0, 1, CoinTag.tagSELFSELL);
-//        for (int i = 0; i < 2; i++) {
-//            pubKey = coinKeys.get(i).publicKey();
-//            Assert.assertEquals("deriveBepalKeyRange selfsell faield,  address dismatch", expects[i], pubKey);
-//        }
+        expects = new String[]{"SSC6km11fQXws75EamGd3JbU4kaKnSUdUXVpidHs418q9cNnYd7e8", "SSC59fMtdggcUa7bt3BXAopx9uFoiJFZpX4LFQjFeV6WtM2EoMCgq"};
+        coinKeys = keyTreer.deriveBepalKeyRange(seed, 0, 1, CoinTag.tagSELFSELL);
+        for (int i = 0; i < 2; i++) {
+            pubKey = coinKeys.get(i).publicKey();
+            Assert.assertEquals("deriveBepalKeyRange selfsell faield,  address dismatch", expects[i], pubKey);
+        }
     }
 
     @Test
@@ -390,103 +390,103 @@ public class KeyTreerTest {
         Assert.assertEquals("signVerify eos failed, sign dismatch", expect, verify);
     }
 
-//    @Test
-//    public void batchDeriveBepalKey() {
-//        String[] files = new String[]{
-//                "btc"//, "eth", "btm", "eos", "gxc", "ssc"
-//        };
-//        CoinTag[] coinTags = new CoinTag[]{
-//                CoinTag.tagBITCOIN//, CoinTag.tagETHEREUM, CoinTag.tagBYTOM, CoinTag.tagEOS, CoinTag.tagGXCHAIN, CoinTag.tagSELFSELL
-//        };
-//
-//        BufferedReader reader = null;
-//        String code, addr, valid;
-//
-//        String address;
-//        ICoinKey coinKey;
-//        List<String> list = new ArrayList<>();
-//        try {
-//            KeyTreer keyTreer = new KeyTreer();
-//            for (int i = 0; i < files.length; i++) {
-//                File file = new File(this.getClass().getClassLoader().getResource(files[i] + ".txt").getPath());
-//                reader = new BufferedReader(new FileReader(file));
-//                do {
-//                    code = reader.readLine();
-//                    if (code == null || code.isEmpty()) break;
-//                    addr = reader.readLine();
-//                    if (addr == null || addr.isEmpty()) break;
-//                    valid = reader.readLine();
-//                    if (valid == null || valid.isEmpty()) break;
-//                    reader.readLine();
-//                    reader.readLine();
-//
-//                    String[] codeAry = code.split(" ");
-//                    list.clear();
-//                    for (String cd : codeAry) {
-//                        list.add(cd);
-//                    }
-//                    byte[] seed = keyTreer.transSeed(list, "");
-//                    coinKey = keyTreer.deriveBepalKey(seed, coinTags[i]);
-//
-//                    address = coinKey.address();
-//                    System.out.println(files[i] + ": " + address);
-//                    Assert.assertEquals("batchDeriveBepalKey " + files[i] + " failed, address dismatch,\nexpect: "
-//                            + code + "\ngot: " + addr, addr, address);
-//                } while (true);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    @Test
+    public void batchDeriveBepalKey() {
+        String[] files = new String[]{
+                "btc", "eth", "btm", "eos", "gxc", "ssc"
+        };
+        CoinTag[] coinTags = new CoinTag[]{
+                CoinTag.tagBITCOIN, CoinTag.tagETHEREUM, CoinTag.tagBYTOM, CoinTag.tagEOS, CoinTag.tagGXCHAIN, CoinTag.tagSELFSELL
+        };
 
-//    @Test
-//    public void batchDerivePub() {
-//        String[] files = new String[]{"btcpub", "ethpub", "btmpub", "eospub"};
-//        CoinTag[] coinTags = new CoinTag[]{CoinTag.tagBITCOIN, CoinTag.tagETHEREUM, CoinTag.tagBYTOM, CoinTag.tagEOS};
-//
-//        BufferedReader reader = null;
-//        String code, addr, valid;
-//
-//        String address;
-//        ICoinKey coinKey;
-//        List<String> list = new ArrayList<>();
-//        try {
-//            KeyTreer keyTreer = new KeyTreer();
-//            for (int i = 0; i < files.length; i++) {
-//                File file = new File(this.getClass().getClassLoader().getResource(files[i] + ".txt").getPath());
-//                reader = new BufferedReader(new FileReader(file));
-//                do {
-//                    code = reader.readLine();
-//                    if (code == null || code.isEmpty()) break;
-//                    addr = reader.readLine();
-//                    if (addr == null || addr.isEmpty()) break;
-//                    valid = reader.readLine();
-//                    if (valid == null || valid.isEmpty()) break;
-//                    reader.readLine();
-//                    reader.readLine();
-//
-//                    String[] codeAry = code.split(" ");
-//                    list.clear();
-//                    for (String cd : codeAry) {
-//                        list.add(cd);
-//                    }
-//                    byte[] seed = keyTreer.transSeed(list, "");
-//                    coinKey = keyTreer.deriveBip44(seed, coinTags[i]);
-//                    coinKey = keyTreer.deriveSecChildPub(coinKey.base(), coinTags[i]);
-//
-//                    address = coinKey.address();
-//                    System.out.println(files[i] + ": " + address);
-//                    Assert.assertEquals("batchDerivePub " + files[i] + " failed, address dismatch,\nexpect: "
-//                            + code + "\ngot: " + addr, addr, address);
-//                } while (true);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    @Test
-//    public void testMain() {
-//    }
+        BufferedReader reader = null;
+        String code, addr, valid;
+
+        String address;
+        ICoinKey coinKey;
+        List<String> list = new ArrayList<>();
+        try {
+            KeyTreer keyTreer = new KeyTreer();
+            for (int i = 0; i < files.length; i++) {
+                File file = new File(this.getClass().getClassLoader().getResource(files[i] + ".txt").getPath());
+                reader = new BufferedReader(new FileReader(file));
+                do {
+                    code = reader.readLine();
+                    if (code == null || code.isEmpty()) break;
+                    addr = reader.readLine();
+                    if (addr == null || addr.isEmpty()) break;
+                    valid = reader.readLine();
+                    if (valid == null || valid.isEmpty()) break;
+                    reader.readLine();
+                    reader.readLine();
+
+                    String[] codeAry = code.split(" ");
+                    list.clear();
+                    for (String cd : codeAry) {
+                        list.add(cd);
+                    }
+                    byte[] seed = keyTreer.transSeed(list, "");
+                    coinKey = keyTreer.deriveBepalKey(seed, coinTags[i]);
+
+                    address = coinKey.address();
+                    System.out.println(files[i] + ": " + address);
+                    Assert.assertEquals("batchDeriveBepalKey " + files[i] + " failed, address dismatch,\nexpect: "
+                            + code + "\ngot: " + addr, addr, address);
+                } while (true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void batchDerivePub() {
+        String[] files = new String[]{"btcpub", "ethpub", "btmpub", "eospub"};
+        CoinTag[] coinTags = new CoinTag[]{CoinTag.tagBITCOIN, CoinTag.tagETHEREUM, CoinTag.tagBYTOM, CoinTag.tagEOS};
+
+        BufferedReader reader = null;
+        String code, addr, valid;
+
+        String address;
+        ICoinKey coinKey;
+        List<String> list = new ArrayList<>();
+        try {
+            KeyTreer keyTreer = new KeyTreer();
+            for (int i = 0; i < files.length; i++) {
+                File file = new File(this.getClass().getClassLoader().getResource(files[i] + ".txt").getPath());
+                reader = new BufferedReader(new FileReader(file));
+                do {
+                    code = reader.readLine();
+                    if (code == null || code.isEmpty()) break;
+                    addr = reader.readLine();
+                    if (addr == null || addr.isEmpty()) break;
+                    valid = reader.readLine();
+                    if (valid == null || valid.isEmpty()) break;
+                    reader.readLine();
+                    reader.readLine();
+
+                    String[] codeAry = code.split(" ");
+                    list.clear();
+                    for (String cd : codeAry) {
+                        list.add(cd);
+                    }
+                    byte[] seed = keyTreer.transSeed(list, "");
+                    coinKey = keyTreer.deriveBip44(seed, coinTags[i]);
+                    coinKey = keyTreer.deriveSecChildPub(coinKey.base(), coinTags[i]);
+
+                    address = coinKey.address();
+                    System.out.println(files[i] + ": " + address);
+                    Assert.assertEquals("batchDerivePub " + files[i] + " failed, address dismatch,\nexpect: "
+                            + code + "\ngot: " + addr, addr, address);
+                } while (true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void testMain() {
+    }
 
 }

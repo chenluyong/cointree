@@ -6,7 +6,7 @@ import com.bepal.coins.keytree.infrastructure.tags.CoinTag;
 import com.bepal.coins.keytree.model.HDKey;
 
 public class CoinKeyFactory {
-    static public ICoinKey getConfig(CoinTag coinTag, HDKey hdKey) {
+    static public ICoinKey get(CoinTag coinTag, HDKey hdKey) {
         // net type
         ICoinKey.NetType netType = ICoin.NetType.MAIN;
         if (coinTag.compareTo(CoinTag.tagTESTBEGIN) > 0

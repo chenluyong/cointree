@@ -20,7 +20,7 @@ public abstract class ACoiner implements ICoiner {
     ///////////////// params ///////////////////////
 
     protected IDerivator derivator;
-    
+
     protected CoinConfig config;
 
     ///////////////////// construct ///////////////////////
@@ -126,6 +126,6 @@ public abstract class ACoiner implements ICoiner {
     }
 
     private ICoinKey base(HDKey hdKey) {
-        return CoinKeyFactory.getConfig(config.getCoinTag(), hdKey);
+        return CoinKeyFactory.get(config.getCoinTag(), hdKey);
     }
 }

@@ -12,9 +12,9 @@ bepalcoins
     │                  │  ├─ed25519
     │                  │  └─keccak
     │                  ├─keytree
-    │                  │  ├─coinkey  # 添加币种
-    │                  │  ├─coins    # 添加币种
-    │                  │  ├─config   # 币种信息工厂 - 需配置
+    │                  │  ├─coinkey  # 添加币种[地址/公钥/私钥/签名]输出形式
+    │                  │  ├─coins    # 添加币种[推导]
+    │                  │  ├─config   # 币种信息[算法类型/BIP44/所属网络/主公私钥头/]
     │                  │  ├─infrastructure
     │                  │  │  ├─abstraction
     │                  │  │  ├─components

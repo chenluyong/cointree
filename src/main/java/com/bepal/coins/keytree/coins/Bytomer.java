@@ -1,5 +1,6 @@
 package com.bepal.coins.keytree.coins;
 
+import com.bepal.coins.keytree.config.CoinConfig;
 import com.bepal.coins.keytree.config.CoinConfigFactory;
 import com.bepal.coins.keytree.infrastructure.abstraction.ACoiner;
 import com.bepal.coins.keytree.infrastructure.tags.CoinTag;
@@ -14,6 +15,9 @@ public class Bytomer extends ACoiner {
         super(CoinConfigFactory.getConfig(CoinTag.tagBYTOM));
     }
 
+    public Bytomer(CoinConfig config) {
+        super(config);
+    }
     public Bytomer(NetType netType) {
         super(CoinConfigFactory.getConfig(
             NetType.MAIN == netType ? CoinTag.tagBYTOM : (

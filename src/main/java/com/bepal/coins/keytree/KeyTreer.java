@@ -13,6 +13,8 @@ package com.bepal.coins.keytree;
 
 import com.bepal.coins.keytree.coinkey.BitcoinKey;
 import com.bepal.coins.keytree.coins.*;
+import com.bepal.coins.keytree.config.CoinConfigFactory;
+import com.bepal.coins.keytree.infrastructure.abstraction.ACoiner;
 import com.bepal.coins.keytree.infrastructure.components.MnemonicCode;
 import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoin;
@@ -283,62 +285,27 @@ public class KeyTreer {
 
         switch (coinTag) {
             // main net
-            case tagBITCOIN: {
-                return new Bitcoiner();
-            }
-            case tagETHEREUM: {
-                return new Ethereumer();
-            }
-            case tagBYTOM: {
-                return new Bytomer();
-            }
-            case tagEOS: {
-                return new Eoser();
-            }
-            case tagGXCHAIN: {
-                return new GXChainer();
-            }
-            case tagSELFSELL: {
-                return new SelfSeller();
-            }
-            case tagAChain: {
-                return new AChainer();
-            }
-            case tagELASTOS: {
-                return new Elastoser();
-            }
-
-
+            case tagETHEREUM:
+            case tagBITCOIN:
+            case tagEOS:
+            case tagGXCHAIN:
+            case tagSELFSELL:
+            case tagAChain:
+            case tagELASTOS:
             // test net
-            case tagBITCOINTEST: {
-                return new Bitcoiner(testNet);
-            }
-            case tagETHEREUMTEST: {
-                return new Ethereumer(testNet);
-            }
-            case tagBYTOMTEST: {
-                return new Bytomer(testNet);
-            }
-            case tagEOSTEST: {
-                return new Eoser(testNet);
-            }
-            case tagGXCHAINTEST: {
-                return new GXChainer(testNet);
-            }
-            case tagSELFSELLTEST: {
-                return new SelfSeller(testNet);
-            }
-            case tagACHAINTEST: {
-                return new AChainer(testNet);
-            }
-            case tagELASTOSTEST:{
-                return new Elastoser(testNet);
-            }
+            case tagBITCOINTEST:
+            case tagETHEREUMTEST:
+            case tagEOSTEST:
+            case tagGXCHAINTEST:
+            case tagSELFSELLTEST:
+            case tagACHAINTEST:
+            case tagELASTOSTEST:
+                return new ACoiner(CoinConfigFactory.getConfig(coinTag));
 
-
-            // other net
-            case tagBYTOMSOLO: {
-                return new Bytomer(ICoin.NetType.SOLO);
+            case tagBYTOM:
+            case tagBYTOMTEST:
+            case tagBYTOMSOLO:{
+                return new Bytomer(CoinConfigFactory.getConfig(coinTag));
             }
         }
 

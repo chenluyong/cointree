@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class ACoiner implements ICoiner {
+public class ACoiner implements ICoiner {
     ///////////////// params ///////////////////////
 
     protected IDerivator derivator;

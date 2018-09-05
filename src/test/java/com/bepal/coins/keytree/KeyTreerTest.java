@@ -12,16 +12,10 @@ KeyTreerTest
 
 package com.bepal.coins.keytree;
 
-import com.bepal.coins.crypto.Base58;
-import com.bepal.coins.crypto.Hex;
 import com.bepal.coins.crypto.SHAHash;
-import com.bepal.coins.keytree.coinkey.AChainKey;
-import com.bepal.coins.keytree.coinkey.BitcoinKey;
-import com.bepal.coins.keytree.infrastructure.interfaces.ICoin;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.infrastructure.tags.CoinTag;
 import com.bepal.coins.keytree.model.ECSign;
-import com.bepal.coins.keytree.model.HDKey;
 import org.junit.Assert;
 import org.junit.Test;
 

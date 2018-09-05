@@ -44,7 +44,12 @@ public class CoinKeyFactory {
             case tagETHEREUMTEST:
                 return new EthereumKey(hdKey,netType);
 
+            case tagGXCHAIN:
+            case tagGXCHAINTEST:
+                return new GXChainKey(hdKey,netType);
+
         }
         return null;
+
     }
 }

@@ -154,15 +154,15 @@ public class KeyTreerTest {
             address = coinKeys.get(i).address();
             Assert.assertEquals("deriveBepalKeyRange eos faield,  address dismatch", expects[i], address);
         }
-//
-//        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagGXCHAIN);
-//        expects = new String[]{"GXC57jfmhcAsCPs7LSKrowj7CymSJdkG8czStampQZYyau36VH6Ji", "GXC7FfT1du67MNVZJxSGCe4zE7UqsoGJ97QRfxPHAkxBgdVHvyEdi"};
-//        coinKeys = keyTreer.deriveSecChildRangePub(coinKey.base(), 0, 1, CoinTag.tagGXCHAIN);
-//        for (int i = 0; i < 2; i++) {
-//            address = coinKeys.get(i).address();
-//            Assert.assertEquals("deriveBepalKeyRange gxchain faield,  address dismatch", expects[i], address);
-//        }
-//
+
+        coinKey = keyTreer.deriveBip44(seed, CoinTag.tagGXCHAIN);
+        expects = new String[]{"GXC57jfmhcAsCPs7LSKrowj7CymSJdkG8czStampQZYyau36VH6Ji", "GXC7FfT1du67MNVZJxSGCe4zE7UqsoGJ97QRfxPHAkxBgdVHvyEdi"};
+        coinKeys = keyTreer.deriveSecChildRangePub(coinKey.base(), 0, 1, CoinTag.tagGXCHAIN);
+        for (int i = 0; i < 2; i++) {
+            address = coinKeys.get(i).address();
+            Assert.assertEquals("deriveBepalKeyRange gxchain faield,  address dismatch", expects[i], address);
+        }
+
         coinKey = keyTreer.deriveBip44(seed, CoinTag.tagELASTOS);
         expects = new String[]{"ENu66Di2wpwimBUKcHiL5fn1f1HDVPn3uu", "EJUGryNES35U3LUniX75MBqVaZni5st6gu"};
         coinKeys = keyTreer.deriveSecChildRangePub(coinKey.base(), 0, 1, CoinTag.tagELASTOS);
@@ -206,11 +206,11 @@ public class KeyTreerTest {
         address = coinKey.address();
         Assert.assertEquals("deriveBepalKey eos failed, address dismatch", expect, address);
 
-//        expect = "GXC57jfmhcAsCPs7LSKrowj7CymSJdkG8czStampQZYyau36VH6Ji";
-//        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagGXCHAIN);
-//        address = coinKey.address();
-//        Assert.assertEquals("deriveBepalKey gxchain failed, address dismatch", expect, address);
-//
+        expect = "GXC57jfmhcAsCPs7LSKrowj7CymSJdkG8czStampQZYyau36VH6Ji";
+        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagGXCHAIN);
+        address = coinKey.address();
+        Assert.assertEquals("deriveBepalKey gxchain failed, address dismatch", expect, address);
+
 //        expect = "SSC6km11fQXws75EamGd3JbU4kaKnSUdUXVpidHs418q9cNnYd7e8";
 //        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagSELFSELL);
 //        pubkey = coinKey.publicKey();
@@ -221,10 +221,10 @@ public class KeyTreerTest {
 //        Assert.assertEquals("deriveBepalKey selfsell failed, address dismatch", expect, address);
 //
 //
-//        expect = "mvD7iGnPrJ7KjTMVNdKCbcvSGGD1Ew4urE";
-//        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBITCOINTEST);
-//        address = coinKey.address();
-//        Assert.assertEquals("deriveBepalKey bitcoin test net failed, address dismatch", expect, address);
+        expect = "mvD7iGnPrJ7KjTMVNdKCbcvSGGD1Ew4urE";
+        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBITCOINTEST);
+        address = coinKey.address();
+        Assert.assertEquals("deriveBepalKey bitcoin test net failed, address dismatch", expect, address);
 
         expect = "0xc9b3d56861111a7a05687b2ef446f32750dd9721";
         coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagETHEREUMTEST);
@@ -297,13 +297,13 @@ public class KeyTreerTest {
             Assert.assertEquals("deriveBepalKeyRange eos faield,  address dismatch", expects[i], address);
         }
 
-//        expects = new String[]{"GXC57jfmhcAsCPs7LSKrowj7CymSJdkG8czStampQZYyau36VH6Ji", "GXC7FfT1du67MNVZJxSGCe4zE7UqsoGJ97QRfxPHAkxBgdVHvyEdi"};
-//        coinKeys = keyTreer.deriveBepalKeyRange(seed, 0, 1, CoinTag.tagGXCHAIN);
-//        for (int i = 0; i < 2; i++) {
-//            address = coinKeys.get(i).address();
-//            Assert.assertEquals("deriveBepalKeyRange gxchain faield,  address dismatch", expects[i], address);
-//        }
-//
+        expects = new String[]{"GXC57jfmhcAsCPs7LSKrowj7CymSJdkG8czStampQZYyau36VH6Ji", "GXC7FfT1du67MNVZJxSGCe4zE7UqsoGJ97QRfxPHAkxBgdVHvyEdi"};
+        coinKeys = keyTreer.deriveBepalKeyRange(seed, 0, 1, CoinTag.tagGXCHAIN);
+        for (int i = 0; i < 2; i++) {
+            address = coinKeys.get(i).address();
+            Assert.assertEquals("deriveBepalKeyRange gxchain faield,  address dismatch", expects[i], address);
+        }
+
 //        expects = new String[]{"SSC6km11fQXws75EamGd3JbU4kaKnSUdUXVpidHs418q9cNnYd7e8", "SSC59fMtdggcUa7bt3BXAopx9uFoiJFZpX4LFQjFeV6WtM2EoMCgq"};
 //        coinKeys = keyTreer.deriveBepalKeyRange(seed, 0, 1, CoinTag.tagSELFSELL);
 //        for (int i = 0; i < 2; i++) {

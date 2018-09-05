@@ -33,13 +33,15 @@ public class CoinConfigFactory {
         }
 
         switch (coinTag) {
+            case tagGXCHAIN:
+            case tagGXCHAINTEST:
             case tagAChain:
             case tagACHAINTEST:
             case tagETHEREUM:
             case tagETHEREUMTEST:
             case tagBITCOINTEST:
             case tagBITCOIN:
-                return new CoinConfig(DeriveTag.tagBITCOIN, coinTag, SeedTag.tagBITCOIN,
+                return new CoinConfig(DeriveTag.tagDEFAULT, coinTag, SeedTag.tagDEFAULT,
                         SignerTag.tagSECP256K1, bip44, netType,pubPrefix,prvPrefix);
 
             case tagBYTOM:

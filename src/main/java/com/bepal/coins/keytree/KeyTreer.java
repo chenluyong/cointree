@@ -295,9 +295,9 @@ public class KeyTreer {
             case tagEOS: {
                 return new Eoser();
             }
-//            case tagGXCHAIN: {
-//                return new GXChainer();
-//            }
+            case tagGXCHAIN: {
+                return new GXChainer();
+            }
 //            case tagSELFSELL: {
 //                return new Selfseller();
 //            }
@@ -322,9 +322,9 @@ public class KeyTreer {
             case tagEOSTEST: {
                 return new Eoser(testNet);
             }
-//            case tagGXCHAINTEST: {
-//                return new GXChainer(testNet);
-//            }
+            case tagGXCHAINTEST: {
+                return new GXChainer(testNet);
+            }
 //            case tagSELFSELLTEST: {
 //                return new Selfseller(testNet);
 //            }

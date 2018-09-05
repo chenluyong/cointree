@@ -46,6 +46,7 @@ public class CoinConfig {
     }
 
 
+
     ///////////////////////////// get ////////////////////////
     public DeriveTag getDeriveTag() {
         return deriveTag;

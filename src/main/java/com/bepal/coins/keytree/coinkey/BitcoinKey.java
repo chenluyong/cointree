@@ -32,27 +32,23 @@ public class BitcoinKey extends ACoinKey {
 
 
     public BitcoinKey(ECKey ecKey) {
-        super(new HDKey(ecKey));
-        this.config = CoinConfigFactory.getConfig(CoinTag.tagBITCOIN);
+        super(new HDKey(ecKey),CoinConfigFactory.getConfig(CoinTag.tagBITCOIN));
     }
 
     public BitcoinKey(ECKey ecKey, NetType netType) {
-        super(new HDKey(ecKey));
-        this.config = CoinConfigFactory.getConfig(
+        super(new HDKey(ecKey),CoinConfigFactory.getConfig(
                 NetType.MAIN == netType ? CoinTag.tagBITCOIN : CoinTag.tagBITCOINTEST
-        );
+        ));
     }
 
     public BitcoinKey(HDKey hdKey) {
-        super(hdKey);
-        this.config = CoinConfigFactory.getConfig(CoinTag.tagBITCOIN);
+        super(hdKey,CoinConfigFactory.getConfig(CoinTag.tagBITCOIN));
     }
 
     public BitcoinKey(HDKey hdKey, NetType netType) {
-        super(hdKey);
-        this.config = CoinConfigFactory.getConfig(
+        super(hdKey,CoinConfigFactory.getConfig(
                 NetType.MAIN == netType ? CoinTag.tagBITCOIN : CoinTag.tagBITCOINTEST
-        );
+        ));
     }
 
     @Override

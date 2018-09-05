@@ -14,11 +14,13 @@ public abstract class ACoinKey implements ICoinKey {
     protected CoinConfig config;
 
 
-    public ACoinKey(ECKey _ecKey) {
+    public ACoinKey(ECKey _ecKey, CoinConfig config) {
         this.hdKey = new HDKey(_ecKey);
+        this.config = config;
     }
-    public ACoinKey(HDKey _hdKey) {
+    public ACoinKey(HDKey _hdKey, CoinConfig config) {
         this.hdKey = _hdKey;
+        this.config = config;
     }
 
 
@@ -43,13 +45,13 @@ public abstract class ACoinKey implements ICoinKey {
     @Override
     public ECSign sign(byte[] hash) {
         ISigner signer= SignerCoordinator.getInstance().findSigner(config.getSignerTag());
-        return signer.sign(this.hdKey.getEcKey().getPriKey(), this.hdKey.getEcKey().getPubKey(), hash);
+        return signer.sign(this.base().getPriKey(), this.hdKey.getEcKey().getPubKey(), hash);
     }
 
     @Override
     public boolean verify(byte[] hash, ECSign ecSign) {
         ISigner signer= SignerCoordinator.getInstance().findSigner(config.getSignerTag());
-        return signer.verify(this.hdKey.getEcKey().getPubKey(), hash, ecSign);
+        return signer.verify(this.base().getPubKey(), hash, ecSign);
     }
 
     //////////////////////// new function ///////////////////////////////

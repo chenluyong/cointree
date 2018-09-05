@@ -15,6 +15,7 @@ package com.bepal.coins.keytree;
 import com.bepal.coins.crypto.Base58;
 import com.bepal.coins.crypto.Hex;
 import com.bepal.coins.crypto.SHAHash;
+import com.bepal.coins.keytree.coinkey.AChainKey;
 import com.bepal.coins.keytree.coinkey.BitcoinKey;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoin;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
@@ -187,7 +188,7 @@ public class KeyTreerTest {
         String address = "", pubkey = "";
         String expect = "1FFiZJj3th8zRktVZi3Gyn7wARmQ3p8S36";
         HDKey hdKey = keyTreer.deriveBepalKey(seed, CoinTag.tagBITCOIN);
-        address = new BitcoinKey(hdKey.getEcKey()).address();
+        address = new BitcoinKey(hdKey).address();
         Assert.assertEquals("deriveBepalKey bitcoin failed, address dismatch", expect, address);
 //
 //        expect = "0x063b07ee7b38291c1c0e36686e2e1e5e6b3f3dde";
@@ -240,10 +241,10 @@ public class KeyTreerTest {
 //        address = coinKey.address();
 //        Assert.assertEquals("deriveBepalKey eos test failed, address dismatch", expect, address);
 //
-//        expect = "ACTCLp3vzhFNwSDN9xjQgVi1WEpr59iHa4TQ";
-//        coinKey = keyTreer.deriveBepalKey(seed, CoinTag.tagAChain);
-//        address = coinKey.address();
-//        Assert.assertEquals("deriveBepalKey eos test failed, address dismatch", expect, address);
+        expect = "ACTCLp3vzhFNwSDN9xjQgVi1WEpr59iHa4TQ";
+        hdKey = keyTreer.deriveBepalKey(seed, CoinTag.tagAChain);
+        address = new AChainKey(hdKey).address();
+        Assert.assertEquals("deriveBepalKey eos test failed, address dismatch", expect, address);
 //
 //
 //        expect = "ENu66Di2wpwimBUKcHiL5fn1f1HDVPn3uu";
@@ -484,25 +485,12 @@ public class KeyTreerTest {
 //        }
 //    }
 //
-//    @Test
-//    public void testMain() {
-//        String codes = "beyond honey crisp weird type coast pair endless idle glad famous visa";
-//        String[] codeAry = codes.split(" ");
-//        List<String> list = new ArrayList<>();
-//        for (String code : codeAry) {
-//            list.add(code);
-//        }
-//
-//        KeyTreer keyTreer = new KeyTreer();
-//        byte[] seed = keyTreer.transSeed(list, "");
-//
-//        ICoinKey coinKey = keyTreer.deriveBip44(seed, CoinTag.tagAChain);
-//
-//        byte [] hdPrvKey = coinKey.toStandardXPrivate(0);
-//        byte [] hdPubKey = coinKey.toStandardXPublic(0);
-//        System.out.println(Base58.encode(hdPubKey));
-//        System.out.println(Base58.encode(hdPrvKey));
-//
-//    }
+    @Test
+    public void testMain() {
+        CoinTag coinTag = CoinTag.tagTESTEND;
+        CoinTag coinTagTest = CoinTag.tagBITCOINTEST;
+        System.out.println(coinTag.compareTo(coinTagTest));
+
+    }
 
 }

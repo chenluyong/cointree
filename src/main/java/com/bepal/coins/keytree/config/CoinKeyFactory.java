@@ -1,9 +1,6 @@
 package com.bepal.coins.keytree.config;
 
-import com.bepal.coins.keytree.coinkey.AChainKey;
-import com.bepal.coins.keytree.coinkey.BitcoinKey;
-import com.bepal.coins.keytree.coinkey.BytomKey;
-import com.bepal.coins.keytree.coinkey.ElastosKey;
+import com.bepal.coins.keytree.coinkey.*;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoin;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.infrastructure.tags.CoinTag;
@@ -38,6 +35,10 @@ public class CoinKeyFactory {
             case tagELASTOS:
             case tagELASTOSTEST:
                 return new ElastosKey(hdKey,netType);
+
+            case tagEOS:
+            case tagEOSTEST:
+                return new EosKey(hdKey,netType);
 
         }
         return null;

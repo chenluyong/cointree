@@ -292,9 +292,9 @@ public class KeyTreer {
             case tagBYTOM: {
                 return new Bytomer();
             }
-//            case tagEOS: {
-//                return new Eoser();
-//            }
+            case tagEOS: {
+                return new Eoser();
+            }
 //            case tagGXCHAIN: {
 //                return new GXChainer();
 //            }
@@ -319,9 +319,9 @@ public class KeyTreer {
             case tagBYTOMTEST: {
                 return new Bytomer(testNet);
             }
-//            case tagEOSTEST: {
-//                return new Eoser(testNet);
-//            }
+            case tagEOSTEST: {
+                return new Eoser(testNet);
+            }
 //            case tagGXCHAINTEST: {
 //                return new GXChainer(testNet);
 //            }

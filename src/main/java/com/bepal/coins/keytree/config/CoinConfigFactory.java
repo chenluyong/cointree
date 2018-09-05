@@ -51,7 +51,12 @@ public class CoinConfigFactory {
             case tagELASTOS:
             case tagELASTOSTEST:
                 return new CoinConfig(DeriveTag.tagSECP256R1, coinTag, SeedTag.tagDEFAULT,
-                        SignerTag.tagSECP256R1, 2305, netType,pubPrefix, prvPrefix);
+                        SignerTag.tagSECP256R1, 2305, netType, pubPrefix, prvPrefix);
+
+            case tagEOS:
+            case tagEOSTEST:
+                return new CoinConfig(DeriveTag.tagDEFAULT, coinTag, SeedTag.tagDEFAULT,
+                        SignerTag.tagSECP256K1NONCE, 194, netType,pubPrefix, prvPrefix);
 
         }
 

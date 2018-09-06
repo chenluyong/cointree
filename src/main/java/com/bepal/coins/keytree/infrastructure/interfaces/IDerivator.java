@@ -14,8 +14,11 @@ package com.bepal.coins.keytree.infrastructure.interfaces;
 import com.bepal.coins.keytree.model.Chain;
 import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.infrastructure.tags.SeedTag;
+import com.bepal.coins.keytree.model.HDKey;
 
 public interface IDerivator {
+
+    HDKey deriveChild(HDKey hdKey, Chain chain);
     /**
      * derive child eckey according to chain
      * */
@@ -30,7 +33,7 @@ public interface IDerivator {
      * derivate from seed
      * @param seedTag derive seed type
      * */
-    ECKey deriveFromSeed(byte[] seed, SeedTag seedTag);
+    HDKey deriveFromSeed(byte[] seed, SeedTag seedTag);
 
     /**
      * derivate from private key

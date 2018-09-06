@@ -53,9 +53,8 @@ public class BitcoinDerivator extends ADerivator {
         BigInteger ki= priv.add(ilInt).mod(Secp256k1.CURVE.getN());
         ErrorTool.assertNonZero(ki, "Illegal derived key: derived private key equals 0.");
 
-        ECKey chiKey= new ECKey();
-        chiKey.setPriKey(BigIntUtil.bigIntegerToBytesLE(ki, 32));
-        chiKey.setChainCode(chainCode);
+        ECKey chiKey= new ECKey(BigIntUtil.bigIntegerToBytesLE(ki, 32),
+                null, chainCode,this);
         return chiKey;
     }
 
@@ -72,9 +71,7 @@ public class BitcoinDerivator extends ADerivator {
         ErrorTool.assertLessThanN(Secp256k1.CURVE.getN(), ilInt, "Illegal derived key: I_L >= n");
         ECPoint Ki= publicPointFromPrivate(ilInt).add(Secp256k1.CURVE.getCurve().decodePoint(ecKey.getPubKey()));
 
-        ECKey chiKey= new ECKey();
-        chiKey.setPubKey(Ki.getEncoded(true));
-        chiKey.setChainCode(chainCode);
+        ECKey chiKey= new ECKey(null,Ki.getEncoded(true),chainCode,this);
         return chiKey;
     }
 

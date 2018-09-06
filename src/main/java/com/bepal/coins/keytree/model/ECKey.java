@@ -11,8 +11,11 @@ ECKey
 */
 package com.bepal.coins.keytree.model;
 
+import com.bepal.coins.keytree.config.CoinConfigFactory;
+import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;
 import com.bepal.coins.keytree.infrastructure.derivator.BitcoinDerivator;
 import com.bepal.coins.keytree.infrastructure.interfaces.IDerivator;
+import com.bepal.coins.keytree.infrastructure.tags.CoinTag;
 import com.bepal.coins.models.ByteArrayData;
 
 public class ECKey {
@@ -21,9 +24,12 @@ public class ECKey {
     protected byte[] chainCode;
     protected IDerivator derivator;
 
-    public ECKey() {
-        derivator = new BitcoinDerivator();
+
+    public ECKey(byte[] priKey, byte[] pubKey, byte[] chainCode, CoinTag coinTag) {
+        this(priKey,pubKey,chainCode,
+                DeriveCoordinator.findDerivator(CoinConfigFactory.getConfig(coinTag).getDeriveTag()));
     }
+
 
     public ECKey(byte[] priKey, byte[] pubKey, byte[] chainCode, IDerivator derivator) {
         setPriKey(priKey);

@@ -50,9 +50,10 @@ public class ED25519Derivator extends ADerivator {
             if ((sum>> 8)!= 0) return null;
         }
 
-        ECKey chiKey= new ECKey();
-        chiKey.setPriKey(ByteArrayData.copyOfRange(data, 0, 32));
-        chiKey.setChainCode(ByteArrayData.copyOfRange(data, 32, 32));
+        ECKey chiKey= new ECKey(ByteArrayData.copyOfRange(data, 0, 32),
+                null,ByteArrayData.copyOfRange(data, 32, 32),this);
+//        chiKey.setPriKey(ByteArrayData.copyOfRange(data, 0, 32));
+//        chiKey.setChainCode(ByteArrayData.copyOfRange(data, 32, 32));
         return chiKey;
     }
 
@@ -66,9 +67,8 @@ public class ED25519Derivator extends ADerivator {
         Ed25519GroupElement P= new Ed25519EncodedGroupElement(ecKey.getPubKey()).decode();
         P= F.addToPub(P);
 
-        ECKey chiKey= new ECKey();
-        chiKey.setPubKey(P.encode().getRaw());
-        chiKey.setChainCode(ByteArrayData.copyOfRange(nData, 32, 32));
+        ECKey chiKey= new ECKey(null,P.encode().getRaw(),
+                ByteArrayData.copyOfRange(nData, 32, 32),this);
         return chiKey;
     }
 
@@ -79,9 +79,9 @@ public class ED25519Derivator extends ADerivator {
         byte[] chainCode= ByteArrayData.copyOfRange(priMaster, 32, 32);
         pruneRootScalar(priKey);
 
-        ECKey ecKey= new ECKey();
-        ecKey.setPriKey(priKey);
-        ecKey.setChainCode(chainCode);
+        ECKey ecKey= new ECKey(priKey,null,chainCode,this);
+//        ecKey.setPriKey(priKey);
+//        ecKey.setChainCode(chainCode);
         return new HDKey(ecKey,0,0);
     }
 

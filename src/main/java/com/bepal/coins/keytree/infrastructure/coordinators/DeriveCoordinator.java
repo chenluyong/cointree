@@ -31,7 +31,7 @@ public final class DeriveCoordinator {
         return instance;
     }
 
-    public IDerivator findDerivator(DeriveTag deriveTag) {
+    public static IDerivator findDerivator(DeriveTag deriveTag) {
         switch (deriveTag) {
             case tagED25519: {
                 return new ED25519Derivator();

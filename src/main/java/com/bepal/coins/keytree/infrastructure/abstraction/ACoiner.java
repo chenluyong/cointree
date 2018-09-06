@@ -59,9 +59,6 @@ public class ACoiner implements ICoiner {
     @Override
     public ICoinKey deriveSecChild(HDKey hdKey) {
         ECKey ecKey = hdKey.getEcKey();
-        if (null == ecKey.getPubKey()) {
-            ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
-        }
 
         int depth = hdKey.getDepth();
         Chain chain = getChain(0);

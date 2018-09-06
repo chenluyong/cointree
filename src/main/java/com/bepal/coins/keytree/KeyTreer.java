@@ -27,6 +27,7 @@ import com.bepal.coins.keytree.infrastructure.tags.SeedTag;
 import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.model.HDKey;
 import com.bepal.coins.models.ByteArrayData;
+import com.sun.xml.internal.bind.v2.runtime.Coordinator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -256,9 +257,12 @@ public class KeyTreer {
      * @param sdkPriKey the return of sdkPriKey
      * */
     public ICoinKey deriveSDKSecChild(byte[] sdkPriKey, CoinTag coinTag) {
-        ECKey ecKey= new ECKey();
-        ecKey.setPriKey(ByteArrayData.copyOfRange(sdkPriKey, 0+ 4, 33));
-        ecKey.setChainCode(ByteArrayData.copyOfRange(sdkPriKey, 33+ 4, 33));
+
+        ECKey ecKey= new ECKey(ByteArrayData.copyOfRange(sdkPriKey, 0+ 4, 33),
+                null,ByteArrayData.copyOfRange(sdkPriKey, 33+ 4, 33),
+                DeriveCoordinator.findDerivator(CoinConfigFactory.getConfig(coinTag).getDeriveTag()));
+//        ecKey.setPriKey(ByteArrayData.copyOfRange(sdkPriKey, 0+ 4, 33));
+//        ecKey.setChainCode(ByteArrayData.copyOfRange(sdkPriKey, 33+ 4, 33));
 
         return deriveSecChild(ecKey, coinTag);
     }
@@ -269,10 +273,9 @@ public class KeyTreer {
      * @param sdkPubKey the return of sdkPubKey
      * */
     public ICoinKey deriveSDKSecChildPub(byte[] sdkPubKey, CoinTag coinTag) {
-        ECKey ecKey= new ECKey();
-        ecKey.setPubKey(ByteArrayData.copyOfRange(sdkPubKey, 0+ 4, 33));
-        ecKey.setChainCode(ByteArrayData.copyOfRange(sdkPubKey, 33+ 4, 33));
-
+        ECKey ecKey= new ECKey(null,ByteArrayData.copyOfRange(sdkPubKey, 0+ 4, 33),
+                ByteArrayData.copyOfRange(sdkPubKey, 33+ 4, 33),
+                DeriveCoordinator.findDerivator(CoinConfigFactory.getConfig(coinTag).getDeriveTag()));
         return deriveSecChildPub(ecKey, coinTag);
     }
 

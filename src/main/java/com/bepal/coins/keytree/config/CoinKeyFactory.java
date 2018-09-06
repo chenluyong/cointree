@@ -55,7 +55,8 @@ public class CoinKeyFactory {
             case tagSELFSELL:
             case tagSELFSELLTEST:
                 return new SelfSellKey(hdKey,netType);
-
+            default:
+                break;
         }
         return null;
 

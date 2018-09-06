@@ -61,8 +61,8 @@ public class CoinConfigFactory {
             case tagEOSTEST:
                 return new CoinConfig(DeriveTag.tagDEFAULT, coinTag, SeedTag.tagDEFAULT,
                         SignerTag.tagSECP256K1NONCE, 194, netType,pubPrefix, prvPrefix);
-
-
+            default:
+                break;
         }
 
 

@@ -47,12 +47,6 @@ public class ECKey {
         return priKey;
     }
 
-    protected void setPriKey(byte[] priKey) {
-        if (priKey!= null&& priKey[0]== 0&& priKey.length> 32) {
-            priKey= ByteArrayData.copyOfRange(priKey, 1, 32);
-        }
-        this.priKey = priKey;
-    }
 
     public byte[] getPubKey() {
         if (null == pubKey) {
@@ -61,14 +55,20 @@ public class ECKey {
         return pubKey;
     }
 
-    protected void setPubKey(byte[] pubKey) {
-        this.pubKey = pubKey;
-    }
-
     public byte[] getChainCode() {
         return chainCode;
     }
 
+    protected void setPubKey(byte[] pubKey) {
+        this.pubKey = pubKey;
+    }
+
+    protected void setPriKey(byte[] priKey) {
+        if (priKey!= null&& priKey[0]== 0&& priKey.length> 32) {
+            priKey= ByteArrayData.copyOfRange(priKey, 1, 32);
+        }
+        this.priKey = priKey;
+    }
     protected void setChainCode(byte[] chainCode) {
         if (chainCode!= null&& chainCode[0]== 0&& chainCode.length> 32) {
             chainCode= ByteArrayData.copyOfRange(chainCode, 1, 32);

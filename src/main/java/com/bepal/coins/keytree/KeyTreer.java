@@ -47,11 +47,10 @@ public class KeyTreer {
     public ICoinKey deriveHDKey(byte[] seed) {
 
         IDerivator derivator = DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagBITCOIN);
-        ECKey ecKey= derivator.deriveFromSeed(seed, SeedTag.tagBITCOIN);
-        ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
+        HDKey hdKey = derivator.deriveFromSeed(seed, SeedTag.tagBITCOIN);
 
-        // default bitcoin key
-        return new BitcoinKey(new HDKey(ecKey), ICoin.NetType.MAIN);
+        //default bitcoin key
+        return new BitcoinKey(hdKey, ICoin.NetType.MAIN);
     }
 
 

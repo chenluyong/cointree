@@ -31,10 +31,13 @@ public class ACoiner implements ICoiner {
     }
 
     ///////////////////// function ///////////////////////
+
+
+
     @Override
     public ICoinKey deriveBip44(byte[] seed) {
-        ECKey ecKey = derivator.deriveFromSeed(seed, this.config.getSeedTag());
-        if (ecKey == null) return null;
+        HDKey hdKey = derivator.deriveFromSeed(seed, this.config.getSeedTag());
+        if (hdKey == null) return null;
 
         int secLayer = (int) this.config.getBip44(), thdLayer = 0;
         if (this.config.getNetType() != ICoin.NetType.MAIN) {
@@ -47,15 +50,10 @@ public class ACoiner implements ICoiner {
         chains.add(getChain(secLayer,true));
         chains.add(getChain(thdLayer,true));
 
-        int depth = 0;
-        int path = 0;
         for (Chain chain : chains) {
-            ecKey = derivator.deriveChild(ecKey, chain);
-            ++depth;
-            path = ByteBuffer.wrap(Arrays.copyOfRange(chain.getPath(), 0, 4)).getInt();
+            hdKey = derivator.deriveChild(hdKey, chain);
         }
-        ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
-        return this.base(new HDKey(ecKey, depth, path));
+        return this.base(hdKey);
     }
 
     @Override

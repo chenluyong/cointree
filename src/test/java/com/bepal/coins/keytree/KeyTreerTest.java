@@ -162,7 +162,7 @@ public class KeyTreerTest {
         coinKeys = keyTreer.deriveSecChildRangePub(coinKey.base(), 0, 1, CoinTag.tagELASTOS);
         for (int i = 0; i < 2; i++) {
             address = coinKeys.get(i).address();
-            Assert.assertEquals("deriveBepalKeyRange gxchain faield,  address dismatch", expects[i], address);
+            Assert.assertEquals("deriveBepalKeyRange elastos faield,  address dismatch", expects[i], address);
         }
 
     }

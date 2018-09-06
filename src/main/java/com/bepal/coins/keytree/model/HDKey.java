@@ -110,10 +110,10 @@ public class HDKey{
     ///////////////////// function /////////////////////////////
 
     public String toXPrivate() {
-        return Hex.toHexString(Base58.encode(this.toStandardXPrivate()));
+        return Base58.encode(this.toStandardXPrivate());
     }
     public String toXPublic() {
-        return Hex.toHexString(Base58.encode(this.toStandardXPublic()));
+        return Base58.encode(this.toStandardXPublic());
     }
 
     public byte[] toStandardXPrivate() {

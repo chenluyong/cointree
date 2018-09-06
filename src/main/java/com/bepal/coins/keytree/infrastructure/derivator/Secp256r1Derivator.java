@@ -1,6 +1,7 @@
 package com.bepal.coins.keytree.infrastructure.derivator;
 
 import com.bepal.coins.crypto.SHAHash;
+import com.bepal.coins.keytree.infrastructure.abstraction.ADerivator;
 import com.bepal.coins.keytree.infrastructure.coordinators.SeedCoordinator;
 import com.bepal.coins.keytree.infrastructure.interfaces.IDerivator;
 import com.bepal.coins.keytree.infrastructure.signer.Secp256r1;
@@ -17,7 +18,7 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-public class Secp256r1Derivator implements IDerivator {
+public class Secp256r1Derivator extends ADerivator {
 
     @Override
     public ECKey deriveChild(ECKey ecKey, Chain chain) {
@@ -64,16 +65,6 @@ public class Secp256r1Derivator implements IDerivator {
         return chiKey;
     }
 
-    @Override
-    public ECKey deriveFromSeed(byte[] seed, SeedTag seedTag) {
-        byte[] priMaster = SeedCoordinator.getInstance().deriveMaster(seed, seedTag);
-
-        ECKey ecKey = new ECKey();
-        ecKey.setPriKey(ByteArrayData.copyOfRange(priMaster, 0, 32));
-        ecKey.setChainCode(ByteArrayData.copyOfRange(priMaster, 32, 32));
-
-        return ecKey;
-    }
 
     @Override
     public byte[] derivePubKey(byte[] priKey) {

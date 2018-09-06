@@ -16,14 +16,15 @@ import com.bepal.coins.crypto.ed25519.Ed25519EncodedFieldElement;
 import com.bepal.coins.crypto.ed25519.Ed25519EncodedGroupElement;
 import com.bepal.coins.crypto.ed25519.Ed25519Group;
 import com.bepal.coins.crypto.ed25519.Ed25519GroupElement;
-import com.bepal.coins.keytree.infrastructure.interfaces.IDerivator;
+import com.bepal.coins.keytree.infrastructure.abstraction.ADerivator;
 import com.bepal.coins.keytree.model.Chain;
 import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.infrastructure.coordinators.SeedCoordinator;
 import com.bepal.coins.keytree.infrastructure.tags.SeedTag;
+import com.bepal.coins.keytree.model.HDKey;
 import com.bepal.coins.models.ByteArrayData;
 
-public class ED25519Derivator implements IDerivator {
+public class ED25519Derivator extends ADerivator {
 
     @Override
     public ECKey deriveChild(ECKey ecKey, Chain chain) {
@@ -72,7 +73,7 @@ public class ED25519Derivator implements IDerivator {
     }
 
     @Override
-    public ECKey deriveFromSeed(byte[] seed, SeedTag seedTag) {
+    public HDKey deriveFromSeed(byte[] seed, SeedTag seedTag) {
         byte[] priMaster= SeedCoordinator.getInstance().deriveMaster(seed, seedTag);
         byte[] priKey= ByteArrayData.copyOfRange(priMaster, 0, 32);
         byte[] chainCode= ByteArrayData.copyOfRange(priMaster, 32, 32);
@@ -81,7 +82,7 @@ public class ED25519Derivator implements IDerivator {
         ECKey ecKey= new ECKey();
         ecKey.setPriKey(priKey);
         ecKey.setChainCode(chainCode);
-        return ecKey;
+        return new HDKey(ecKey,0,0);
     }
 
     @Override

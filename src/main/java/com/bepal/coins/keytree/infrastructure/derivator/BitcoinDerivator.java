@@ -12,12 +12,14 @@ BitcoinDerivator
 package com.bepal.coins.keytree.infrastructure.derivator;
 
 import com.bepal.coins.crypto.SHAHash;
+import com.bepal.coins.keytree.infrastructure.abstraction.ADerivator;
 import com.bepal.coins.keytree.infrastructure.interfaces.IDerivator;
 import com.bepal.coins.keytree.model.Chain;
 import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.infrastructure.coordinators.SeedCoordinator;
 import com.bepal.coins.keytree.infrastructure.tags.SeedTag;
 import com.bepal.coins.keytree.infrastructure.signer.Secp256k1;
+import com.bepal.coins.keytree.model.HDKey;
 import com.bepal.coins.models.ByteArrayData;
 import com.bepal.coins.utils.BigIntUtil;
 import com.bepal.coins.utils.ErrorTool;
@@ -28,7 +30,8 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-public class BitcoinDerivator implements IDerivator {
+public class BitcoinDerivator extends ADerivator {
+
 
     @Override
     public ECKey deriveChild(ECKey ecKey, Chain chain) {
@@ -75,16 +78,6 @@ public class BitcoinDerivator implements IDerivator {
         return chiKey;
     }
 
-    @Override
-    public ECKey deriveFromSeed(byte[] seed, SeedTag seedTag) {
-        byte[] priMaster= SeedCoordinator.getInstance().deriveMaster(seed, seedTag);
-
-        ECKey ecKey= new ECKey();
-        ecKey.setPriKey(ByteArrayData.copyOfRange(priMaster, 0, 32));
-        ecKey.setChainCode(ByteArrayData.copyOfRange(priMaster, 32, 32));
-
-        return ecKey;
-    }
 
     @Override
     public byte[] derivePubKey(byte[] priKey) {

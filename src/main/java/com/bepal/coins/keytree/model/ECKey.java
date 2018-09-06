@@ -47,11 +47,10 @@ public class ECKey {
         return priKey;
     }
 
-    public void setPriKey(byte[] priKey) {
+    protected void setPriKey(byte[] priKey) {
         if (priKey!= null&& priKey[0]== 0&& priKey.length> 32) {
             priKey= ByteArrayData.copyOfRange(priKey, 1, 32);
         }
-
         this.priKey = priKey;
     }
 
@@ -62,7 +61,7 @@ public class ECKey {
         return pubKey;
     }
 
-    public void setPubKey(byte[] pubKey) {
+    protected void setPubKey(byte[] pubKey) {
         this.pubKey = pubKey;
     }
 
@@ -70,7 +69,7 @@ public class ECKey {
         return chainCode;
     }
 
-    public void setChainCode(byte[] chainCode) {
+    protected void setChainCode(byte[] chainCode) {
         if (chainCode!= null&& chainCode[0]== 0&& chainCode.length> 32) {
             chainCode= ByteArrayData.copyOfRange(chainCode, 1, 32);
         }
@@ -78,7 +77,7 @@ public class ECKey {
         this.chainCode = chainCode;
     }
 
-    public void setDerivator(IDerivator derivator) {
+    protected void setDerivator(IDerivator derivator) {
         this.derivator = derivator;
     }
 }

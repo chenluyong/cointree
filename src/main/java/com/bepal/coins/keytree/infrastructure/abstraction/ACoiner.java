@@ -64,7 +64,6 @@ public class ACoiner implements ICoiner {
         Chain chain = getChain(0);
         for (int i = 0; i < 2; ++i, ++depth) {
             ecKey = derivator.deriveChild(ecKey, chain);
-            ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
         }
         return this.base(new HDKey(ecKey, depth, 0));
     }
@@ -73,19 +72,14 @@ public class ACoiner implements ICoiner {
     @Override
     public List<ICoinKey> deriveSecChildRange(HDKey hdKey, int start, int end) {
         ECKey ecKey = hdKey.getEcKey();
-        if (null == ecKey.getPubKey()) {
-            ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
-        }
 
         Chain chain = getChain(0);
         ecKey = derivator.deriveChild(ecKey, chain);
-        ecKey.setPubKey(derivator.derivePubKey(ecKey.getPriKey()));
 
         List<ICoinKey> coinKeys = new ArrayList<>();
         for (int pos = start; pos <= end; ++pos) {
             chain.setPath(pos);
             ECKey tmpKey = derivator.deriveChild(ecKey, chain);
-            tmpKey.setPubKey(derivator.derivePubKey(tmpKey.getPriKey()));
 
             coinKeys.add(this.base(new HDKey(tmpKey, hdKey.getDepth() + 1, pos)));
         }

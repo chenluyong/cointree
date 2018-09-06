@@ -17,7 +17,6 @@ public abstract class ADerivator implements IDerivator {
         ECKey ecKey = hdKey.getEcKey();
         if (null != ecKey.getPriKey()) {
             ecKey = deriveChild(ecKey, chain);
-            ecKey.setPubKey(this.derivePubKey(ecKey.getPriKey()));
         }
         else {
             ecKey = deriveChildPub(ecKey, chain);

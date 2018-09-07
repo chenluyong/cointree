@@ -11,6 +11,8 @@ CoinTag
 */
 package com.bepal.coins.keytree.infrastructure.tags;
 
+import com.bepal.coins.keytree.infrastructure.interfaces.ICoin;
+
 public enum CoinTag {
     tagBITCOIN(0),
     tagETHEREUM(1),
@@ -37,18 +39,37 @@ public enum CoinTag {
     tagBYTOMSOLO(10002),
     ;
 
+    public ICoin.NetType getNetType() {
+        ICoin.NetType ret = ICoin.NetType.MAIN;
+        if (this.compareTo(CoinTag.tagTESTBEGIN) > 0
+                && this.compareTo(CoinTag.tagTESTEND) < 0) {
+            ret = ICoin.NetType.TEST;
+        }
+        else if (this.compareTo(CoinTag.tagTESTEND) > 0) {
+            ret = ICoin.NetType.SOLO;
+        }
+        return ret;
+    }
 
     ///////////////////////// operator ///////////////////////////
 
-//
-//    public final int compareTo(E o) {
-//        Enum<?> other = (Enum<?>)o;
-//        Enum<E> self = this;
-//        if (self.getClass() != other.getClass() && // optimization
-//                self.getDeclaringClass() != other.getDeclaringClass())
-//            throw new ClassCastException();
-//        return self.ordinal - other.ordinal;
-//    }
+    // https://gitlab.eshanren.com/chenluyong/bepal/blob/master/doc/protocol/table.md
+    public int getPubPrefix() {
+        // bip32 header
+        int pubPrefix = 0x0488B21E; // xpub
+        if (getNetType() != ICoin.NetType.MAIN) {
+            pubPrefix = 0x043587CF; // tpub
+        }
+        return pubPrefix;
+    }
+    public int getPrvPrefix() {
+        // bip32 header
+        int prvPrefix = 0x0488ADE4; // xprv
+        if (getNetType() != ICoin.NetType.MAIN) {
+            prvPrefix = 0x04358394; // tprv
+        }
+        return prvPrefix;
+    }
 
     //////////////////////////////////////////////////////////////
 

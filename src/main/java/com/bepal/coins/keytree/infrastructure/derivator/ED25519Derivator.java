@@ -52,8 +52,6 @@ public class ED25519Derivator extends ADerivator {
 
         ECKey chiKey= new ECKey(ByteArrayData.copyOfRange(data, 0, 32),
                 null,ByteArrayData.copyOfRange(data, 32, 32),this);
-//        chiKey.setPriKey(ByteArrayData.copyOfRange(data, 0, 32));
-//        chiKey.setChainCode(ByteArrayData.copyOfRange(data, 32, 32));
         return chiKey;
     }
 
@@ -80,8 +78,6 @@ public class ED25519Derivator extends ADerivator {
         pruneRootScalar(priKey);
 
         ECKey ecKey= new ECKey(priKey,null,chainCode,this);
-//        ecKey.setPriKey(priKey);
-//        ecKey.setChainCode(chainCode);
         return new HDKey(ecKey,0,0);
     }
 

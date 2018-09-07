@@ -258,8 +258,6 @@ public class KeyTreer {
         ECKey ecKey= new ECKey(ByteArrayData.copyOfRange(sdkPriKey, 0+ 4, 33),
                 null,ByteArrayData.copyOfRange(sdkPriKey, 33+ 4, 33),
                 DeriveCoordinator.findDerivator(CoinConfigFactory.getConfig(coinTag).getDeriveTag()));
-//        ecKey.setPriKey(ByteArrayData.copyOfRange(sdkPriKey, 0+ 4, 33));
-//        ecKey.setChainCode(ByteArrayData.copyOfRange(sdkPriKey, 33+ 4, 33));
 
         return deriveSecChild(ecKey, coinTag);
     }

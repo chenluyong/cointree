@@ -42,8 +42,6 @@ public class Secp256r1Derivator extends ADerivator {
 
         ECKey chiKey = new ECKey(BigIntUtil.bigIntegerToBytesLE(ki, 32),
                 null,chainCode,this);
-//        chiKey.setPriKey(BigIntUtil.bigIntegerToBytesLE(ki, 32));
-//        chiKey.setChainCode(chainCode);
         return chiKey;
     }
 

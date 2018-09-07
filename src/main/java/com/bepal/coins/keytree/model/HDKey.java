@@ -34,7 +34,8 @@ public class HDKey{
 
     public HDKey(byte[] hdKey, IDerivator derivator) throws Exception {
         ByteArrayData data = new ByteArrayData(hdKey);
-        if (hdKey.length != 78 && hdKey.length != 82) {
+        // check sum
+        if (!isValid(hdKey)) {
             throw new Exception("非法的分层确定性密钥");
         }
         // prefix 4 byte;
@@ -61,7 +62,7 @@ public class HDKey{
             this.pubPrefix = head;
         }
         if (fingerprint != getFingerprint()) {
-            throw new Exception("密语校验位错误，请确认密钥正确项");
+            throw new Exception("密钥校验位错误，请确认密钥正确项");
         }
         ecKey.setDerivator(derivator);
     }
@@ -165,6 +166,22 @@ public class HDKey{
         if (this.fingerprint == 0)
             fingerprint = ByteBuffer.wrap(ByteArrayData.copyOfRange(SHAHash.sha256hash160(ecKey.getPubKey()), 0, 4)).getInt();
         return fingerprint;
+    }
+
+    private boolean isValid(byte[] hdKey) {
+        if (hdKey.length != 78 && hdKey.length != 82) {
+            return false;
+        }
+        // check sum;
+        if (hdKey.length == 82) {
+            byte[] temp = ByteArrayData.copyOfRange(hdKey,0,78);
+            byte[] temp_checkSum = ByteArrayData.copyOfRange(hdKey,78,4);
+            byte[] checkSum = SHAHash.hash2256Twice(temp);
+            if (checkSum == temp_checkSum) {
+                return false;
+            }
+        }
+        return true;
     }
 }
 

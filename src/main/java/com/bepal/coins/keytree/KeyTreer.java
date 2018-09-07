@@ -13,6 +13,7 @@ package com.bepal.coins.keytree;
 
 import com.bepal.coins.keytree.coinkey.BitcoinKey;
 import com.bepal.coins.keytree.coins.*;
+import com.bepal.coins.keytree.config.CoinConfig;
 import com.bepal.coins.keytree.config.CoinConfigFactory;
 import com.bepal.coins.keytree.infrastructure.abstraction.ACoiner;
 import com.bepal.coins.keytree.infrastructure.components.MnemonicCode;
@@ -45,13 +46,12 @@ public class KeyTreer {
     /**
      * 默认比特币规则
      * */
-    public ICoinKey deriveHDKey(byte[] seed) {
-
-        IDerivator derivator = DeriveCoordinator.getInstance().findDerivator(DeriveTag.tagBITCOIN);
-        HDKey hdKey = derivator.deriveFromSeed(seed, SeedTag.tagBITCOIN);
-
+    public ICoinKey deriveHDKey(byte[] seed,CoinTag coinTag) {
+        CoinConfig coinConfig = CoinConfigFactory.getConfig(coinTag);
+        IDerivator derivator = DeriveCoordinator.getInstance().findDerivator(coinConfig.getDeriveTag());
+        HDKey hdKey = derivator.deriveFromSeed(seed, coinConfig.getSeedTag());
         //default bitcoin key
-        return new BitcoinKey(hdKey, ICoin.NetType.MAIN);
+        return new BitcoinKey(hdKey, coinConfig.getNetType());
     }
 
 

@@ -24,13 +24,6 @@ public final class DeriveCoordinator {
 
     private DeriveCoordinator() {}
 
-    public static DeriveCoordinator getInstance() {
-        if (null== instance) {
-            instance= new DeriveCoordinator();
-        }
-        return instance;
-    }
-
     public static IDerivator findDerivator(DeriveTag deriveTag) {
         switch (deriveTag) {
             case tagED25519: {

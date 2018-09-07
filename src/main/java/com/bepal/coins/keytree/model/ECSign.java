@@ -43,6 +43,7 @@ public class ECSign {
         V = v;
     }
 
+
     public static ECSign fromData(byte[] data) {
         byte[] r = ByteArrayData.copyOfRange(data, 1, 32);
         byte[] s = ByteArrayData.copyOfRange(data, 33, 32);

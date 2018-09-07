@@ -15,7 +15,6 @@ public class AChainKey extends ACoinKey {
     public AChainKey(ECKey ecKey) {
         super(new HDKey(ecKey),CoinConfigFactory.getConfig(CoinTag.tagAChain));
     }
-
     public AChainKey(HDKey hdKey) {
         super(hdKey,CoinConfigFactory.getConfig(CoinTag.tagAChain));
     }
@@ -27,6 +26,7 @@ public class AChainKey extends ACoinKey {
                 NetType.MAIN == netType ? CoinTag.tagAChain : CoinTag.tagACHAINTEST
         ));
     }
+
 
     @Override
     public String address() {

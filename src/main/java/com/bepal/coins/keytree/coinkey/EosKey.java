@@ -21,6 +21,7 @@ public class EosKey extends ACoinKey {
         );
     }
 
+
     @Override
     public String address() {
         return publicKey();
@@ -29,10 +30,9 @@ public class EosKey extends ACoinKey {
     public String publicKey() {
         return  "EOS"+ GrapheneSerializer.serializePubKey(this.base().getPubKey());
     }
+
     @Override
     public String privateKey() {
         return GrapheneSerializer.wifPriKey(this.base().getPriKey());
     }
-
-
 }

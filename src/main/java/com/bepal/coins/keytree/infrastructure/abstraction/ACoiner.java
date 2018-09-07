@@ -32,8 +32,6 @@ public class ACoiner implements ICoiner {
 
     ///////////////////// function ///////////////////////
 
-
-
     @Override
     public ICoinKey deriveBip44(byte[] seed) {
         HDKey hdKey = derivator.deriveFromSeed(seed, this.config.getSeedTag());
@@ -67,7 +65,6 @@ public class ACoiner implements ICoiner {
         }
         return this.base(new HDKey(ecKey, depth, 0));
     }
-
 
     @Override
     public List<ICoinKey> deriveSecChildRange(HDKey hdKey, int start, int end) {
@@ -114,6 +111,7 @@ public class ACoiner implements ICoiner {
         return coinKeys;
     }
 
+    /////////////////////////////// protected / private //////////////////////////////////
     protected Chain getChain(int path) {
         return getChain(path, false);
     }

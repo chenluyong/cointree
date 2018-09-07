@@ -26,12 +26,12 @@ public class EthereumKey extends ACoinKey {
         );
     }
 
+
     @Override
     public String address() {
         byte[] point= CURVE.getCurve().decodePoint(this.base().getPubKey()).getEncoded(false);
         byte[] pubKey= ByteArrayData.copyOfRange(point, 1, 64);
         byte[] data=  ByteArrayData.copyOfRange(SHAHash.Keccak256(pubKey), 12, 20);
         return "0x"+ Hex.toHexString(data);
-
     }
 }

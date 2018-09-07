@@ -21,7 +21,6 @@ public class CoinKeyFactory {
             netType = ICoin.NetType.SOLO;
         }
 
-
         switch (coinTag) {
             case tagBITCOINTEST:
             case tagBITCOIN:
@@ -59,6 +58,6 @@ public class CoinKeyFactory {
                 break;
         }
         return null;
-
     }
+
 }

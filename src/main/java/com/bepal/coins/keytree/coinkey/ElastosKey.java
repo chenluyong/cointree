@@ -9,8 +9,6 @@ import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.model.HDKey;
 
 public class ElastosKey extends ACoinKey {
-
-
     public ElastosKey(ECKey ecKey) {
         super(new HDKey(ecKey),CoinConfigFactory.getConfig(CoinTag.tagELASTOS));
     }
@@ -30,7 +28,6 @@ public class ElastosKey extends ACoinKey {
         byte[] programHash = toCodeHash(program,1);
         return toAddress(programHash);
     }
-
 
 
     /// ----------------------------

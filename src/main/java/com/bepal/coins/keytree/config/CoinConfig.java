@@ -19,7 +19,6 @@ public class CoinConfig {
     protected int pubPrefix;
     protected int prvPrefix;
 
-
     //////////////////////////////// construct //////////////////////////////////
 
     public CoinConfig(DeriveTag deriveTag, CoinTag coinTag, SeedTag seedTag, SignerTag signerTag,
@@ -44,7 +43,6 @@ public class CoinConfig {
         this.pubPrefix = 0x0488B21E; // xpub
         this.prvPrefix = 0x0488ADE4; // xprv
     }
-
 
 
     ///////////////////////////// get ////////////////////////

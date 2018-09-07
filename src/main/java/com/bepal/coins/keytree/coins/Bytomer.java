@@ -8,13 +8,9 @@ import com.bepal.coins.keytree.model.Chain;
 
 
 public class Bytomer extends ACoiner {
-
-
-
     public Bytomer() {
         super(CoinConfigFactory.getConfig(CoinTag.tagBYTOM));
     }
-
     public Bytomer(CoinConfig config) {
         super(config);
     }
@@ -31,6 +27,4 @@ public class Bytomer extends ACoiner {
     protected Chain getChain(int path, boolean hardened) {
         return new Chain(path, hardened,2);
     }
-
-
 }

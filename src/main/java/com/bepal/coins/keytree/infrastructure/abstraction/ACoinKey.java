@@ -13,7 +13,6 @@ public abstract class ACoinKey implements ICoinKey {
     protected HDKey hdKey; // 33 32
     protected CoinConfig config;
 
-
     public ACoinKey(ECKey _ecKey, CoinConfig config) {
         this.hdKey = new HDKey(_ecKey);
         this.config = config;
@@ -25,7 +24,6 @@ public abstract class ACoinKey implements ICoinKey {
 
 
     //////////////////////// base class ////////////////////////////////
-
     @Override
     public ECKey base() {
         return this.hdKey.getEcKey();

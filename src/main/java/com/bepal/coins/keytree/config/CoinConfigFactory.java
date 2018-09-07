@@ -10,7 +10,6 @@ import com.bepal.coins.keytree.infrastructure.tags.SignerTag;
 
 public class CoinConfigFactory {
 
-
     static public CoinConfig getConfig(CoinTag coinTag) {
         // bip44
         int bip44 = getBip44(coinTag);
@@ -55,10 +54,8 @@ public class CoinConfigFactory {
                 break;
         }
 
-
         return null;
     }
-
 
     static public int getBip44(CoinTag coinTag) {
         int ret = -1;
@@ -92,6 +89,5 @@ public class CoinConfigFactory {
         }
         return ret;
     }
-
 
 }

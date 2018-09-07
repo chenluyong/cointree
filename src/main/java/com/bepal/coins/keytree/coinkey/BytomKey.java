@@ -17,7 +17,6 @@ public class BytomKey extends ACoinKey {
     private static final String SEGWITSOLO= "sm";
 
 
-
     public BytomKey(ECKey ecKey) {
         super(new HDKey(ecKey),CoinConfigFactory.getConfig(CoinTag.tagBYTOM));
     }
@@ -48,7 +47,6 @@ public class BytomKey extends ACoinKey {
         } else if (this.config.getNetType() == NetType.SOLO) {
             segwit= SEGWITSOLO;
         }
-
 
         return Bech32.Bech32Encode(segwit, stream.toByteArray());
     }

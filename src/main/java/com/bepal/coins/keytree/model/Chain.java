@@ -18,7 +18,6 @@ import java.text.MessageFormat;
 public class Chain {
     private int path;
 
-
     private int pathType= 0;
     private boolean hardened;
 
@@ -47,7 +46,6 @@ public class Chain {
     public boolean isHardened() {
         return hardened;
     }
-
 
     ///////////////////////////// get / set /////////////////////////////////
 

@@ -24,6 +24,7 @@ public class ECKey {
     protected byte[] chainCode;
     protected IDerivator derivator;
 
+
     public ECKey(ECKey ecKey) {
         this(ecKey.priKey,ecKey.pubKey,ecKey.chainCode,ecKey.derivator);
     }
@@ -32,7 +33,6 @@ public class ECKey {
         this(priKey,pubKey,chainCode,
                 DeriveCoordinator.findDerivator(CoinConfigFactory.getConfig(coinTag).getDeriveTag()));
     }
-
 
     public ECKey(byte[] priKey, byte[] pubKey, byte[] chainCode, IDerivator derivator) {
         setPriKey(priKey);
@@ -73,6 +73,7 @@ public class ECKey {
         }
         this.priKey = priKey;
     }
+
     protected void setChainCode(byte[] chainCode) {
         if (chainCode!= null&& chainCode[0]== 0&& chainCode.length> 32) {
             chainCode= ByteArrayData.copyOfRange(chainCode, 1, 32);

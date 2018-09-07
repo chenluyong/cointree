@@ -5,11 +5,9 @@ import com.bepal.coins.crypto.Hex;
 import com.bepal.coins.crypto.SHAHash;
 import com.bepal.coins.keytree.infrastructure.derivator.BitcoinDerivator;
 import com.bepal.coins.keytree.infrastructure.interfaces.IDerivator;
-import com.bepal.coins.keytree.infrastructure.tags.CoinTag;
 import com.bepal.coins.models.ByteArrayData;
 
 import java.nio.ByteBuffer;
-import java.util.Arrays;
 
 public class HDKey{
 
@@ -162,8 +160,6 @@ public class HDKey{
 
         return data.toBytes();
     }
-
-
 
     private int getFingerprint() {
         if (this.fingerprint == 0)

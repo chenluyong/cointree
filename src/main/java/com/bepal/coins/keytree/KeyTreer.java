@@ -51,8 +51,6 @@ public class KeyTreer {
         return new BitcoinKey(hdKey, coinConfig.getNetType());
     }
 
-
-
     /**
      * derive keys according to bip44
      * */
@@ -119,8 +117,6 @@ public class KeyTreer {
         ICoinKey coinKey= deriveBip44(seed, coinTag);
         return deriveSecChildRange(coinKey.base(), start, end, coinTag);
     }
-
-
 
 
     /////////////////////////////////////////////zformular////////////////////////////////////////////////////////////

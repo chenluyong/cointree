@@ -167,7 +167,7 @@ public class HDKey{
 
     private int getFingerprint() {
         if (this.fingerprint == 0)
-            fingerprint = ByteBuffer.wrap(Arrays.copyOfRange(SHAHash.sha256hash160(ecKey.getPubKey()), 0, 4)).getInt();
+            fingerprint = ByteBuffer.wrap(ByteArrayData.copyOfRange(SHAHash.sha256hash160(ecKey.getPubKey()), 0, 4)).getInt();
         return fingerprint;
     }
 }

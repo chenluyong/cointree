@@ -22,7 +22,7 @@ public abstract class ADerivator implements IDerivator {
             ecKey = deriveChildPub(ecKey, chain);
         }
         return new HDKey(ecKey, hdKey.getDepth() + 1,
-                ByteBuffer.wrap(Arrays.copyOfRange(chain.getPath(), 0, 4)).getInt());
+                ByteBuffer.wrap(ByteArrayData.copyOfRange(chain.getPath(), 0, 4)).getInt());
     }
 
     @Override

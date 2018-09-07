@@ -23,12 +23,9 @@ import com.bepal.coins.keytree.infrastructure.interfaces.ICoinKey;
 import com.bepal.coins.keytree.infrastructure.interfaces.IDerivator;
 import com.bepal.coins.keytree.infrastructure.tags.CoinTag;
 import com.bepal.coins.keytree.infrastructure.interfaces.ICoiner;
-import com.bepal.coins.keytree.infrastructure.tags.DeriveTag;
-import com.bepal.coins.keytree.infrastructure.tags.SeedTag;
 import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.model.HDKey;
 import com.bepal.coins.models.ByteArrayData;
-import com.sun.xml.internal.bind.v2.runtime.Coordinator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +45,7 @@ public class KeyTreer {
      * */
     public ICoinKey deriveHDKey(byte[] seed,CoinTag coinTag) {
         CoinConfig coinConfig = CoinConfigFactory.getConfig(coinTag);
-        IDerivator derivator = DeriveCoordinator.getInstance().findDerivator(coinConfig.getDeriveTag());
+        IDerivator derivator = DeriveCoordinator.findDerivator(coinConfig.getDeriveTag());
         HDKey hdKey = derivator.deriveFromSeed(seed, coinConfig.getSeedTag());
         //default bitcoin key
         return new BitcoinKey(hdKey, coinConfig.getNetType());

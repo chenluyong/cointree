@@ -27,7 +27,7 @@ public class ACoiner implements ICoiner {
 
     public ACoiner(CoinConfig config) {
         this.config = config;
-        this.derivator = DeriveCoordinator.getInstance().findDerivator(this.config.getDeriveTag());
+        this.derivator = DeriveCoordinator.findDerivator(this.config.getDeriveTag());
     }
 
     ///////////////////// function ///////////////////////

@@ -58,6 +58,8 @@ public abstract class ACoinKey implements ICoinKey {
 
     public HDKey hdKey() {return this.hdKey; }
 
+    public CoinConfig config() {return this.config;}
+
     public byte[] toStandardXPrivate() {
         return hdKey.toStandardXPrivate();
     }

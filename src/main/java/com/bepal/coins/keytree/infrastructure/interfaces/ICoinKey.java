@@ -11,11 +11,16 @@ ICoinKey
 */
 package com.bepal.coins.keytree.infrastructure.interfaces;
 
+import com.bepal.coins.keytree.config.CoinConfig;
 import com.bepal.coins.keytree.model.ECKey;
 import com.bepal.coins.keytree.model.ECSign;
+import com.bepal.coins.keytree.model.HDKey;
 
 public interface ICoinKey extends ICoin{
 
+    HDKey hdKey();
+
+    CoinConfig config() ;
 
     /**
      * base ECKey`

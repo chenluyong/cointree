@@ -62,6 +62,7 @@ public class ECKey {
         return chainCode;
     }
 
+    ///////////////////////////// 禁止外部二次设置类内变量 ///////////////////////////////////
     protected void setPubKey(byte[] pubKey) {
         this.pubKey = pubKey;
     }

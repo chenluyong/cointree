@@ -24,6 +24,9 @@ public class ECKey {
     protected byte[] chainCode;
     protected IDerivator derivator;
 
+    ECKey(){
+
+    }
 
     public ECKey(ECKey ecKey) {
         this(ecKey.priKey,ecKey.pubKey,ecKey.chainCode,ecKey.derivator);

@@ -1,7 +1,6 @@
 package com.bepal.coins.keytree.model;
 
 import com.bepal.coins.crypto.Base58;
-import com.bepal.coins.crypto.Hex;
 import com.bepal.coins.crypto.SHAHash;
 import com.bepal.coins.keytree.infrastructure.derivator.BitcoinDerivator;
 import com.bepal.coins.keytree.infrastructure.interfaces.IDerivator;
@@ -47,6 +46,7 @@ public class HDKey{
         // path 4 byte
         this.path = data.readInt();
         // chain code
+        this.ecKey = new ECKey();
         this.ecKey.setChainCode(data.readData(32));
         // key
         byte[] key = data.readData(33);
@@ -68,9 +68,7 @@ public class HDKey{
     }
 
     public HDKey(ECKey ecKey) {
-        this.ecKey = ecKey;
-        this.depth = 0;
-        this.path = 0;
+        this(ecKey,0,0);
     }
     public HDKey(ECKey ecKey, int depth, int path) {
         this.ecKey = ecKey;

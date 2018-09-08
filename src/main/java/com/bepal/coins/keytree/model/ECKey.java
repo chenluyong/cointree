@@ -11,12 +11,16 @@ ECKey
 */
 package com.bepal.coins.keytree.model;
 
+import com.bepal.coins.crypto.SHAHash;
 import com.bepal.coins.keytree.config.CoinConfigFactory;
 import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;
 import com.bepal.coins.keytree.infrastructure.derivator.BitcoinDerivator;
 import com.bepal.coins.keytree.infrastructure.interfaces.IDerivator;
 import com.bepal.coins.keytree.infrastructure.tags.CoinTag;
 import com.bepal.coins.models.ByteArrayData;
+
+import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 public class ECKey {
     protected byte[] priKey;
@@ -87,5 +91,9 @@ public class ECKey {
 
     protected void setDerivator(IDerivator derivator) {
         this.derivator = derivator;
+    }
+
+    public int getFingerprint() {
+        return ByteBuffer.wrap(Arrays.copyOfRange(SHAHash.sha256hash160(getPubKey()), 0, 4)).getInt();
     }
 }

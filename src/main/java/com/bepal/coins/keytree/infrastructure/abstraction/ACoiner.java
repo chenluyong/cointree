@@ -63,7 +63,7 @@ public class ACoiner implements ICoiner {
         for (int i = 0; i < 2; ++i, ++depth) {
             ecKey = derivator.deriveChild(ecKey, chain);
         }
-        return this.base(new HDKey(ecKey, depth, 0));
+        return this.base(new HDKey(ecKey, depth, 0,hdKey.getEcKey().getFingerprint()));
     }
 
     @Override
@@ -78,7 +78,8 @@ public class ACoiner implements ICoiner {
             chain.setPath(pos);
             ECKey tmpKey = derivator.deriveChild(ecKey, chain);
 
-            coinKeys.add(this.base(new HDKey(tmpKey, hdKey.getDepth() + 1, pos)));
+            coinKeys.add(this.base(new HDKey(tmpKey, hdKey.getDepth() + 1, pos,
+                    hdKey.getEcKey().getFingerprint())));
         }
 
         return coinKeys;
@@ -92,7 +93,8 @@ public class ACoiner implements ICoiner {
         for (int i = 0; i < 2; ++i, ++depth) {
             ecKey = derivator.deriveChildPub(ecKey, chain);
         }
-        return this.base(new HDKey(ecKey, depth, 0));
+        return this.base(new HDKey(ecKey, depth, 0,
+                hdKey.getEcKey().getFingerprint()));
     }
 
     @Override
@@ -105,7 +107,8 @@ public class ACoiner implements ICoiner {
         for (int pos = start; pos <= end; ++pos) {
             chain.setPath(pos);
             ECKey tmpKey = derivator.deriveChildPub(ecKey, chain);
-            coinKeys.add(this.base(new HDKey(tmpKey, hdKey.getDepth() + 1, pos)));
+            coinKeys.add(this.base(new HDKey(tmpKey, hdKey.getDepth() + 1, pos,
+                    hdKey.getEcKey().getFingerprint())));
         }
 
         return coinKeys;

@@ -1,6 +1,7 @@
 package com.bepal.coins.keytree.model;
 
 import com.bepal.coins.crypto.Base58;
+import com.bepal.coins.crypto.Hex;
 import com.bepal.coins.crypto.SHAHash;
 import com.bepal.coins.keytree.config.CoinConfigFactory;
 import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;
@@ -11,13 +12,14 @@ import com.bepal.coins.keytree.infrastructure.tags.DeriveTag;
 import com.bepal.coins.models.ByteArrayData;
 
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 public class HDKey{
 
     /**
      * 私钥
      */
-    ECKey ecKey;
+    ECKey ecKey = new ECKey();
     /**
      * 深度 第几层的意思
      */
@@ -27,7 +29,7 @@ public class HDKey{
     int pubPrefix = 0x0488B21E; // xpub
 
     ///
-    private int fingerprint;
+    private int parentFingerprint;
 
     //////////////////////
 
@@ -42,6 +44,7 @@ public class HDKey{
     }
 
     public HDKey(byte[] hdKey, IDerivator derivator) throws Exception {
+        ecKey.setDerivator(derivator);
         ByteArrayData data = new ByteArrayData(hdKey);
         // check sum
         if (!isValid(hdKey)) {
@@ -52,11 +55,10 @@ public class HDKey{
         // depth 1 byte
         this.depth = data.readByte();
         // fp 4 byte
-        int fingerprint = data.readIntLE();
+        this.parentFingerprint = data.readIntLE();
         // path 4 byte
         this.path = data.readIntLE();
         // chain code
-        this.ecKey = new ECKey();
         this.ecKey.setChainCode(data.readData(32));
         // key
         byte[] key = data.readData(33);
@@ -71,19 +73,16 @@ public class HDKey{
             this.ecKey.setPubKey(key);
             this.pubPrefix = head;
         }
-        if (fingerprint != getFingerprint()) {
-            throw new Exception("密钥校验位错误，请确认密钥正确项");
-        }
-        ecKey.setDerivator(derivator);
     }
 
     public HDKey(ECKey ecKey) {
-        this(ecKey,0,0);
+        this(ecKey,0,0,0);
     }
-    public HDKey(ECKey ecKey, int depth, int path) {
+    public HDKey(ECKey ecKey, int depth, int path, int fp) {
         this.ecKey = ecKey;
         this.depth = depth;
         this.path = path;
+        this.parentFingerprint = fp;
     }
 
     /////////////////////  get / set ///////////////////////////
@@ -130,7 +129,9 @@ public class HDKey{
         ByteArrayData data = new ByteArrayData();
         data.appendIntLE(prefix);
         data.appendByte(this.depth);
-        data.appendIntLE(this.getFingerprint());
+        data.appendIntLE(this.parentFingerprint);
+
+
         data.appendIntLE(this.path);
         data.putBytes(this.ecKey.getChainCode());
         byte[] privateKey = this.ecKey.getPriKey();
@@ -153,7 +154,12 @@ public class HDKey{
         ByteArrayData data = new ByteArrayData();
         data.appendIntLE(prefix);
         data.appendByte(this.depth);
-        data.appendIntLE(this.getFingerprint());
+        if (this.depth == 0) {
+            data.appendIntLE(0);
+        }
+        else {
+            data.appendIntLE(this.parentFingerprint);
+        }
         data.appendIntLE(this.path);
         data.putBytes(this.ecKey.getChainCode());
         byte[] publicKey = this.ecKey.getPubKey();
@@ -170,11 +176,6 @@ public class HDKey{
         return data.toBytes();
     }
 
-    private int getFingerprint() {
-        if (this.fingerprint == 0)
-            fingerprint = ByteBuffer.wrap(ByteArrayData.copyOfRange(SHAHash.sha256hash160(ecKey.getPubKey()), 0, 4)).getInt();
-        return fingerprint;
-    }
 
     private boolean isValid(byte[] hdKey) {
         if (hdKey.length != 78 && hdKey.length != 82) {

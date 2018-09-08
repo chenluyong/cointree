@@ -78,7 +78,7 @@ public class ED25519Derivator extends ADerivator {
         pruneRootScalar(priKey);
 
         ECKey ecKey= new ECKey(priKey,null,chainCode,this);
-        return new HDKey(ecKey,0,0);
+        return new HDKey(ecKey);
     }
 
     @Override

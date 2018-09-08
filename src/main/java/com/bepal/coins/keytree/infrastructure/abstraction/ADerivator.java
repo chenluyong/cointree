@@ -1,5 +1,6 @@
 package com.bepal.coins.keytree.infrastructure.abstraction;
 
+import com.bepal.coins.crypto.Hex;
 import com.bepal.coins.keytree.infrastructure.coordinators.SeedCoordinator;
 import com.bepal.coins.keytree.infrastructure.interfaces.IDerivator;
 import com.bepal.coins.keytree.infrastructure.tags.SeedTag;
@@ -22,7 +23,8 @@ public abstract class ADerivator implements IDerivator {
             ecKey = deriveChildPub(ecKey, chain);
         }
         return new HDKey(ecKey, hdKey.getDepth() + 1,
-                ByteBuffer.wrap(ByteArrayData.copyOfRange(chain.getPath(), 0, 4)).getInt());
+                ByteBuffer.wrap(ByteArrayData.copyOfRange(chain.getPath(), 0, 4)).getInt(),
+                hdKey.getEcKey().getFingerprint());
     }
 
     @Override
@@ -32,6 +34,6 @@ public abstract class ADerivator implements IDerivator {
         ECKey ecKey = new ECKey(ByteArrayData.copyOfRange(priMaster, 0, 32),
                 null, ByteArrayData.copyOfRange(priMaster, 32, 32));
 
-        return new HDKey(ecKey,0,0);
+        return new HDKey(ecKey);
     }
 }

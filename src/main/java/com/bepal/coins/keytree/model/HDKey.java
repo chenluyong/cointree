@@ -2,8 +2,12 @@ package com.bepal.coins.keytree.model;
 
 import com.bepal.coins.crypto.Base58;
 import com.bepal.coins.crypto.SHAHash;
+import com.bepal.coins.keytree.config.CoinConfigFactory;
+import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;
 import com.bepal.coins.keytree.infrastructure.derivator.BitcoinDerivator;
 import com.bepal.coins.keytree.infrastructure.interfaces.IDerivator;
+import com.bepal.coins.keytree.infrastructure.tags.CoinTag;
+import com.bepal.coins.keytree.infrastructure.tags.DeriveTag;
 import com.bepal.coins.models.ByteArrayData;
 
 import java.nio.ByteBuffer;
@@ -30,6 +34,12 @@ public class HDKey{
     public HDKey(byte[] hdKey) throws Exception {
         this(hdKey, new BitcoinDerivator());
     }
+    public HDKey(byte[] hdKey, CoinTag coinTag) throws Exception {
+        this(hdKey, CoinConfigFactory.getConfig(coinTag).getDeriveTag());
+    }
+    public HDKey(byte[] hdKey, DeriveTag deriveTag) throws Exception {
+        this(hdKey, DeriveCoordinator.findDerivator(deriveTag));
+    }
 
     public HDKey(byte[] hdKey, IDerivator derivator) throws Exception {
         ByteArrayData data = new ByteArrayData(hdKey);
@@ -38,13 +48,13 @@ public class HDKey{
             throw new Exception("非法的分层确定性密钥");
         }
         // prefix 4 byte;
-        int head = data.readInt();
+        int head = data.readIntLE();
         // depth 1 byte
         this.depth = data.readByte();
         // fp 4 byte
-        int fingerprint = data.readInt();
+        int fingerprint = data.readIntLE();
         // path 4 byte
-        this.path = data.readInt();
+        this.path = data.readIntLE();
         // chain code
         this.ecKey = new ECKey();
         this.ecKey.setChainCode(data.readData(32));
@@ -114,7 +124,7 @@ public class HDKey{
     }
 
     public byte[] toStandardXPrivate() {
-        return toStandardXPublic(prvPrefix);
+        return toStandardXPrivate(prvPrefix);
     }
     public byte[] toStandardXPrivate(int prefix) {
         ByteArrayData data = new ByteArrayData();

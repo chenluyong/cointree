@@ -8,6 +8,7 @@ import com.bepal.coins.utils.ErrorTool;
 
 import java.io.ByteArrayOutputStream;
 import java.math.BigInteger;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
@@ -105,7 +106,7 @@ public class ByteArrayData {
 
     public void appendString(String data) {
         try {
-            appendData(data.getBytes("utf-8"));
+            appendData(data.getBytes(StandardCharsets.UTF_8));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -118,7 +119,7 @@ public class ByteArrayData {
 
     public void appendStringByUVar(String data) {
         try {
-            appendDataByUVar(data.getBytes("utf-8"));
+            appendDataByUVar(data.getBytes(StandardCharsets.UTF_8));
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -144,6 +145,19 @@ public class ByteArrayData {
                 outputStream.write(0);
             }
         }
+    }
+
+    public void appendBigInt8(BigInteger val) {
+        byte[] bytes = val.toByteArray();
+        if (bytes.length > 8) {
+            throw new RuntimeException("Input too large to encode into a uint64");
+        }
+        if (bytes.length < 8) {
+            for (int i = 0; i < 8 - bytes.length; i++) {
+                outputStream.write(0);
+            }
+        }
+        outputStream.write(bytes, 0, bytes.length);
     }
 
     private void checkIsRead() {
@@ -178,6 +192,13 @@ public class ByteArrayData {
     public int readInt() {
         checkIsRead();
         int value = ByteUtil.bytesToInt(inputStream, readIndex);
+        readIndex += 4;
+        return value;
+    }
+
+    public int readIntLE() {
+        checkIsRead();
+        int value = ByteUtil.bytesToIntLE(inputStream, readIndex);
         readIndex += 4;
         return value;
     }
@@ -224,7 +245,7 @@ public class ByteArrayData {
 
     public String readString() {
         try {
-            return new String(readData(), "utf-8");
+            return new String(readData(), StandardCharsets.UTF_8);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -237,7 +258,7 @@ public class ByteArrayData {
 
     public String readStringByUVar() {
         try {
-            return new String(readDataByUVar(), "utf-8");
+            return new String(readDataByUVar(), StandardCharsets.UTF_8);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
@@ -250,6 +271,11 @@ public class ByteArrayData {
     public BigInteger readBigIntLE8() {
         byte[] data = readData(8);
         data = ByteArrayData.reverseBytes(data);
+        return new BigInteger(1, data);
+    }
+
+    public BigInteger readBigInt8() {
+        byte[] data = readData(8);
         return new BigInteger(1, data);
     }
 

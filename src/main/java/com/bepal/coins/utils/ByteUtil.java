@@ -54,7 +54,7 @@ public class ByteUtil {
         } else if (first == 253) {
             value = (0xFF & data[offset + 1]) | ((0xFF & data[offset + 2]) << 8);
         } else if (first == 254) {
-            value = bytesToInt(data, offset + 1);
+            value = bytesToIntByLong(data, offset + 1);
         } else {
             value = bytesToLong(data, offset + 1);
         }
@@ -85,9 +85,8 @@ public class ByteUtil {
     }
 
     public static int bytesToShort(byte[] data, int offset) {
-        int value = (data[offset] & 0xFF)
+        return (data[offset] & 0xFF)
                 | ((data[offset + 1] & 0xFF) << 8);
-        return value;
     }
 
     public static byte[] shortToBytesLE(int value) {
@@ -98,9 +97,8 @@ public class ByteUtil {
     }
 
     public static int bytesToShortLE(byte[] data, int offset) {
-        int value = (data[offset + 1] & 0xFF)
-                | ((data[offset + 0] & 0xFF) << 8);
-        return value;
+        return (data[offset + 1] & 0xFF)
+                | ((data[offset] & 0xFF) << 8);
     }
 
     public static byte[] intToBytes(long value) {
@@ -128,19 +126,27 @@ public class ByteUtil {
     }
 
     public static int bytesToInt(byte[] data, int offset) {
-        int value = (data[offset] & 0xFF)
+        return (data[offset] & 0xFF)
                 | ((data[offset + 1] & 0xFF) << 8)
                 | ((data[offset + 2] & 0xFF) << 16)
                 | ((data[offset + 3] & 0xFF) << 24);
-        return value;
+    }
+
+    /**
+     * 小位在尾部
+     */
+    public static int bytesToIntLE(byte[] data, int offset) {
+        return (data[offset + 3] & 0xFF)
+                | ((data[offset + 2] & 0xFF) << 8)
+                | ((data[offset + 1] & 0xFF) << 16)
+                | ((data[offset] & 0xFF) << 24);
     }
 
     public static long bytesToIntByLong(byte[] data, int offset) {
-        long value = (long) (data[offset] & 0xFF)
+        return (long) (data[offset] & 0xFF)
                 | ((long) (data[offset + 1] & 0xFF) << 8)
                 | ((long) (data[offset + 2] & 0xFF) << 16)
                 | ((long) (data[offset + 3] & 0xFF) << 24);
-        return value;
     }
 
     public static byte[] longToBytes(long value) {
@@ -157,7 +163,7 @@ public class ByteUtil {
     }
 
     public static long bytesToLong(byte[] data, int offset) {
-        long value = ((long) data[offset] & 0xFF)
+        return ((long) data[offset] & 0xFF)
                 | ((long) (data[offset + 1] & 0xFF) << 8)
                 | ((long) (data[offset + 2] & 0xFF) << 16)
                 | ((long) (data[offset + 3] & 0xFF) << 24)
@@ -165,7 +171,6 @@ public class ByteUtil {
                 | ((long) (data[offset + 5] & 0xFF) << 40)
                 | ((long) (data[offset + 6] & 0xFF) << 48)
                 | ((long) (data[offset + 7] & 0xFF) << 56);
-        return value;
     }
 
     public static long bytesToUVar(byte[] data, int offset) {

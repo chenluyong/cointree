@@ -15,6 +15,7 @@ import com.bepal.coins.keytree.coinkey.BitcoinKey;
 import com.bepal.coins.keytree.coins.*;
 import com.bepal.coins.keytree.config.CoinConfig;
 import com.bepal.coins.keytree.config.CoinConfigFactory;
+import com.bepal.coins.keytree.config.CoinerFactory;
 import com.bepal.coins.keytree.infrastructure.abstraction.ACoiner;
 import com.bepal.coins.keytree.infrastructure.components.MnemonicCode;
 import com.bepal.coins.keytree.infrastructure.coordinators.DeriveCoordinator;
@@ -40,22 +41,68 @@ public class KeyTreer {
     }
 
 
-    /**
-     * 默认比特币规则
-     * */
-    public ICoinKey deriveHDKey(byte[] seed,CoinTag coinTag) {
+    public HDKey deriveHDKey(byte[] seed,CoinTag coinTag) {
         CoinConfig coinConfig = CoinConfigFactory.getConfig(coinTag);
         IDerivator derivator = DeriveCoordinator.findDerivator(coinConfig.getDeriveTag());
         HDKey hdKey = derivator.deriveFromSeed(seed, coinConfig.getSeedTag());
-        //default bitcoin key
-        return new BitcoinKey(hdKey, coinConfig.getNetType());
+        return hdKey;
     }
+    public ICoinKey deriveCoinKey(byte[] seed,CoinTag coinTag) {
+        HDKey hdKey = deriveHDKey(seed,coinTag);
+        ICoinKey coinKey = deriveBip44(hdKey,coinTag);
+        return coinKey;
+    }
+    public ICoinKey deriveBip44(HDKey hdKey, CoinTag coinTag) {
+        ICoiner coiner = CoinerFactory.get(coinTag);
+        return coiner.deriveBip44(hdKey);
+    }
+
+    /**
+     * derive second layer key
+     * */
+    public ICoinKey deriveSecChild(HDKey hdKey, CoinTag coinTag) {
+        ICoiner coiner= CoinerFactory.get(coinTag);
+        if (coiner== null) return null;
+
+        return coiner.deriveSecChild(hdKey);
+    }
+
+    /**
+     * derive second layer range key
+     * */
+    public List<ICoinKey> deriveSecChildRange(HDKey hdKey, int start, int end, CoinTag coinTag) {
+        ICoiner coiner= CoinerFactory.get(coinTag);
+        if (coiner== null) return null;
+
+        return coiner.deriveSecChildRange(hdKey, start, end);
+    }
+
+    /**
+     * derive second layer public key by public key
+     * */
+    public ICoinKey deriveSecChildPub(HDKey hdKey, CoinTag coinTag) {
+        ICoiner coiner= CoinerFactory.get(coinTag);
+        if (coiner== null) return null;
+
+        return coiner.deriveSecChildPub(hdKey);
+    }
+
+    /**
+     * derive second layer range public key by public key
+     * */
+    public List<ICoinKey> deriveSecChildRangePub(HDKey hdKey, int start, int end, CoinTag coinTag) {
+        ICoiner coiner= CoinerFactory.get(coinTag);
+        if (coiner== null) return null;
+
+        return coiner.deriveSecChildRangePub(hdKey, start, end);
+    }
+    ///////////////////////////////////////////////////////////////////////
 
     /**
      * derive keys according to bip44
      * */
     public ICoinKey deriveBip44(byte[] seed, CoinTag coinTag) {
-        ICoiner coiner= findCoiner(coinTag);
+        ICoiner coiner= CoinerFactory.get(coinTag);
         if (coiner== null) return null;
 
         return coiner.deriveBip44(seed);
@@ -66,7 +113,7 @@ public class KeyTreer {
      * derive second layer key
      * */
     public ICoinKey deriveSecChild(ECKey ecKey, CoinTag coinTag) {
-        ICoiner coiner= findCoiner(coinTag);
+        ICoiner coiner= CoinerFactory.get(coinTag);
         if (coiner== null) return null;
 
         return coiner.deriveSecChild(new HDKey(ecKey));
@@ -76,7 +123,7 @@ public class KeyTreer {
      * derive second layer range key
      * */
     public List<ICoinKey> deriveSecChildRange(ECKey ecKey, int start, int end, CoinTag coinTag) {
-        ICoiner coiner= findCoiner(coinTag);
+        ICoiner coiner= CoinerFactory.get(coinTag);
         if (coiner== null) return null;
 
         return coiner.deriveSecChildRange(new HDKey(ecKey), start, end);
@@ -86,7 +133,7 @@ public class KeyTreer {
      * derive second layer public key by public key
      * */
     public ICoinKey deriveSecChildPub(ECKey ecKey, CoinTag coinTag) {
-        ICoiner coiner= findCoiner(coinTag);
+        ICoiner coiner= CoinerFactory.get(coinTag);
         if (coiner== null) return null;
 
         return coiner.deriveSecChildPub(new HDKey(ecKey));
@@ -96,7 +143,7 @@ public class KeyTreer {
      * derive second layer range public key by public key
      * */
     public List<ICoinKey> deriveSecChildRangePub(ECKey ecKey, int start, int end, CoinTag coinTag) {
-        ICoiner coiner= findCoiner(coinTag);
+        ICoiner coiner= CoinerFactory.get(coinTag);
         if (coiner== null) return null;
 
         return coiner.deriveSecChildRangePub(new HDKey(ecKey), start, end);
@@ -269,39 +316,39 @@ public class KeyTreer {
                 DeriveCoordinator.findDerivator(CoinConfigFactory.getConfig(coinTag).getDeriveTag()));
         return deriveSecChildPub(ecKey, coinTag);
     }
-
-    /**
-     * using the CoinTag the specific coiner
-     * */
-    private ICoiner findCoiner(CoinTag coinTag) {
-        final ICoin.NetType testNet= ICoin.NetType.TEST;
-
-        switch (coinTag) {
-            // main net
-            case tagETHEREUM:
-            case tagBITCOIN:
-            case tagEOS:
-            case tagGXCHAIN:
-            case tagSELFSELL:
-            case tagAChain:
-            case tagELASTOS:
-            // test net
-            case tagBITCOINTEST:
-            case tagETHEREUMTEST:
-            case tagEOSTEST:
-            case tagGXCHAINTEST:
-            case tagSELFSELLTEST:
-            case tagACHAINTEST:
-            case tagELASTOSTEST:
-                return new ACoiner(CoinConfigFactory.getConfig(coinTag));
-
-            case tagBYTOM:
-            case tagBYTOMTEST:
-            case tagBYTOMSOLO:{
-                return new Bytomer(CoinConfigFactory.getConfig(coinTag));
-            }
-        }
-
-        return null;
-    }
+//
+//    /**
+//     * using the CoinTag the specific coiner
+//     * */
+//    private ICoiner findCoiner(CoinTag coinTag) {
+//        final ICoin.NetType testNet= ICoin.NetType.TEST;
+//
+//        switch (coinTag) {
+//            // main net
+//            case tagETHEREUM:
+//            case tagBITCOIN:
+//            case tagEOS:
+//            case tagGXCHAIN:
+//            case tagSELFSELL:
+//            case tagAChain:
+//            case tagELASTOS:
+//            // test net
+//            case tagBITCOINTEST:
+//            case tagETHEREUMTEST:
+//            case tagEOSTEST:
+//            case tagGXCHAINTEST:
+//            case tagSELFSELLTEST:
+//            case tagACHAINTEST:
+//            case tagELASTOSTEST:
+//                return new ACoiner(CoinConfigFactory.getConfig(coinTag));
+//
+//            case tagBYTOM:
+//            case tagBYTOMTEST:
+//            case tagBYTOMSOLO:{
+//                return new Bytomer(CoinConfigFactory.getConfig(coinTag));
+//            }
+//        }
+//
+//        return null;
+//    }
 }

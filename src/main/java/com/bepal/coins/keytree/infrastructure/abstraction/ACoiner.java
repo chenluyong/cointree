@@ -37,6 +37,11 @@ public class ACoiner implements ICoiner {
         HDKey hdKey = derivator.deriveFromSeed(seed, this.config.getSeedTag());
         if (null == hdKey) return null;
 
+        return this.deriveBip44(hdKey);
+    }
+
+
+    public ICoinKey deriveBip44(HDKey hdKey) {
         int secLayer = (int) this.config.getBip44(), thdLayer = 0;
         if (this.config.getNetType() != ICoin.NetType.MAIN) {
             secLayer = 1;

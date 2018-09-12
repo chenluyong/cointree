@@ -22,6 +22,7 @@ public interface ICoiner extends ICoin{
      * according to bip44 derive key
      */
     ICoinKey deriveBip44(byte[] seed);
+    ICoinKey deriveBip44(HDKey hdKey);
 
     /**
      * derive second layer child
